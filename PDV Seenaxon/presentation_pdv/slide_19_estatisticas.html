@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV Seenaxon - Estatísticas do Projeto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        .slide-container{width:1280px;min-height:720px;background:#F2F2F2;display:flex;flex-direction:column;padding-top:60px;font-family:'Inter',sans-serif}
+        .slide-header{padding:0 80px;margin-bottom:50px}
+        h1{font-size:48px;font-weight:800;color:#1A1A1A;margin-bottom:10px}
+        .header-line{width:80px;height:6px;background:#FF4500;margin-bottom:20px}
+        .header-description{font-size:18px;font-weight:500;color:#333;line-height:1.6}
+        /* Layout refreshed: stats and summary side-by-side to reduce vertical length */
+        .content-main{display:flex;flex-direction:row;padding:0 80px;flex:1;gap:24px}
+        .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:3}
+        .stat-box{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px}
+        .stat-number{font-size:64px;font-weight:800;color:#FF4500;line-height:1}
+        .stat-label{font-size:18px;font-weight:700;color:#1A1A1A;text-align:center;line-height:1.4}
+        .stat-description{font-size:14px;font-weight:500;color:#333;text-align:center;line-height:1.5}
+        .summary-box{background:#FFF;border-top:4px solid #FF4500;padding:16px;display:flex;flex-direction:column;justify-content:center;align-items:center;flex:1;align-self:stretch}
+        .summary-item{display:flex;flex-direction:column;align-items:center;gap:8px;margin:6px 0}
+        .summary-item-value{font-size:32px;font-weight:800;color:#FF4500}
+        .summary-item-label{font-size:14px;font-weight:600;color:#333;text-align:center}
+        .accent-element{position:absolute;width:150px;height:150px;background:#FF4500;opacity:.04;border-radius:50%;right:40px;bottom:40px;z-index:1}
+        @media print{.slide-container{width:1280px}}
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="accent-element"></div>
+        <div class="slide-header">
+            <div class="header-line"></div>
+            <h1>Estatísticas do Projeto</h1>
+            <p class="header-description">Números impressionantes que demonstram a completude e profissionalismo do sistema</p>
+        </div>
+
+        <div class="content-main">
+            <div class="stats-grid">
+                <div class="stat-box"><div class="stat-number">45</div><div class="stat-label">Arquivos</div><div class="stat-description">Código-fonte bem organizado</div></div>
+                <div class="stat-box"><div class="stat-number">8</div><div class="stat-label">Classes de Negócio</div><div class="stat-description">POO estruturado</div></div>
+                <div class="stat-box"><div class="stat-number">3</div><div class="stat-label">Repositórios</div><div class="stat-description">Padrão Repository</div></div>
+                <div class="stat-box"><div class="stat-number">7</div><div class="stat-label">Formulários</div><div class="stat-description">Interface completa</div></div>
+                <div class="stat-box"><div class="stat-number">12</div><div class="stat-label">Documentações</div><div class="stat-description">Guias e exemplos</div></div>
+                <div class="stat-box"><div class="stat-number">6000+</div><div class="stat-label">Linhas de Código</div><div class="stat-description">Implementação completa</div></div>
+                <div class="stat-box"><div class="stat-number">100+</div><div class="stat-label">Métodos</div><div class="stat-description">Funcionalidades ricas</div></div>
+                <div class="stat-box"><div class="stat-number">25</div><div class="stat-label">Slides</div><div class="stat-description">Apresentação completa</div></div>
+                <div class="stat-box"><div class="stat-number">100%</div><div class="stat-label">Funcional</div><div class="stat-description">Pronto para produção</div></div>
+            </div>
+
+            <div class="summary-box">
+                <div class="summary-item"><div class="summary-item-value">Profissional</div><div class="summary-item-label">Arquitetura de classe mundial</div></div>
+                <div class="summary-item"><div class="summary-item-value">Completo</div><div class="summary-item-label">Todas as funcionalidades implementadas</div></div>
+                <div class="summary-item"><div class="summary-item-value">Documentado</div><div class="summary-item-label">Código e guias bem explicados</div></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

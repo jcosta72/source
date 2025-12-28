@@ -1,0 +1,98 @@
+object FormDesconto: TFormDesconto
+  Left = 0
+  Top = 0
+  Caption = 'Aplicar Desconto'
+  ClientHeight = 400
+  ClientWidth = 500
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  DesignerMasterStyle = 0
+  object PanelPrincipal: TPanel
+    Align = Client
+    Size.Width = 500.000000000000000000
+    Size.Height = 400.000000000000000000
+    TabOrder = 0
+    object LabelTitulo: TLabel
+      Position.X = 20.000000000000000000
+      Position.Y = 20.000000000000000000
+      Text = 'APLICAR DESCONTO'
+      Font.Size = 16.000000000000000000
+      Font.Style = [fsBold]
+    end
+    object PanelConteudo: TPanel
+      Position.X = 20.000000000000000000
+      Position.Y = 60.000000000000000000
+      Width = 460.000000000000000000
+      Height = 280.000000000000000000
+      TabOrder = 0
+      object RadioGroupTipo: TRadioButton
+        Position.X = 10.000000000000000000
+        Position.Y = 10.000000000000000000
+        Text = 'Desconto em Valor Fixo (R$)'
+        IsChecked = True
+        TabOrder = 0
+      end
+      object RadioGroupPercentual: TRadioButton
+        Position.X = 10.000000000000000000
+        Position.Y = 50.000000000000000000
+        Text = 'Desconto em Percentual (%)'
+        TabOrder = 1
+      end
+      object LabelValor: TLabel
+        Position.X = 10.000000000000000000
+        Position.Y = 100.000000000000000000
+        Text = 'Valor do Desconto:'
+        Font.Size = 12.000000000000000000
+      end
+      object EditValor: TEdit
+        Position.X = 10.000000000000000000
+        Position.Y = 120.000000000000000000
+        Width = 300.000000000000000000
+        Height = 35.000000000000000000
+        Font.Size = 14.000000000000000000
+        TabOrder = 2
+        Text = '0.00'
+      end
+      object LabelUnidade: TLabel
+        Position.X = 320.000000000000000000
+        Position.Y = 125.000000000000000000
+        Text = 'R$'
+        Font.Size = 14.000000000000000000
+        Font.Style = [fsBold]
+      end
+      object LabelPreview: TLabel
+        Position.X = 10.000000000000000000
+        Position.Y = 170.000000000000000000
+        Width = 440.000000000000000000
+        Height = 100.000000000000000000
+        Text = ''
+        Font.Size = 11.000000000000000000
+        WordWrap = True
+      end
+    end
+    object PanelBotoes: TPanel
+      Position.X = 20.000000000000000000
+      Position.Y = 350.000000000000000000
+      Width = 460.000000000000000000
+      Height = 40.000000000000000000
+      TabOrder = 1
+      object ButtonAplicar: TButton
+        Position.X = 10.000000000000000000
+        Position.Y = 5.000000000000000000
+        Width = 220.000000000000000000
+        Height = 30.000000000000000000
+        Text = 'Aplicar Desconto'
+        TabOrder = 0
+      end
+      object ButtonCancelar: TButton
+        Position.X = 240.000000000000000000
+        Position.Y = 5.000000000000000000
+        Width = 210.000000000000000000
+        Height = 30.000000000000000000
+        Text = 'Cancelar'
+        TabOrder = 1
+      end
+    end
+  end
+end

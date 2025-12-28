@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV Seenaxon - Histórico de Caixas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        .slide-container {
+            width: 1280px;
+            min-height: 720px; /* keep as required */
+            background: #F2F2F2;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px; /* keep title spacing */
+            font-family: 'Inter', sans-serif;
+        }
+
+        .slide-header { padding: 0 80px; margin-bottom: 35px; }
+
+        h1 { font-size: 48px; font-weight: 800; color: #1A1A1A; margin-bottom: 10px; }
+
+        .header-line { width: 80px; height: 6px; background: #FF4500; margin-bottom: 20px; }
+
+        .header-description { font-size: 18px; font-weight: 500; color: #333333; line-height: 1.6; }
+
+        .content-main {
+            display: flex;
+            gap: 60px;
+            padding: 0 80px;
+            flex: 1;
+            align-items: flex-start;
+        }
+
+        .content-left { flex: 1; }
+
+        .content-right { flex: 1; display: flex; align-items: flex-start; justify-content: center; }
+
+        .section { margin-bottom: 16px; }
+
+        .section h3 {
+            font-size: 16px; font-weight: 700; color: #1A1A1A; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 3px solid #FF4500; display: inline-block;
+        }
+
+        .list-items { list-style: none; padding: 0; }
+
+        .list-items li {
+            font-size: 14px; font-weight: 500; color: #333333; margin-bottom: 6px; padding-left: 22px; position: relative; line-height: 1.5;
+        }
+
+        .list-items li::before { content: '▸'; position: absolute; left: 0; color: #FF4500; font-size: 14px; }
+
+        .report-image { width: 340px; height: 400px; object-fit: contain; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="slide-header">
+            <div class="header-line"></div>
+            <h1>Histórico de Caixas</h1>
+            <p class="header-description">Consulta completa de caixas fechados com filtro por período e exportação de relatórios</p>
+        </div>
+
+        <div class="content-main">
+            <div class="content-left">
+                <div class="section">
+                    <h3>Filtros Disponíveis</h3>
+                    <ul class="list-items">
+                        <li>Por período e por operador</li>
+                        <li>Por status e por saldo (combinação de filtros)</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3>Funcionalidades</h3>
+                    <ul class="list-items">
+                        <li>Listagem e resumo de caixas</li>
+                        <li>Visualização de vendas e cálculo de diferença</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3>Informações por Caixa</h3>
+                    <ul class="list-items">
+                        <li>Data/hora de abertura/fechamento, operador e saldos</li>
+                        <li>Total de vendas, transações e diferença de caixa</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3>Exportação</h3>
+                    <ul class="list-items">
+                        <li>Exportar (CSV, Excel, PDF) e Imprimir</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-right">
+                <img src="/home/ubuntu/upload/search_images/n5sOO21MKV9t.png" alt="Histórico de Caixas" class="report-image">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

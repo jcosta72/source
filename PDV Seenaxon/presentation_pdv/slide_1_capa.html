@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV Seenaxon - Capa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: linear-gradient(135deg, #F2F2F2 0%, #FFFFFF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 80px;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-left {
+            flex: 1;
+            z-index: 2;
+        }
+
+        .content-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .accent-line {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 8px;
+            height: 200px;
+            background: #FF4500;
+        }
+
+        h1 {
+            font-size: 72px;
+            font-weight: 800;
+            color: #1A1A1A;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+
+        .subtitle {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 40px;
+            line-height: 1.4;
+        }
+
+        .technologies {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 50px;
+        }
+
+        .tech-item {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333333;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tech-item::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #FF4500;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .logo-container {
+            width: 300px;
+            height: 300px;
+            background: #FFFFFF;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .logo-container img {
+            width: 220px;
+            height: 220px;
+            object-fit: contain;
+        }
+
+        .geometric-shape {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: #FF4500;
+            opacity: 0.05;
+            border-radius: 50%;
+            right: -100px;
+            top: -100px;
+            z-index: 1;
+        }
+
+        .geometric-shape-2 {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: #FF4500;
+            opacity: 0.03;
+            border-radius: 50%;
+            left: -50px;
+            bottom: -50px;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="accent-line"></div>
+        <div class="geometric-shape"></div>
+        <div class="geometric-shape-2"></div>
+
+        <div class="content-left">
+            <h1>PDV Seenaxon</h1>
+            <p class="subtitle">Sistema de Ponto de Venda Profissional em Delphi FMX</p>
+
+            <div class="technologies">
+                <div class="tech-item">Delphi 12 Sydney</div>
+                <div class="tech-item">FireMonkey (FMX)</div>
+                <div class="tech-item">Programação Orientada a Objetos (POO)</div>
+                <div class="tech-item">Arquitetura Profissional</div>
+            </div>
+        </div>
+
+        <div class="content-right">
+            <div class="logo-container">
+                <img src="/home/ubuntu/upload/search_images/Nxd2pfXZs9Eg.png" alt="Delphi Logo">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

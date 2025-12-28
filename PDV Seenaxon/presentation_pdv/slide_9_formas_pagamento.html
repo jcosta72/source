@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV Seenaxon - Formas de Pagamento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #F2F2F2;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .slide-header {
+            padding: 0 80px;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: #1A1A1A;
+            margin-bottom: 10px;
+        }
+
+        .header-line {
+            width: 80px;
+            height: 6px;
+            background: #FF4500;
+            margin-bottom: 20px;
+        }
+
+        .header-description {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        .content-main {
+            display: flex;
+            gap: 50px;
+            padding: 0 80px;
+            flex: 1;
+            align-items: flex-start;
+        }
+
+        .payment-methods {
+            flex: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+        }
+
+        .payment-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .payment-icon {
+            width: 60px;
+            height: 60px;
+            background: #FF4500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .payment-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #FF4500;
+        }
+
+        .payment-features {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .payment-features li {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333333;
+            padding-left: 22px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .payment-features li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #FF4500;
+            font-size: 14px;
+        }
+
+        .image-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .payment-screenshot {
+            width: 100%;
+            max-width: 320px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .accent-element {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: #FF4500;
+            opacity: 0.06;
+            border-radius: 50%;
+            right: 80px;
+            bottom: 60px;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="accent-element"></div>
+
+        <div class="slide-header">
+            <div class="header-line"></div>
+            <h1>Múltiplas Formas de Pagamento</h1>
+            <p class="header-description">Suporte completo a dinheiro, cartão e PIX com confirmação automática</p>
+        </div>
+
+        <div class="content-main">
+            <div class="payment-methods">
+                <div class="payment-box">
+                    <div class="payment-icon">💰</div>
+                    <div class="payment-title">Dinheiro</div>
+                    <ul class="payment-features">
+                        <li>Valor recebido obrigatório</li>
+                        <li>Cálculo automático de troco</li>
+                        <li>Validação de valor</li>
+                        <li>Registro de transação</li>
+                        <li>Controle de caixa</li>
+                    </ul>
+                </div>
+
+                <div class="payment-box">
+                    <div class="payment-icon">💳</div>
+                    <div class="payment-title">Cartão</div>
+                    <ul class="payment-features">
+                        <li>Débito/Crédito</li>
+                        <li>Sem necessidade de troco</li>
+                        <li>Registro automático</li>
+                        <li>Integração com EFT</li>
+                        <li>Comprovante gerado</li>
+                    </ul>
+                </div>
+
+                <div class="payment-box">
+                    <div class="payment-icon">📱</div>
+                    <div class="payment-title">PIX</div>
+                    <ul class="payment-features">
+                        <li>Pagamento instantâneo</li>
+                        <li>Sem taxa de transação</li>
+                        <li>Confirmação automática</li>
+                        <li>Segurança garantida</li>
+                        <li>Rastreamento completo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="image-container">
+                <img src="/home/ubuntu/screenshots/youtube_2025-12-28_13-27-17_4704.webp" alt="Tela de Pagamento" class="payment-screenshot">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

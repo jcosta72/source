@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV Seenaxon - Casos de Uso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        .slide-container{width:1280px;min-height:720px;background:#F2F2F2;display:flex;flex-direction:column;padding-top:60px;font-family:'Inter',sans-serif}
+        .slide-header{padding:0 80px;margin-bottom:20px}
+        h1{font-size:48px;font-weight:800;color:#1A1A1A;margin-bottom:10px}
+        .header-line{width:80px;height:6px;background:#FF4500;margin-bottom:20px}
+        .header-description{font-size:18px;font-weight:500;color:#333;line-height:1.6}
+        .content-main{display:flex;gap:40px;padding:0 80px;flex:1;align-items:flex-start}
+        /* left side: switch to two-column grid to reduce vertical stacking */
+        .content-left{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+        .content-right{flex:1;display:flex;align-items:center;justify-content:center}
+        .use-case{background:#fff;border-top:4px solid #FF4500;padding:16px;display:flex;gap:12px}
+        .use-case-number{width:50px;height:50px;background:#FF4500;color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;flex-shrink:0}
+        .use-case-content{display:flex;flex-direction:column;gap:8px}
+        .use-case-title{font-size:16px;font-weight:700;color:#1A1A1A}
+        .use-case-description{font-size:14px;font-weight:500;color:#333;line-height:1.6}
+        .use-case-steps{font-size:13px;font-weight:400;color:#666;line-height:1.5;margin-top:6px}
+        .use-case-step{display:flex;gap:8px;margin-bottom:4px}
+        .step-bullet{color:#FF4500;font-weight:600}
+        .use-case-image{width:220px;height:220px;object-fit:contain}
+        /* make sure long titles wrap nicely and don't add extra height */
+        .use-case-title,.use-case-description{word-break:break-word}
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="slide-header">
+            <div class="header-line"></div>
+            <h1>Casos de Uso</h1>
+            <p class="header-description">Cenários reais: venda simples, venda com desconto e recuperação após interrupção do sistema</p>
+        </div>
+
+        <div class="content-main">
+            <div class="content-left">
+                <div class="use-case">
+                    <div class="use-case-number">1</div>
+                    <div class="use-case-content">
+                        <div class="use-case-title">Venda Simples</div>
+                        <div class="use-case-description">Fluxo básico de uma venda sem modificações</div>
+                        <div class="use-case-steps">
+                            <div class="use-case-step"><span class="step-bullet">→</span><span>Operador faz login no sistema</span></div>
+                            <div class="use-case-step"><span class="step-bullet">→</span><span>Adiciona produtos ao carrinho</span></div>
+                            <div class="use-case-step"><span class="step-bullet">→</span><span>Finaliza venda com pagamento</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case">
+                    <div class="use-case-number">2</div>
+                    <div class="use-case-content">
+                        <div class="use-case-title">Venda com Desconto</div>
+                        <div class="use-case-description">Venda com aplicação de desconto percentual ou em valor</div>
+                        <div class="use-case-steps">
+                            <div class="use-case-step"><span class="step-bullet">→</span><span>Adiciona múltiplos produtos</span></div>
+                            <div class="use-case-step"><span class="step-bullet">→</span><span>Clica em "Aplicar Desconto"</span></div>
+                            <div class="use-case-step"><span class="step-bullet">→</span><span>Finaliza venda com novo total</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case" style="grid-column:1 / span 2">
+                    <div class="use-case-number">3</div>
+                    <div class="use-case-content">
+                        <div class="use-case-title">Recuperação de Venda Pendente</div>
+                        <div class="use-case-description">Sistema interrompido durante uma venda e retomada posterior</div>
+                        <div class="use-case-steps">
+                            <div class="use-case-step"><span class="step-bullet">→</span><span>Sistema sofre interrupção (falta de energia)</span></div>
+                            <div class="use-case-step"><span class="step-bullet">→</span><span>Venda pendente é salva em arquivo XML</span></div>
+                            <div class="use-case-step"><span class="step-bullet">→</span><span>Sistema reinicia e detecta venda pendente</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-right">
+                <img src="/home/ubuntu/upload/search_images/SRC1KGbLkE5I.jpg" alt="Casos de Uso Completados" class="use-case-image">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

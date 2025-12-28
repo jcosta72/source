@@ -1,0 +1,212 @@
+{
+  "project_info": {
+    "title": "PDV Seenaxon",
+    "created": 1766956419.096355,
+    "last_updated": 1766956856.7970748,
+    "total_slides": 25
+  },
+  "slides": {
+    "slide_1_capa": "edited",
+    "slide_2_visao_geral": "edited",
+    "slide_3_arquitetura": "edited",
+    "slide_4_autenticacao": "edited",
+    "slide_5_gerenciamento_caixa": "edited",
+    "slide_6_catalogo_produtos": "edited",
+    "slide_7_carrinho_compras": "edited",
+    "slide_8_descontos_acrescimos": "edited",
+    "slide_9_formas_pagamento": "edited",
+    "slide_10_impressao_fiscal": "edited",
+    "slide_11_interface_responsiva": "edited",
+    "slide_12_recuperacao_vendas": "edited",
+    "slide_13_persistencia_banco_dados": "edited",
+    "slide_14_relatorios_gerenciais": "edited",
+    "slide_15_historico_caixas": "edited",
+    "slide_16_tecnologias": "edited",
+    "slide_17_arquivos_projeto": "edited",
+    "slide_18_documentacao": "edited",
+    "slide_19_estatisticas": "edited",
+    "slide_20_fluxo_venda": "edited",
+    "slide_21_casos_uso": "edited",
+    "slide_22_vantagens": "edited",
+    "slide_23_proximas_melhorias": "edited",
+    "slide_24_conclusao": "edited",
+    "slide_25_contato": "edited"
+  },
+  "outline": [
+    {
+      "id": "slide_1_capa",
+      "title": "PDV Seenaxon",
+      "summary": "Apresentação do sistema de ponto de venda profissional desenvolvido em Delphi Sydney com FMX, mostrando o título principal e tecnologias utilizadas.",
+      "image_plan": "/home/ubuntu/upload/search_images/5v4X9IOsLGOx.jpg; /home/ubuntu/upload/search_images/Nxd2pfXZs9Eg.png - Image 19 shows a typical POS system, which is the subject of the presentation. Image 34 is the Delphi logo, the technology used.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_2_visao_geral",
+      "title": "Visão Geral",
+      "summary": "Visão geral do PDV Seenaxon com as principais funcionalidades: interface responsiva, autenticação segura, gerenciamento de caixa, catálogo de produtos, carrinho de compras, múltiplas formas de pagamento, impressão fiscal e recuperação de vendas.",
+      "image_plan": "/home/ubuntu/upload/search_images/t35F8Bs5OXF1.jpg - General overview of a Point of Sale system. Image 20 is a conceptual image of a POS system.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_3_arquitetura",
+      "title": "Arquitetura Profissional com POO",
+      "summary": "Estrutura profissional do sistema com classes de negócio, repositórios e formulários, demonstrando o uso de Programação Orientada a Objetos.",
+      "image_plan": "/home/ubuntu/upload/search_images/vYD5q6FKNbWZ.png; /home/ubuntu/upload/search_images/dDrNxiXbd35x.jpeg - Slide discusses professional architecture and POO. Image 11 is a software architecture diagram, and Image 14 illustrates Object-Oriented Programming concepts.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_4_autenticacao",
+      "title": "Sistema de Login Seguro",
+      "summary": "Sistema de autenticação com matrícula e senha, validação de credenciais, máximo 3 tentativas e operadores pré-carregados para teste.",
+      "image_plan": "/home/ubuntu/screenshots/youtube_2025-12-28_13-24-27_9879.webp - Screenshot of the login/initial screen of the PDV system, relevant to the authentication slide. Image 1 shows the initial state of the PDV.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_5_gerenciamento_caixa",
+      "title": "Gerenciamento de Caixa",
+      "summary": "Funcionalidades completas de abertura, operação e fechamento de caixa com saldo inicial, histórico de vendas e relatórios detalhados.",
+      "image_plan": "/home/ubuntu/upload/search_images/mN6J8FfkrNir.jpg - Image 22 is a cash register drawer, representing the concept of cash management (Caixa).",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_6_catalogo_produtos",
+      "title": "Catálogo de Produtos",
+      "summary": "22 produtos disponíveis em diferentes categorias com busca em tempo real, filtro por categoria e exibição de preço.",
+      "image_plan": "/home/ubuntu/screenshots/youtube_2025-12-28_13-25-39_7941.webp - Screenshot showing the product list and cart with items added, relevant to the product catalog and cart.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_7_carrinho_compras",
+      "title": "Carrinho de Compras",
+      "summary": "Gerenciamento completo de itens com operações de adicionar, remover, ajustar quantidade e aplicar descontos/acréscimos.",
+      "image_plan": "/home/ubuntu/screenshots/youtube_2025-12-28_13-26-05_3544.webp - Screenshot showing the cart with multiple items and calculated total, relevant to cart management.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_8_descontos_acrescimos",
+      "title": "Descontos e Acréscimos",
+      "summary": "Flexibilidade de preços com descontos por item ou geral, em valor fixo ou percentual, com validação automática.",
+      "image_plan": "/home/ubuntu/screenshots/youtube_2025-12-28_13-26-29_1985.webp - Screenshot showing the discount application modal, directly relevant to the Discounts and Surcharges slide.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_9_formas_pagamento",
+      "title": "Múltiplas Formas de Pagamento",
+      "summary": "Suporte a três formas de pagamento: dinheiro com cálculo de troco, cartão e PIX com confirmação automática.",
+      "image_plan": "/home/ubuntu/screenshots/youtube_2025-12-28_13-27-17_4704.webp - Screenshot showing the finalization screen with payment options (Dinheiro, Cartão, PIX), relevant to payment methods.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_10_impressao_fiscal",
+      "title": "Impressão Fiscal",
+      "summary": "Cupom profissional com dados da empresa, produtos, totalizadores e forma de pagamento, gerado automaticamente após venda.",
+      "image_plan": "/home/ubuntu/upload/search_images/iqkcVj86CNy8.jpg - Image 24 shows a receipt printer and cash drawer, representing the concept of fiscal printing/receipts.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_11_interface_responsiva",
+      "title": "Interface Responsiva",
+      "summary": "Layout adaptável a qualquer resolução com ajuste automático de componentes e compatibilidade com Windows, macOS e Linux.",
+      "image_plan": "/home/ubuntu/screenshots/youtube_2025-12-28_13-24-51_9435.webp - Screenshot of the main screen, showing the responsive layout and FMX interface. Image 2 is a good representation of the PDV interface.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_12_recuperacao_vendas",
+      "title": "Recuperação de Vendas",
+      "summary": "Proteção contra interrupções com salvamento automático de venda pendente em arquivo XML e recuperação ao reiniciar.",
+      "image_plan": "/home/ubuntu/screenshots/youtube_2025-12-28_13-26-53_3747.webp - Screenshot showing the finalization screen, which is the point where a sale would be recovered or finalized. The slide is conceptual, so a relevant UI element is used.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_13_persistencia_banco_dados",
+      "title": "Persistência em Banco de Dados",
+      "summary": "SQLite integrado para salvar produtos, operadores, vendas e itens, com suporte a backup e restauração automática.",
+      "image_plan": "/home/ubuntu/upload/search_images/EcE8JMzgNLO3.png - Image 27 is the SQLite icon, the database technology used for persistence.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_14_relatorios_gerenciais",
+      "title": "Relatórios Gerenciais",
+      "summary": "Análise de desempenho com vendas por operador, por forma de pagamento e relatórios customizados por período.",
+      "image_plan": "/home/ubuntu/upload/search_images/zHZAdx7IDzDv.png; /home/ubuntu/upload/search_images/m2Xv51T17liu.png - Images 28 and 31 are examples of dashboards and sales reports, relevant to managerial reports.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_15_historico_caixas",
+      "title": "Histórico de Caixas",
+      "summary": "Consulta completa de caixas fechados com filtro por período, resumo de cada caixa e exportação de relatórios.",
+      "image_plan": "/home/ubuntu/upload/search_images/n5sOO21MKV9t.png - Image 32 is a report template showing sales data, relevant to the history of cash registers and reports.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_16_tecnologias",
+      "title": "Tecnologias Utilizadas",
+      "summary": "Stack profissional com Delphi 12 Sydney, FireMonkey FMX, SQLite e padrões como POO, MVC e Repository Pattern.",
+      "image_plan": "/home/ubuntu/upload/search_images/sLOzjf0YazdI.jpg - Delphi IDE icon, representing the core technology stack.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_17_arquivos_projeto",
+      "title": "Arquivos do Projeto",
+      "summary": "Estrutura completa com 45 arquivos: 8 classes de negócio, 3 repositórios, 7 formulários e 12 documentações.",
+      "image_plan": "",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_18_documentacao",
+      "title": "Documentação Completa",
+      "summary": "12 arquivos de documentação incluindo guias de uso, arquitetura, exemplos práticos e fluxos de funcionamento.",
+      "image_plan": "",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_19_estatisticas",
+      "title": "Estatísticas do Projeto",
+      "summary": "Números impressionantes: 45 arquivos, 8 classes, 3 repositórios, 7 formulários, 6000+ linhas de código e 100+ métodos.",
+      "image_plan": "",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_20_fluxo_venda",
+      "title": "Fluxo de Venda Completo",
+      "summary": "Passo a passo da venda: login, abertura de caixa, verificação de venda pendente, adição de produtos, finalização e impressão.",
+      "image_plan": "/home/ubuntu/screenshots/youtube_2025-12-28_13-25-14_3921.webp - Screenshot showing the main screen with the product list and cart, illustrating the flow of a sale.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_21_casos_uso",
+      "title": "Casos de Uso",
+      "summary": "Cenários reais: venda simples, venda com desconto e recuperação após interrupção do sistema.",
+      "image_plan": "/home/ubuntu/upload/search_images/SRC1KGbLkE5I.jpg - Image 36 shows a person celebrating a completed task with a checkmark, representing the successful completion of use cases/scenarios.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_22_vantagens",
+      "title": "Vantagens do PDV Seenaxon",
+      "summary": "Sistema profissional, seguro, confiável, responsivo, completo, documentado, extensível, performático e multiplataforma.",
+      "image_plan": "/home/ubuntu/upload/search_images/GPikBweKt9Fm.jpg - Image 38 is a banner showing success with a check mark, reinforcing the advantages and positive aspects.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_23_proximas_melhorias",
+      "title": "Próximas Melhorias",
+      "summary": "Roadmap futuro com integração de leitor de código de barras, sistema de fidelidade, aplicativo mobile e sincronização com servidor.",
+      "image_plan": "",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_24_conclusao",
+      "title": "Conclusão",
+      "summary": "PDV Seenaxon como solução completa para pequenas e médias lojas, desenvolvido com Delphi Sydney e pronto para compilar e executar.",
+      "image_plan": "/home/ubuntu/upload/search_images/Z8ivE7xODBpu.png - Image 26 is a general image of a complete POS system, suitable for a conclusion slide.",
+      "slide_template_key": ""
+    },
+    {
+      "id": "slide_25_contato",
+      "title": "Contato e Suporte",
+      "summary": "Informações sobre documentação completa, código fonte bem estruturado e próximos passos para compilar, testar e customizar o sistema.",
+      "image_plan": "/home/ubuntu/upload/search_images/YjEaM9mf97ts.jpg - Image 39 is a contact/support graphic, relevant to the contact and support slide.",
+      "slide_template_key": ""
+    }
+  ]
+}

@@ -1,0 +1,277 @@
+object FormPrincipal: TFormPrincipal
+  Left = 0
+  Top = 0
+  Caption = 'PDV Seenaxon - Frente de Caixa Inteligente'
+  ClientHeight = 768
+  ClientWidth = 1280
+  Position = MainFormCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  DesignerMasterStyle = 0
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  object PanelPrincipal: TPanel
+    Align = Client
+    Padding.Left = 0.000000000000000000
+    Padding.Top = 0.000000000000000000
+    Padding.Right = 0.000000000000000000
+    Padding.Bottom = 0.000000000000000000
+    Size.Width = 1280.000000000000000000
+    Size.Height = 768.000000000000000000
+    TabOrder = 0
+    object PanelCabecalho: TPanel
+      Align = Top
+      Padding.Left = 10.000000000000000000
+      Padding.Top = 10.000000000000000000
+      Padding.Right = 10.000000000000000000
+      Padding.Bottom = 10.000000000000000000
+      Size.Width = 1280.000000000000000000
+      Size.Height = 60.000000000000000000
+      StyleLookup = 'panelstyle'
+      TabOrder = 0
+      object LabelOperador: TLabel
+        Align = Left
+        Size.Width = 400.000000000000000000
+        Size.Height = 40.000000000000000000
+        Text = 'Operador: '
+        Font.Size = 14.000000000000000000
+        VertTextAlign = Center
+      end
+      object LabelStatusCaixa: TLabel
+        Align = Right
+        Size.Width = 200.000000000000000000
+        Size.Height = 40.000000000000000000
+        Text = 'Caixa Aberto'
+        Font.Size = 14.000000000000000000
+        TextSettings.FontColor = claGreen
+        TextAlign = Trailing
+        VertTextAlign = Center
+      end
+      object ButtonCaixa: TButton
+        Align = Right
+        Margins.Left = 5.000000000000000000
+        Margins.Right = 5.000000000000000000
+        Size.Width = 150.000000000000000000
+        Size.Height = 40.000000000000000000
+        Text = 'Gerenciar Caixa'
+        TabOrder = 1
+      end
+      object ButtonSair: TButton
+        Align = Right
+        Margins.Left = 5.000000000000000000
+        Margins.Right = 5.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 40.000000000000000000
+        Text = 'Sair'
+        TabOrder = 2
+      end
+    end
+    object PanelConteudo: TPanel
+      Align = Client
+      Padding.Left = 0.000000000000000000
+      Padding.Top = 0.000000000000000000
+      Padding.Right = 0.000000000000000000
+      Padding.Bottom = 0.000000000000000000
+      Size.Width = 1280.000000000000000000
+      Size.Height = 708.000000000000000000
+      TabOrder = 1
+      object PanelEsquerda: TPanel
+        Align = Left
+        Padding.Left = 5.000000000000000000
+        Padding.Top = 5.000000000000000000
+        Padding.Right = 5.000000000000000000
+        Padding.Bottom = 5.000000000000000000
+        Size.Width = 800.000000000000000000
+        Size.Height = 708.000000000000000000
+        TabOrder = 0
+        object PanelPesquisa: TPanel
+          Align = Top
+          Padding.Left = 10.000000000000000000
+          Padding.Top = 10.000000000000000000
+          Padding.Right = 10.000000000000000000
+          Padding.Bottom = 10.000000000000000000
+          Size.Width = 790.000000000000000000
+          Size.Height = 60.000000000000000000
+          TabOrder = 0
+          object LabelPesquisa: TLabel
+            Align = Top
+            Size.Width = 770.000000000000000000
+            Size.Height = 20.000000000000000000
+            Text = 'C'#243'digo de Barras - F11 Pesquisa'
+            Font.Size = 12.000000000000000000
+          end
+          object EditPesquisa: TEdit
+            Align = Client
+            Margins.Top = 5.000000000000000000
+            Size.Width = 770.000000000000000000
+            Height = 25.000000000000000000
+            TabOrder = 0
+          end
+        end
+        object PanelTabela: TPanel
+          Align = Client
+          Padding.Left = 10.000000000000000000
+          Padding.Top = 10.000000000000000000
+          Padding.Right = 10.000000000000000000
+          Padding.Bottom = 10.000000000000000000
+          Size.Width = 790.000000000000000000
+          Size.Height = 638.000000000000000000
+          TabOrder = 1
+          object LabelProdutos: TLabel
+            Align = Top
+            Size.Width = 770.000000000000000000
+            Size.Height = 20.000000000000000000
+            Text = 'Produtos Dispon'#237'veis'
+            Font.Size = 12.000000000000000000
+            Font.Style = [fsBold]
+          end
+          object ListBoxProdutos: TListBox
+            Align = Client
+            Margins.Top = 5.000000000000000000
+            Size.Width = 770.000000000000000000
+            Size.Height = 613.000000000000000000
+            ItemHeight = 40.000000000000000000
+            TabOrder = 0
+          end
+        end
+      end
+      object PanelDireita: TPanel
+        Align = Right
+        Padding.Left = 5.000000000000000000
+        Padding.Top = 5.000000000000000000
+        Padding.Right = 5.000000000000000000
+        Padding.Bottom = 5.000000000000000000
+        Size.Width = 480.000000000000000000
+        Size.Height = 708.000000000000000000
+        TabOrder = 1
+        object PanelResumo: TPanel
+          Align = Top
+          Padding.Left = 10.000000000000000000
+          Padding.Top = 10.000000000000000000
+          Padding.Right = 10.000000000000000000
+          Padding.Bottom = 10.000000000000000000
+          Size.Width = 470.000000000000000000
+          Size.Height = 350.000000000000000000
+          TabOrder = 0
+          object LabelResumo: TLabel
+            Align = Top
+            Size.Width = 450.000000000000000000
+            Size.Height = 25.000000000000000000
+            Text = 'RESUMO DA VENDA'
+            Font.Size = 14.000000000000000000
+            Font.Style = [fsBold]
+          end
+          object MemoResumo: TMemo
+            Align = Client
+            Margins.Top = 5.000000000000000000
+            Size.Width = 450.000000000000000000
+            Size.Height = 310.000000000000000000
+            ReadOnly = True
+            TabOrder = 0
+            Viewport.Width = 446.000000000000000000
+            Viewport.Height = 306.000000000000000000
+          end
+        end
+        object PanelAcoes: TPanel
+          Align = Client
+          Padding.Left = 10.000000000000000000
+          Padding.Top = 10.000000000000000000
+          Padding.Right = 10.000000000000000000
+          Padding.Bottom = 10.000000000000000000
+          Size.Width = 470.000000000000000000
+          Size.Height = 348.000000000000000000
+          TabOrder = 1
+          object PanelBotoesAcao: TPanel
+            Align = Top
+            Padding.Left = 0.000000000000000000
+            Padding.Top = 0.000000000000000000
+            Padding.Right = 0.000000000000000000
+            Padding.Bottom = 5.000000000000000000
+            Size.Width = 450.000000000000000000
+            Size.Height = 100.000000000000000000
+            TabOrder = 0
+            object ButtonDesconto: TButton
+              Align = Top
+              Margins.Right = 5.000000000000000000
+              Margins.Bottom = 5.000000000000000000
+              Size.Width = 450.000000000000000000
+              Size.Height = 40.000000000000000000
+              Text = 'Desconto'
+              TabOrder = 0
+            end
+            object ButtonAcrescimo: TButton
+              Align = Top
+              Margins.Right = 5.000000000000000000
+              Margins.Bottom = 5.000000000000000000
+              Size.Width = 450.000000000000000000
+              Size.Height = 40.000000000000000000
+              Text = 'Acr'#233'scimo'
+              TabOrder = 1
+            end
+            object ButtonFinalizarVenda: TButton
+              Align = Top
+              Margins.Right = 5.000000000000000000
+              Margins.Bottom = 5.000000000000000000
+              Size.Width = 450.000000000000000000
+              Size.Height = 40.000000000000000000
+              Text = 'Finalizar Venda'
+              TabOrder = 2
+            end
+          end
+          object PanelBotoesSecundarios: TPanel
+            Align = Client
+            Padding.Left = 0.000000000000000000
+            Padding.Top = 0.000000000000000000
+            Padding.Right = 0.000000000000000000
+            Padding.Bottom = 0.000000000000000000
+            Size.Width = 450.000000000000000000
+            Size.Height = 233.000000000000000000
+            TabOrder = 1
+            object ButtonLimparCarrinho: TButton
+              Align = Top
+              Margins.Right = 5.000000000000000000
+              Margins.Bottom = 5.000000000000000000
+              Size.Width = 450.000000000000000000
+              Size.Height = 40.000000000000000000
+              Text = 'Limpar Carrinho'
+              TabOrder = 0
+            end
+            object PanelBotoesRapidos: TPanel
+              Align = Top
+              Padding.Left = 0.000000000000000000
+              Padding.Top = 5.000000000000000000
+              Padding.Right = 0.000000000000000000
+              Padding.Bottom = 5.000000000000000000
+              Size.Width = 450.000000000000000000
+              Size.Height = 50.000000000000000000
+              TabOrder = 1
+              object ButtonRemover: TButton
+                Align = Left
+                Margins.Right = 5.000000000000000000
+                Size.Width = 145.000000000000000000
+                Size.Height = 40.000000000000000000
+                Text = 'Remover'
+                TabOrder = 0
+              end
+              object ButtonAumentar: TButton
+                Align = Left
+                Margins.Right = 5.000000000000000000
+                Size.Width = 145.000000000000000000
+                Size.Height = 40.000000000000000000
+                Text = 'Aumentar'
+                TabOrder = 1
+              end
+              object ButtonDiminuir: TButton
+                Align = Client
+                Size.Width = 145.000000000000000000
+                Size.Height = 40.000000000000000000
+                Text = 'Diminuir'
+                TabOrder = 2
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end

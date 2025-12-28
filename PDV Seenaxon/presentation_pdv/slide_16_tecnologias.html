@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV Seenaxon - Tecnologias Utilizadas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        .slide-container{width:1280px;min-height:720px;background:#F2F2F2;display:flex;flex-direction:column;padding-top:60px;font-family:'Inter',sans-serif;position:relative}
+        .slide-header{padding:0 80px;margin-bottom:20px}
+        h1{font-size:48px;font-weight:800;color:#1A1A1A;margin-bottom:10px}
+        .header-line{width:80px;height:6px;background:#FF4500;margin-bottom:20px}
+        .header-description{font-size:18px;font-weight:500;color:#333;line-height:1.6}
+        .content-main{display:flex;gap:40px;padding:0 80px;flex:1}
+        .content-left{flex:1;display:grid;grid-template-columns:1fr 1fr;column-gap:40px;row-gap:20px;align-items:start}
+        .content-right{flex:1;display:flex;align-items:center;justify-content:center}
+        .section{margin-bottom:0}
+        .section h3{font-size:18px;font-weight:700;color:#1A1A1A;margin-bottom:15px;padding-bottom:10px;border-bottom:3px solid #FF4500;display:inline-block}
+        .list-items{list-style:none;padding:0}
+        .list-items li{font-size:15px;font-weight:500;color:#333;margin-bottom:6px;padding-left:25px;position:relative;line-height:1.5}
+        .list-items li::before{content:'▸';position:absolute;left:0;color:#FF4500;font-size:16px}
+        .tech-image{width:260px;height:260px;object-fit:contain}
+        .accent-element{position:absolute;width:80px;height:80px;background:#FF4500;opacity:0.06;border-radius:50%;right:60px;bottom:40px;z-index:1}
+        @media (max-width:1300px){.slide-container{width:100%}}
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="accent-element"></div>
+        <div class="slide-header">
+            <div class="header-line"></div>
+            <h1>Tecnologias Utilizadas</h1>
+            <p class="header-description">Stack profissional com Delphi 12 Sydney, FireMonkey FMX, SQLite e padrões de design</p>
+        </div>
+        <div class="content-main">
+            <div class="content-left">
+                <div class="section">
+                    <h3>Linguagem e Framework</h3>
+                    <ul class="list-items">
+                        <li>Delphi 12 Sydney</li>
+                        <li>FireMonkey (FMX)</li>
+                        <li>Multiplataforma (Windows, macOS, Linux)</li>
+                        <li>Compilação nativa</li>
+                        <li>Performance otimizada</li>
+                    </ul>
+                </div>
+                <div class="section">
+                    <h3>Banco de Dados</h3>
+                    <ul class="list-items">
+                        <li>SQLite 3</li>
+                        <li>Integração com FireDAC</li>
+                        <li>Transações ACID</li>
+                        <li>Backup automático</li>
+                        <li>Sem servidor externo</li>
+                    </ul>
+                </div>
+                <div class="section">
+                    <h3>Padrões de Design</h3>
+                    <ul class="list-items">
+                        <li>Programação Orientada a Objetos (POO)</li>
+                        <li>Model-View-Controller (MVC)</li>
+                        <li>Repository Pattern</li>
+                        <li>Dependency Injection</li>
+                        <li>Single Responsibility Principle</li>
+                    </ul>
+                </div>
+                <div class="section">
+                    <h3>Formatos de Arquivo</h3>
+                    <ul class="list-items">
+                        <li>XML (Recuperação de vendas)</li>
+                        <li>CSV (Exportação de dados)</li>
+                        <li>TXT (Relatórios simples)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content-right">
+                <img src="/home/ubuntu/upload/search_images/sLOzjf0YazdI.jpg" alt="Delphi IDE" class="tech-image">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

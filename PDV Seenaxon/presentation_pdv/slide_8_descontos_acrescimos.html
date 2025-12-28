@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV Seenaxon - Descontos e Acréscimos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #F2F2F2;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px; /* upper padding must stay */
+            font-family: 'Inter', sans-serif;
+        }
+
+        .slide-header { padding: 0 60px; margin-bottom: 30px; }
+
+        h1 { font-size: 48px; font-weight: 800; color: #1A1A1A; margin-bottom: 10px; }
+
+        .header-line { width: 80px; height: 6px; background: #FF4500; margin-bottom: 20px; }
+
+        .header-description { font-size: 18px; font-weight: 500; color: #333333; line-height: 1.6; }
+
+        /* Reduced gaps and side paddings to shrink vertical space */
+        .content-main { display: flex; gap: 40px; padding: 0 60px; flex: 1; }
+
+        .content-left { flex: 1; }
+
+        /* Place example and image side-by-side so their heights don't stack */
+        .content-right {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 24px;
+        }
+
+        .section { margin-bottom: 20px; }
+
+        .section h3 {
+            font-size: 18px; font-weight: 700; color: #1A1A1A;
+            margin-bottom: 12px; padding-bottom: 8px; border-bottom: 3px solid #FF4500; display: inline-block;
+        }
+
+        .list-items { list-style: none; padding: 0; }
+
+        .list-items li {
+            font-size: 15px; font-weight: 500; color: #333333;
+            margin-bottom: 8px; padding-left: 20px; position: relative; line-height: 1.5;
+        }
+
+        .list-items li::before { content: '▸'; position: absolute; left: 0; color: #FF4500; font-size: 16px; }
+
+        .example-box {
+            background: #FFFFFF; border-left: 6px solid #FF4500;
+            padding: 18px; display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 420px;
+        }
+
+        .example-title { font-size: 16px; font-weight: 700; color: #1A1A1A; margin-bottom: 4px; }
+
+        .example-line { display: flex; justify-content: space-between; font-size: 15px; font-weight: 500; color: #333333; line-height: 1.6; }
+
+        .example-line.total { border-top: 2px solid #FF4500; padding-top: 8px; margin-top: 8px; font-weight: 700; color: #1A1A1A; font-size: 16px; }
+
+        /* Limit image width so it doesn't force a tall column when placed side-by-side */
+        .slide-image { width: 100%; max-width: 320px; height: auto; object-fit: contain; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="slide-header">
+            <div class="header-line"></div>
+            <h1>Descontos e Acréscimos</h1>
+            <p class="header-description">Flexibilidade de preços com validação automática</p>
+        </div>
+
+        <div class="content-main">
+            <div class="content-left">
+                <div class="section">
+                    <h3>Descontos</h3>
+                    <ul class="list-items">
+                        <li>Por item individual</li>
+                        <li>Geral na venda</li>
+                        <li>Em valor fixo ou percentual</li>
+                        <li>Validação automática</li>
+                        <li>Não pode exceder total</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3>Acréscimos</h3>
+                    <ul class="list-items">
+                        <li>Taxa de serviço</li>
+                        <li>Entrega</li>
+                        <li>Embalagem</li>
+                        <li>Em valor fixo ou percentual</li>
+                        <li>Cálculo automático</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-right">
+                <div class="example-box">
+                    <div class="example-title">Exemplo Prático:</div>
+                    <div class="example-line"><span>Subtotal:</span><span>R$ 150.00</span></div>
+                    <div class="example-line"><span>Desconto 10%:</span><span>-R$ 15.00</span></div>
+                    <div class="example-line"><span>Acréscimo 5%:</span><span>+R$ 6.75</span></div>
+                    <div class="example-line total"><span>Total:</span><span>R$ 141.75</span></div>
+                </div>
+
+                <img src="/home/ubuntu/screenshots/youtube_2025-12-28_13-26-29_1985.webp" alt="Modal de Desconto" class="slide-image">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

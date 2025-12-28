@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV Seenaxon - Impressão Fiscal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        .slide-container {
+            width: 1280px;
+            min-height: 720px; /* keep as required */
+            background: #F2F2F2;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px; /* must not change */
+            font-family: 'Inter', sans-serif;
+        }
+
+        .slide-header {
+            padding: 0 80px;
+            margin-bottom: 20px; /* reduced from 40 */
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: #1A1A1A;
+            margin-bottom: 10px;
+        }
+
+        .header-line { width: 80px; height: 6px; background: #FF4500; margin-bottom: 20px; }
+
+        .header-description { font-size: 18px; font-weight: 500; color: #333333; line-height: 1.6; }
+
+        .content-main {
+            display: flex;
+            gap: 60px;
+            padding: 0 80px;
+            flex: 1;
+        }
+
+        .content-left { flex: 1; display: flex; flex-direction: column; gap: 12px; /* reduced from 25 */ }
+
+        .content-right { flex: 1; display: flex; align-items: center; justify-content: center; }
+
+        .section { display: flex; flex-direction: column; gap: 8px; /* reduced from 12 */ }
+
+        .section h3 {
+            font-size: 16px; font-weight: 700; color: #1A1A1A; padding-bottom: 8px; border-bottom: 2px solid #FF4500; display: inline-block;
+        }
+
+        .list-items { list-style: none; padding: 0; }
+
+        .list-items li {
+            font-size: 14px; font-weight: 500; color: #333333; padding-left: 22px; position: relative; line-height: 1.5;
+        }
+
+        .list-items li::before { content: '▸'; position: absolute; left: 0; color: #FF4500; font-size: 14px; }
+
+        /* Reduced inner padding and max-height to shrink vertical space */
+        .receipt-preview {
+            background: #FFFFFF; border-left: 4px solid #FF4500; padding: 14px; font-family: 'Courier Prime', monospace; font-size: 12px; line-height: 1.6; color: #333333; max-height: 220px; overflow: hidden;
+        }
+
+        .receipt-line { text-align: center; margin-bottom: 2px; }
+        .receipt-separator { text-align: center; margin: 4px 0; color: #CCCCCC; }
+        .receipt-item { display: flex; justify-content: space-between; margin-bottom: 2px; }
+        .receipt-total { font-weight: 700; border-top: 1px solid #CCCCCC; padding-top: 6px; margin-top: 6px; }
+
+        /* constrain image height instead of full natural height */
+        .printer-image { width: 100%; max-width: 380px; height: auto; max-height: 200px; object-fit: contain; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="slide-header">
+            <div class="header-line"></div>
+            <h1>Impressão Fiscal</h1>
+            <p class="header-description">Cupom profissional gerado automaticamente após cada venda</p>
+        </div>
+
+        <div class="content-main">
+            <div class="content-left">
+                <div class="section">
+                    <h3>Cupom de Venda</h3>
+                    <ul class="list-items">
+                        <li>Cabeçalho com dados da empresa</li>
+                        <li>Número do cupom e série</li>
+                        <li>Data, hora e operador</li>
+                        <li>Lista de produtos com quantidades</li>
+                        <li>Subtotal, desconto, acréscimo</li>
+                        <li>Total e forma de pagamento</li>
+                        <li>Troco (se dinheiro)</li>
+                        <li>Rodapé com contato</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3>Cupom de Fechamento</h3>
+                    <ul class="list-items">
+                        <li>Resumo completo do caixa</li>
+                        <li>Totalizadores por forma de pagamento</li>
+                        <li>Estatísticas do dia</li>
+                        <li>Diferença de caixa</li>
+                        <li>Data e hora de fechamento</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-right">
+                <div style="width: 100%; max-width: 380px;">
+                    <div class="receipt-preview">
+                        <div class="receipt-line">**PDV SEENAXON**</div>
+                        <div class="receipt-line">CNPJ: 00.000.000/0000-00</div>
+                        <div class="receipt-line">IE: 00.000.000.000.000</div>
+                        <div class="receipt-separator">- - - - - - - - - - - - - - - -</div>
+                        <div class="receipt-line">Cupom: 000001 | Série: 001</div>
+                        <div class="receipt-line">28/12/2025 14:30:45</div>
+                        <div class="receipt-line">Operador: JOÃO SILVA</div>
+                        <div class="receipt-separator">- - - - - - - - - - - - - - - -</div>
+                        <div class="receipt-item"><span>2x LIVRO</span><span>59.80</span></div>
+                        <div class="receipt-item"><span>3x CANETA</span><span>15.00</span></div>
+                        <div class="receipt-item"><span>1x CADERNO</span><span>25.00</span></div>
+                        <div class="receipt-separator">- - - - - - - - - - - - - - - -</div>
+                        <div class="receipt-item"><span>Subtotal:</span><span>99.80</span></div>
+                        <div class="receipt-item"><span>Desconto:</span><span>-10.00</span></div>
+                        <div class="receipt-item receipt-total"><span>TOTAL:</span><span>89.80</span></div>
+                        <div class="receipt-separator">- - - - - - - - - - - - - - - -</div>
+                        <div class="receipt-line">Pagamento: DINHEIRO</div>
+                        <div class="receipt-line">Troco: 10.20</div>
+                        <div class="receipt-separator">- - - - - - - - - - - - - - - -</div>
+                        <div class="receipt-line">Obrigado pela compra!</div>
+                        <div class="receipt-line">(11) 3000-0000</div>
+                    </div>
+                    <img src="/home/ubuntu/upload/search_images/iqkcVj86CNy8.jpg" alt="Impressora Fiscal" class="printer-image" style="margin-top: 12px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

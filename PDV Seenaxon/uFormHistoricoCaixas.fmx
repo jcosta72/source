@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TFormHistoricoCaixas>
+  <TPanel Name="PanelPrincipal" Align="Client" Size.Width="1000" Size.Height="600">
+    <TPanel Name="PanelCabecalho" Align="Top" Size.Height="60" Padding.Left="10" Padding.Top="10" Padding.Right="10" Padding.Bottom="10">
+      <TLabel Name="LabelTitulo" Text="HISTÓRICO DE CAIXAS" TextSettings.FontColor="clBlack" TextSettings.Font.Size="24" TextSettings.Font.Style="fsBold"/>
+    </TPanel>
+    
+    <TPanel Name="PanelFiltros" Align="Top" Size.Height="80" Padding.Left="10" Padding.Top="10" Padding.Right="10" Padding.Bottom="10">
+      <TLabel Name="LabelDataInicio" Text="Data Início:" Position.X="10" Position.Y="10" Width="100" Height="20"/>
+      <TEdit Name="EditDataInicio" Position.X="120" Position.Y="10" Width="150" Height="30"/>
+      
+      <TLabel Name="LabelDataFim" Text="Data Fim:" Position.X="300" Position.Y="10" Width="100" Height="20"/>
+      <TEdit Name="EditDataFim" Position.X="410" Position.Y="10" Width="150" Height="30"/>
+      
+      <TButton Name="ButtonPesquisar" Text="Pesquisar" Position.X="600" Position.Y="10" Width="100" Height="30"/>
+      <TButton Name="ButtonLimpar" Text="Limpar" Position.X="720" Position.Y="10" Width="100" Height="30"/>
+    </TPanel>
+    
+    <TPanel Name="PanelConteudo" Align="Client" Padding.Left="10" Padding.Top="10" Padding.Right="10" Padding.Bottom="10">
+      <TPanel Name="PanelEsquerda" Align="Left" Size.Width="400">
+        <TPanel Name="PanelLista" Align="Top" Size.Height="30" Padding.Left="5" Padding.Top="5" Padding.Right="5" Padding.Bottom="5">
+          <TLabel Name="LabelLista" Text="CAIXAS ENCONTRADOS" TextSettings.Font.Style="fsBold"/>
+        </TPanel>
+        
+        <TListBox Name="ListBoxCaixas" Align="Client" Padding.Left="5" Padding.Top="5" Padding.Right="5" Padding.Bottom="5"/>
+      </TPanel>
+      
+      <TPanel Name="PanelDireita" Align="Client" Padding.Left="10">
+        <TPanel Name="PanelResumo" Align="Top" Size.Height="30" Padding.Left="5" Padding.Top="5" Padding.Right="5" Padding.Bottom="5">
+          <TLabel Name="LabelResumo" Text="RESUMO DO CAIXA" TextSettings.Font.Style="fsBold"/>
+        </TPanel>
+        
+        <TMemo Name="MemoResumo" Align="Client" ReadOnly="True" Padding.Left="5" Padding.Top="5" Padding.Right="5" Padding.Bottom="5"/>
+      </TPanel>
+    </TPanel>
+    
+    <TPanel Name="PanelAcoes" Align="Bottom" Size.Height="50" Padding.Left="10" Padding.Top="10" Padding.Right="10" Padding.Bottom="10">
+      <TButton Name="ButtonExportarPDF" Text="Exportar PDF" Position.X="10" Position.Y="10" Width="120" Height="30"/>
+      <TButton Name="ButtonExportarCSV" Text="Exportar CSV" Position.X="140" Position.Y="10" Width="120" Height="30"/>
+      <TButton Name="ButtonVoltar" Text="Voltar" Position.X="870" Position.Y="10" Width="100" Height="30"/>
+    </TPanel>
+  </TPanel>
+</TFormHistoricoCaixas>

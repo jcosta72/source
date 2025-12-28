@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV Seenaxon - Arquivos do Projeto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #F2F2F2;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .slide-header {
+            padding: 0 80px;
+            margin-bottom: 20px; /* reduced from 40px to save vertical space */
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: #1A1A1A;
+            margin-bottom: 10px;
+        }
+
+        .header-line {
+            width: 80px;
+            height: 6px;
+            background: #FF4500;
+            margin-bottom: 20px;
+        }
+
+        .header-description {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        .content-main {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 30px;
+            padding: 0 80px;
+            flex: 1;
+            align-items: start;
+        }
+
+        .category-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .category-icon {
+            width: 40px;
+            height: 40px;
+            background: #FF4500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .category-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1A1A1A;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #FF4500;
+            display: inline-block;
+        }
+
+        .file-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .file-item {
+            font-size: 13px;
+            font-weight: 500;
+            color: #333333;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .file-item::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #FF4500;
+            font-size: 12px;
+        }
+
+        .file-count {
+            font-size: 12px;
+            font-weight: 600;
+            color: #FF4500;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #CCCCCC;
+        }
+
+        .total-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 0 80px;
+            margin-top: 30px;
+            gap: 40px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 800;
+            color: #FF4500;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="slide-header">
+            <div class="header-line"></div>
+            <h1>Arquivos do Projeto</h1>
+            <p class="header-description">Estrutura completa com 45 arquivos organizados por categoria</p>
+        </div>
+
+        <div class="content-main">
+            <div class="category-column">
+                <div class="category-header">
+                    <div class="category-icon">📦</div>
+                    <div class="category-title">Classes de Negócio</div>
+                </div>
+                <ul class="file-list">
+                    <li class="file-item">uProduto.pas</li>
+                    <li class="file-item">uItemVenda.pas</li>
+                    <li class="file-item">uVenda.pas</li>
+                    <li class="file-item">uOperador.pas</li>
+                    <li class="file-item">uCaixa.pas</li>
+                    <li class="file-item">uImpressoraFiscal.pas</li>
+                    <li class="file-item">uRelatórioGerencial.pas</li>
+                    <li class="file-item">uRecuperacaoVendas.pas</li>
+                </ul>
+                <div class="file-count">8 arquivos</div>
+            </div>
+
+            <div class="category-column">
+                <div class="category-header">
+                    <div class="category-icon">🗂️</div>
+                    <div class="category-title">Repositórios</div>
+                </div>
+                <ul class="file-list">
+                    <li class="file-item">uRepositorioProdutos.pas</li>
+                    <li class="file-item">uRepositorioOperadores.pas</li>
+                    <li class="file-item">uRepositorioCaixa.pas</li>
+                </ul>
+                <div class="file-count">3 arquivos</div>
+            </div>
+
+            <div class="category-column">
+                <div class="category-header">
+                    <div class="category-icon">🖥️</div>
+                    <div class="category-title">Formulários</div>
+                </div>
+                <ul class="file-list">
+                    <li class="file-item">uFormLogin.pas</li>
+                    <li class="file-item">uFormCaixa.pas</li>
+                    <li class="file-item">uFormPrincipal.pas</li>
+                    <li class="file-item">uFormDesconto.pas</li>
+                    <li class="file-item">uFormFinalizacao.pas</li>
+                    <li class="file-item">uFormHistoricoCaixas.pas</li>
+                    <li class="file-item">uFormPrincipalCompleta.pas</li>
+                </ul>
+                <div class="file-count">7 arquivos</div>
+            </div>
+
+            <div class="category-column">
+                <div class="category-header">
+                    <div class="category-icon">📚</div>
+                    <div class="category-title">Documentação</div>
+                </div>
+                <ul class="file-list">
+                    <li class="file-item">README.md</li>
+                    <li class="file-item">GUIA_USO.md</li>
+                    <li class="file-item">ARQUITETURA.md</li>
+                    <li class="file-item">INTEGRACAO_LOGIN.md</li>
+                    <li class="file-item">SUGESTOES.md</li>
+                    <li class="file-item">ALTERACOES.md</li>
+                    <li class="file-item">RESPONSIVIDADE.md</li>
+                    <li class="file-item">MELHORIAS.md</li>
+                    <li class="file-item">GERENCIAMENTO_CAIXA.md</li>
+                    <li class="file-item">RECUPERACAO_VENDAS.md</li>
+                    <li class="file-item">TELA_PRINCIPAL.md</li>
+                    <li class="file-item">FLUXO_COMPLETO.md</li>
+                </ul>
+                <div class="file-count">12 arquivos</div>
+            </div>
+        </div>
+
+        <div class="total-stats">
+            <div class="stat-item">
+                <div class="stat-number">45</div>
+                <div class="stat-label">Total de Arquivos</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">30</div>
+                <div class="stat-label">Arquivos de Código</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Documentação</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Arquivos de Projeto</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

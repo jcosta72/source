@@ -1,0 +1,216 @@
+object FormCaixa: TFormCaixa
+  Left = 0
+  Top = 0
+  Caption = 'PDV Seenaxon - Gerenciamento de Caixa'
+  ClientHeight = 700
+  ClientWidth = 1000
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  DesignerMasterStyle = 0
+  object PanelPrincipal: TPanel
+    Align = Client
+    Size.Width = 1000.000000000000000000
+    Size.Height = 700.000000000000000000
+    TabOrder = 0
+    object PanelCabecalho: TPanel
+      Align = Top
+      Size.Width = 1000.000000000000000000
+      Size.Height = 80.000000000000000000
+      StyleLookup = 'panelstyle'
+      TabOrder = 0
+      object LabelTitulo: TLabel
+        Position.X = 20.000000000000000000
+        Position.Y = 15.000000000000000000
+        Text = 'GERENCIAMENTO DE CAIXA'
+        Font.Size = 20.000000000000000000
+        Font.Style = [fsBold]
+      end
+      object LabelOperador: TLabel
+        Position.X = 20.000000000000000000
+        Position.Y = 45.000000000000000000
+        Text = 'Operador: '
+        Font.Size = 12.000000000000000000
+      end
+    end
+    object PanelConteudo: TPanel
+      Align = Client
+      Position.Y = 80.000000000000000000
+      Size.Width = 1000.000000000000000000
+      Size.Height = 620.000000000000000000
+      TabOrder = 1
+      object PanelEsquerda: TPanel
+        Align = Left
+        Size.Width = 480.000000000000000000
+        Size.Height = 620.000000000000000000
+        TabOrder = 0
+        object PanelAbertura: TPanel
+          Align = Top
+          Size.Width = 480.000000000000000000
+          Size.Height = 200.000000000000000000
+          TabOrder = 0
+          object LabelAbertura: TLabel
+            Position.X = 20.000000000000000000
+            Position.Y = 10.000000000000000000
+            Text = 'ABERTURA DE CAIXA'
+            Font.Size = 14.000000000000000000
+            Font.Style = [fsBold]
+          end
+          object LabelSaldoInicial: TLabel
+            Position.X = 20.000000000000000000
+            Position.Y = 40.000000000000000000
+            Text = 'Saldo Inicial (R$):'
+            Font.Size = 12.000000000000000000
+          end
+          object EditSaldoInicial: TEdit
+            Position.X = 20.000000000000000000
+            Position.Y = 60.000000000000000000
+            Width = 200.000000000000000000
+            Height = 35.000000000000000000
+            Font.Size = 12.000000000000000000
+            TabOrder = 0
+            Text = '0.00'
+          end
+          object ButtonAbrirCaixa: TButton
+            Position.X = 20.000000000000000000
+            Position.Y = 110.000000000000000000
+            Width = 200.000000000000000000
+            Height = 40.000000000000000000
+            Text = 'Abrir Caixa'
+            TabOrder = 1
+          end
+        end
+        object PanelFechamento: TPanel
+          Align = Client
+          Position.Y = 200.000000000000000000
+          Size.Width = 480.000000000000000000
+          Size.Height = 420.000000000000000000
+          TabOrder = 1
+          object LabelFechamento: TLabel
+            Position.X = 20.000000000000000000
+            Position.Y = 10.000000000000000000
+            Text = 'FECHAMENTO DE CAIXA'
+            Font.Size = 14.000000000000000000
+            Font.Style = [fsBold]
+          end
+          object MemoDadosFechamento: TMemo
+            Position.X = 20.000000000000000000
+            Position.Y = 40.000000000000000000
+            Width = 440.000000000000000000
+            Height = 300.000000000000000000
+            ReadOnly = True
+            TabOrder = 0
+          end
+          object ButtonFecharCaixa: TButton
+            Position.X = 20.000000000000000000
+            Position.Y = 350.000000000000000000
+            Width = 200.000000000000000000
+            Height = 40.000000000000000000
+            Text = 'Fechar Caixa'
+            Enabled = False
+            TabOrder = 1
+          end
+        end
+      end
+      object PanelDireita: TPanel
+        Align = Right
+        Position.X = 480.000000000000000000
+        Size.Width = 520.000000000000000000
+        Size.Height = 620.000000000000000000
+        TabOrder = 1
+        object PanelStatusCaixa: TPanel
+          Align = Top
+          Size.Width = 520.000000000000000000
+          Size.Height = 250.000000000000000000
+          TabOrder = 0
+          object LabelStatusTitulo: TLabel
+            Position.X = 20.000000000000000000
+            Position.Y = 10.000000000000000000
+            Text = 'STATUS DO CAIXA'
+            Font.Size = 14.000000000000000000
+            Font.Style = [fsBold]
+          end
+          object LabelStatus: TLabel
+            Position.X = 20.000000000000000000
+            Position.Y = 40.000000000000000000
+            Text = 'FECHADO'
+            Font.Size = 16.000000000000000000
+            Font.Style = [fsBold]
+            TextSettings.FontColor = claRed
+          end
+          object LabelDataAbertura: TLabel
+            Position.X = 20.000000000000000000
+            Position.Y = 70.000000000000000000
+            Text = 'Caixa n'#227'o est'#225' aberto'
+            Font.Size = 11.000000000000000000
+          end
+          object LabelSaldoInicial: TLabel
+            Position.X = 20.000000000000000000
+            Position.Y = 100.000000000000000000
+            Text = 'Saldo Inicial: R$ 0,00'
+            Font.Size = 11.000000000000000000
+          end
+          object LabelTotalVendas: TLabel
+            Position.X = 20.000000000000000000
+            Position.Y = 130.000000000000000000
+            Text = 'Total de Vendas:'
+            Font.Size = 11.000000000000000000
+          end
+          object LabelTotalVendasValor: TLabel
+            Position.X = 200.000000000000000000
+            Position.Y = 130.000000000000000000
+            Text = 'R$ 0,00'
+            Font.Size = 11.000000000000000000
+            Font.Style = [fsBold]
+            TextSettings.FontColor = claGreen
+          end
+          object LabelSaldoFinal: TLabel
+            Position.X = 20.000000000000000000
+            Position.Y = 160.000000000000000000
+            Text = 'Saldo Final:'
+            Font.Size = 11.000000000000000000
+          end
+          object LabelSaldoFinalValor: TLabel
+            Position.X = 200.000000000000000000
+            Position.Y = 160.000000000000000000
+            Text = 'R$ 0,00'
+            Font.Size = 11.000000000000000000
+            Font.Style = [fsBold]
+            TextSettings.FontColor = claBlue
+          end
+        end
+        object MemoResumo: TMemo
+          Align = Client
+          Position.Y = 250.000000000000000000
+          Size.Width = 520.000000000000000000
+          Size.Height = 320.000000000000000000
+          ReadOnly = True
+          TabOrder = 1
+        end
+      end
+    end
+    object PanelBotoes: TPanel
+      Align = Bottom
+      Size.Width = 1000.000000000000000000
+      Size.Height = 60.000000000000000000
+      TabOrder = 2
+      object ButtonVoltar: TButton
+        Position.X = 850.000000000000000000
+        Position.Y = 15.000000000000000000
+        Width = 130.000000000000000000
+        Height = 35.000000000000000000
+        Text = 'Voltar'
+        TabOrder = 0
+      end
+      object LabelMensagem: TLabel
+        Position.X = 20.000000000000000000
+        Position.Y = 15.000000000000000000
+        Width = 800.000000000000000000
+        Height = 35.000000000000000000
+        Text = ''
+        Font.Size = 12.000000000000000000
+        WordWrap = True
+      end
+    end
+  end
+end

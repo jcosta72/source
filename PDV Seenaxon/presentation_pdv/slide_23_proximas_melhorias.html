@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV Seenaxon - Próximas Melhorias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #F2F2F2;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .slide-header {
+            padding: 0 80px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: #1A1A1A;
+            margin-bottom: 10px;
+        }
+
+        .header-line {
+            width: 80px;
+            height: 6px;
+            background: #FF4500;
+            margin-bottom: 20px;
+        }
+
+        .header-description {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        .content-main {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+            padding: 0 80px;
+            flex: 1;
+            align-items: start;
+        }
+
+        .phase-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .phase-badge {
+            width: 40px;
+            height: 40px;
+            background: #FF4500;
+            color: #FFFFFF;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .phase-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1A1A1A;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #FF4500;
+            display: inline-block;
+        }
+
+        .phase-description {
+            font-size: 13px;
+            font-weight: 500;
+            color: #666666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .feature-item {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333333;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .feature-item::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #FF4500;
+            font-size: 16px;
+        }
+
+        .feature-subtext {
+            font-size: 12px;
+            font-weight: 400;
+            color: #666666;
+            margin-top: 4px;
+            margin-left: 0;
+        }
+
+        .timeline-connector {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: #FF4500;
+            top: 20px;
+            left: 0;
+            opacity: 0.3;
+        }
+
+        .accent-element {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: #FF4500;
+            opacity: 0.04;
+            border-radius: 50%;
+            right: 80px;
+            bottom: 40px;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="accent-element"></div>
+
+        <div class="slide-header">
+            <div class="header-line"></div>
+            <h1>Próximas Melhorias</h1>
+            <p class="header-description">Roadmap futuro com integração de leitor de código de barras, sistema de fidelidade, aplicativo mobile e sincronização com servidor</p>
+        </div>
+
+        <div class="content-main">
+            <div class="phase-column">
+                <div class="phase-header">
+                    <div class="phase-badge">1</div>
+                    <div class="phase-title">Fase 1: Integrações</div>
+                </div>
+                <div class="phase-description">Curto prazo (1-2 meses)</div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        Integração com leitor de código de barras
+                        <div class="feature-subtext">Leitura automática de produtos</div>
+                    </li>
+                    <li class="feature-item">
+                        Integração com leitor NFC
+                        <div class="feature-subtext">Pagamento por proximidade</div>
+                    </li>
+                    <li class="feature-item">
+                        Integração com impressora térmica
+                        <div class="feature-subtext">Impressão de cupom automática</div>
+                    </li>
+                    <li class="feature-item">
+                        Suporte a múltiplas moedas
+                        <div class="feature-subtext">Conversão automática</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="phase-column">
+                <div class="phase-header">
+                    <div class="phase-badge">2</div>
+                    <div class="phase-title">Fase 2: Funcionalidades</div>
+                </div>
+                <div class="phase-description">Médio prazo (2-3 meses)</div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        Sistema de fidelidade
+                        <div class="feature-subtext">Programa de pontos e descontos</div>
+                    </li>
+                    <li class="feature-item">
+                        Cupom eletrônico
+                        <div class="feature-subtext">Envio por e-mail e WhatsApp</div>
+                    </li>
+                    <li class="feature-item">
+                        Controle de estoque
+                        <div class="feature-subtext">Alertas de baixo estoque</div>
+                    </li>
+                    <li class="feature-item">
+                        Relatórios avançados
+                        <div class="feature-subtext">Análise de vendas em tempo real</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="phase-column">
+                <div class="phase-header">
+                    <div class="phase-badge">3</div>
+                    <div class="phase-title">Fase 3: Expansão</div>
+                </div>
+                <div class="phase-description">Longo prazo (3-6 meses)</div>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        Aplicativo mobile
+                        <div class="feature-subtext">iOS e Android nativo</div>
+                    </li>
+                    <li class="feature-item">
+                        Sincronização com servidor
+                        <div class="feature-subtext">Múltiplas lojas integradas</div>
+                    </li>
+                    <li class="feature-item">
+                        Backup na nuvem
+                        <div class="feature-subtext">Segurança de dados automática</div>
+                    </li>
+                    <li class="feature-item">
+                        Inteligência artificial
+                        <div class="feature-subtext">Recomendações de produtos</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
