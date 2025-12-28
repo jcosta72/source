@@ -3,312 +3,540 @@ unit uRepositorioCaixa;
 interface
 
 uses
-  System.SysUtils, System.Classes, System.Generics.Collections,
+  System.SysUtils, System.Generics.Collections, System.DateUtils,
   uCaixa, uOperador;
 
 type
+  { Classe para gerenciar caixas abertos e fechados }
   TRepositorioCaixa = class
   private
-    FCaixas: TObjectList<TCaixa>;
+    FCaixasAbertos: TObjectList<TCaixa>;
+    FCaixasFechados: TObjectList<TCaixa>;
+    FCaixaAtual: TCaixa;
     FProximoID: Integer;
-    FCaixaAberto: TCaixa;
+    FUltimoErro: string;
+    
+    function ObterProximoID: Integer;
   public
     constructor Create;
     destructor Destroy; override;
     
-    // Operações CRUD
-    procedure AdicionarCaixa(ACaixa: TCaixa);
-    procedure RemoverCaixa(AID: Integer);
-    procedure AtualizarCaixa(ACaixa: TCaixa);
+    { ========== OPERAÇÕES COM CAIXA ATUAL ========== }
     
-    // Consultas
-    function ObterCaixa(AID: Integer): TCaixa;
-    function ObterTodos: TObjectList<TCaixa>;
-    function ObterAbertos: TObjectList<TCaixa>;
-    function ObterFechados: TObjectList<TCaixa>;
+    { Abrir novo caixa }
+    function AbrirCaixa(AOperador: TOperador; ASaldoInicial: Double = 0): TCaixa;
     
-    // Buscas
-    function BuscarPorOperador(AOperadorID: Integer): TObjectList<TCaixa>;
-    function BuscarPorData(AData: TDateTime): TObjectList<TCaixa>;
-    function BuscarPorDataIntervalo(ADataInicio, ADataFim: TDateTime): TObjectList<TCaixa>;
+    { Fechar caixa atual }
+    function FecharCaixa: Boolean;
     
-    // Operações de caixa aberto
-    function AbrirCaixa(AOperador: TOperador; ASaldoInicial: Double): TCaixa;
-    procedure FecharCaixa(AID: Integer);
-    function ObterCaixaAberto: TCaixa;
+    { Cancelar caixa atual }
+    procedure CancelarCaixa;
+    
+    { Obter caixa atual }
+    function GetCaixaAtual: TCaixa;
+    
+    { ========== CONSULTAS ========== }
+    
+    { Obter todos os caixas abertos }
+    function ObterCaixasAbertos: TObjectList<TCaixa>;
+    
+    { Obter todos os caixas fechados }
+    function ObterCaixasFechados: TObjectList<TCaixa>;
+    
+    { Obter caixa por ID }
+    function ObterCaixaPorID(AID: Integer): TCaixa;
+    
+    { Obter caixas por data }
+    function ObterCaixasPorData(AData: TDateTime): TObjectList<TCaixa>;
+    
+    { Obter caixas por operador }
+    function ObterCaixasPorOperador(AOperadorID: Integer): TObjectList<TCaixa>;
+    
+    { Obter caixa mais recente }
+    function ObterCaixaMaisRecente: TCaixa;
+    
+    { ========== ESTATÍSTICAS ========== }
+    
+    { Obter total de caixas }
+    function ObterTotalCaixas: Integer;
+    
+    { Obter total de caixas abertos }
+    function ObterTotalCaixasAbertos: Integer;
+    
+    { Obter total de caixas fechados }
+    function ObterTotalCaixasFechados: Integer;
+    
+    { Obter total de vendas em todos os caixas }
+    function ObterTotalVendas: Double;
+    
+    { Obter total de descontos em todos os caixas }
+    function ObterTotalDescontos: Double;
+    
+    { Obter total de acréscimos em todos os caixas }
+    function ObterTotalAcrescimos: Double;
+    
+    { Obter total de sangrias }
+    function ObterTotalSangrias: Double;
+    
+    { Obter total de suprimentos }
+    function ObterTotalSuprimentos: Double;
+    
+    { Obter relatório de desempenho }
+    function ObterRelatorioDesempenho: string;
+    
+    { ========== VALIDAÇÕES ========== }
+    
+    { Verificar se existe caixa aberto }
     function TemCaixaAberto: Boolean;
     
-    // Estatísticas
-    function ObterTotalVendas: Double;
-    function ObterTotalVendasPorOperador(AOperadorID: Integer): Double;
-    function ObterQuantidadeCaixas: Integer;
-    function ObterQuantidadeAbertos: Integer;
-    function ObterQuantidadeFechados: Integer;
-    function ObterValorTotalCaixas: Double;
-    function ObterResumoGeral: string;
+    { Verificar se existe caixa atual }
+    function TemCaixaAtual: Boolean;
     
-    property Caixas: TObjectList<TCaixa> read FCaixas;
-    property CaixaAberto: TCaixa read FCaixaAberto;
+    { ========== PROPRIEDADES ========== }
+    
+    property CaixaAtual: TCaixa read GetCaixaAtual;
+    property TotalCaixas: Integer read ObterTotalCaixas;
+    property TotalCaixasAbertos: Integer read ObterTotalCaixasAbertos;
+    property TotalCaixasFechados: Integer read ObterTotalCaixasFechados;
+    property UltimoErro: string read FUltimoErro;
   end;
 
 implementation
 
+{ ============================================================================
+  CONSTRUTOR E DESTRUTOR
+  ============================================================================ }
+
 constructor TRepositorioCaixa.Create;
 begin
   inherited Create;
-  FCaixas := TObjectList<TCaixa>.Create;
+  FCaixasAbertos := TObjectList<TCaixa>.Create;
+  FCaixasFechados := TObjectList<TCaixa>.Create;
+  FCaixaAtual := nil;
   FProximoID := 1;
-  FCaixaAberto := nil;
+  FUltimoErro := '';
 end;
 
 destructor TRepositorioCaixa.Destroy;
 begin
-  if Assigned(FCaixas) then
-    FCaixas.Free;
+  FCaixasAbertos.Free;
+  FCaixasFechados.Free;
   inherited;
 end;
 
-procedure TRepositorioCaixa.AdicionarCaixa(ACaixa: TCaixa);
+{ ============================================================================
+  MÉTODOS PRIVADOS
+  ============================================================================ }
+
+function TRepositorioCaixa.ObterProximoID: Integer;
 begin
-  if Assigned(ACaixa) then
-  begin
-    ACaixa.ID := FProximoID;
-    FCaixas.Add(ACaixa);
-    Inc(FProximoID);
-  end;
+  Result := FProximoID;
+  Inc(FProximoID);
 end;
 
-procedure TRepositorioCaixa.RemoverCaixa(AID: Integer);
-var
-  i: Integer;
+{ ============================================================================
+  OPERAÇÕES COM CAIXA ATUAL
+  ============================================================================ }
+
+function TRepositorioCaixa.AbrirCaixa(AOperador: TOperador; 
+  ASaldoInicial: Double = 0): TCaixa;
 begin
-  for i := FCaixas.Count - 1 downto 0 do
+  Result := nil;
+  
+  { Validar operador }
+  if not Assigned(AOperador) then
   begin
-    if FCaixas[i].ID = AID then
+    FUltimoErro := 'Operador inválido';
+    Exit;
+  end;
+  
+  { Verificar se já existe caixa aberto }
+  if TemCaixaAberto then
+  begin
+    FUltimoErro := 'Já existe um caixa aberto';
+    Exit;
+  end;
+  
+  try
+    { Criar novo caixa }
+    FCaixaAtual := TCaixa.Create(ObterProximoID, AOperador, ASaldoInicial);
+    FCaixaAtual.Abrir(ASaldoInicial);
+    
+    { Adicionar à lista de caixas abertos }
+    FCaixasAbertos.Add(FCaixaAtual);
+    
+    Result := FCaixaAtual;
+    FUltimoErro := '';
+  except
+    on E: Exception do
     begin
-      FCaixas.Delete(i);
-      Exit;
+      FUltimoErro := 'Erro ao abrir caixa: ' + E.Message;
+      Result := nil;
     end;
   end;
 end;
 
-procedure TRepositorioCaixa.AtualizarCaixa(ACaixa: TCaixa);
+function TRepositorioCaixa.FecharCaixa: Boolean;
 var
-  i: Integer;
+  Indice: Integer;
 begin
-  for i := 0 to FCaixas.Count - 1 do
+  Result := False;
+  
+  { Validar caixa atual }
+  if not Assigned(FCaixaAtual) then
   begin
-    if FCaixas[i].ID = ACaixa.ID then
+    FUltimoErro := 'Nenhum caixa aberto';
+    Exit;
+  end;
+  
+  try
+    { Fechar caixa }
+    FCaixaAtual.Fechar;
+    
+    { Mover de abertos para fechados }
+    Indice := FCaixasAbertos.IndexOf(FCaixaAtual);
+    if Indice >= 0 then
     begin
-      FCaixas[i] := ACaixa;
-      Exit;
+      FCaixasAbertos.Delete(Indice);
+      FCaixasFechados.Add(FCaixaAtual);
+    end;
+    
+    FCaixaAtual := nil;
+    Result := True;
+    FUltimoErro := '';
+  except
+    on E: Exception do
+    begin
+      FUltimoErro := 'Erro ao fechar caixa: ' + E.Message;
+      Result := False;
     end;
   end;
 end;
 
-function TRepositorioCaixa.ObterCaixa(AID: Integer): TCaixa;
+procedure TRepositorioCaixa.CancelarCaixa;
+var
+  Indice: Integer;
+begin
+  if not Assigned(FCaixaAtual) then
+    Exit;
+  
+  try
+    FCaixaAtual.Cancelar;
+    
+    Indice := FCaixasAbertos.IndexOf(FCaixaAtual);
+    if Indice >= 0 then
+      FCaixasAbertos.Delete(Indice);
+    
+    FCaixaAtual := nil;
+    FUltimoErro := '';
+  except
+    on E: Exception do
+      FUltimoErro := 'Erro ao cancelar caixa: ' + E.Message;
+  end;
+end;
+
+function TRepositorioCaixa.GetCaixaAtual: TCaixa;
+begin
+  Result := FCaixaAtual;
+end;
+
+{ ============================================================================
+  CONSULTAS
+  ============================================================================ }
+
+function TRepositorioCaixa.ObterCaixasAbertos: TObjectList<TCaixa>;
+var
+  Resultado: TObjectList<TCaixa>;
+  i: Integer;
+begin
+  Resultado := TObjectList<TCaixa>.Create(False);
+  
+  for i := 0 to FCaixasAbertos.Count - 1 do
+    Resultado.Add(FCaixasAbertos[i]);
+  
+  Result := Resultado;
+end;
+
+function TRepositorioCaixa.ObterCaixasFechados: TObjectList<TCaixa>;
+var
+  Resultado: TObjectList<TCaixa>;
+  i: Integer;
+begin
+  Resultado := TObjectList<TCaixa>.Create(False);
+  
+  for i := 0 to FCaixasFechados.Count - 1 do
+    Resultado.Add(FCaixasFechados[i]);
+  
+  Result := Resultado;
+end;
+
+function TRepositorioCaixa.ObterCaixaPorID(AID: Integer): TCaixa;
 var
   i: Integer;
 begin
   Result := nil;
-  for i := 0 to FCaixas.Count - 1 do
+  
+  { Procurar em caixas abertos }
+  for i := 0 to FCaixasAbertos.Count - 1 do
   begin
-    if FCaixas[i].ID = AID then
+    if FCaixasAbertos[i].ID = AID then
     begin
-      Result := FCaixas[i];
+      Result := FCaixasAbertos[i];
+      Exit;
+    end;
+  end;
+  
+  { Procurar em caixas fechados }
+  for i := 0 to FCaixasFechados.Count - 1 do
+  begin
+    if FCaixasFechados[i].ID = AID then
+    begin
+      Result := FCaixasFechados[i];
       Exit;
     end;
   end;
 end;
 
-function TRepositorioCaixa.ObterTodos: TObjectList<TCaixa>;
+function TRepositorioCaixa.ObterCaixasPorData(AData: TDateTime): TObjectList<TCaixa>;
 var
+  Resultado: TObjectList<TCaixa>;
   i: Integer;
-  Lista: TObjectList<TCaixa>;
-begin
-  Lista := TObjectList<TCaixa>.Create(False);
-  for i := 0 to FCaixas.Count - 1 do
-    Lista.Add(FCaixas[i]);
-  Result := Lista;
-end;
-
-function TRepositorioCaixa.ObterAbertos: TObjectList<TCaixa>;
-var
-  i: Integer;
-  Lista: TObjectList<TCaixa>;
-begin
-  Lista := TObjectList<TCaixa>.Create(False);
-  for i := 0 to FCaixas.Count - 1 do
-  begin
-    if FCaixas[i].EstaAberto then
-      Lista.Add(FCaixas[i]);
-  end;
-  Result := Lista;
-end;
-
-function TRepositorioCaixa.ObterFechados: TObjectList<TCaixa>;
-var
-  i: Integer;
-  Lista: TObjectList<TCaixa>;
-begin
-  Lista := TObjectList<TCaixa>.Create(False);
-  for i := 0 to FCaixas.Count - 1 do
-  begin
-    if FCaixas[i].EstaFechado then
-      Lista.Add(FCaixas[i]);
-  end;
-  Result := Lista;
-end;
-
-function TRepositorioCaixa.BuscarPorOperador(AOperadorID: Integer): TObjectList<TCaixa>;
-var
-  i: Integer;
-  Lista: TObjectList<TCaixa>;
-begin
-  Lista := TObjectList<TCaixa>.Create(False);
-  for i := 0 to FCaixas.Count - 1 do
-  begin
-    if FCaixas[i].Operador.ID = AOperadorID then
-      Lista.Add(FCaixas[i]);
-  end;
-  Result := Lista;
-end;
-
-function TRepositorioCaixa.BuscarPorData(AData: TDateTime): TObjectList<TCaixa>;
-var
-  i: Integer;
-  Lista: TObjectList<TCaixa>;
-begin
-  Lista := TObjectList<TCaixa>.Create(False);
-  for i := 0 to FCaixas.Count - 1 do
-  begin
-    if Trunc(FCaixas[i].DataAbertura) = Trunc(AData) then
-      Lista.Add(FCaixas[i]);
-  end;
-  Result := Lista;
-end;
-
-function TRepositorioCaixa.BuscarPorDataIntervalo(ADataInicio, ADataFim: TDateTime): TObjectList<TCaixa>;
-var
-  i: Integer;
-  Lista: TObjectList<TCaixa>;
-begin
-  Lista := TObjectList<TCaixa>.Create(False);
-  for i := 0 to FCaixas.Count - 1 do
-  begin
-    if (Trunc(FCaixas[i].DataAbertura) >= Trunc(ADataInicio)) and
-       (Trunc(FCaixas[i].DataAbertura) <= Trunc(ADataFim)) then
-      Lista.Add(FCaixas[i]);
-  end;
-  Result := Lista;
-end;
-
-function TRepositorioCaixa.AbrirCaixa(AOperador: TOperador; ASaldoInicial: Double): TCaixa;
-var
   Caixa: TCaixa;
 begin
-  if TemCaixaAberto then
-    raise Exception.Create('Já existe um caixa aberto');
+  Resultado := TObjectList<TCaixa>.Create(False);
   
-  Caixa := TCaixa.Create(FProximoID, AOperador, ASaldoInicial);
-  Caixa.Abrir(ASaldoInicial);
-  AdicionarCaixa(Caixa);
-  FCaixaAberto := Caixa;
-  Result := Caixa;
+  { Procurar em caixas abertos }
+  for i := 0 to FCaixasAbertos.Count - 1 do
+  begin
+    Caixa := FCaixasAbertos[i];
+    if Trunc(Caixa.DataAbertura) = Trunc(AData) then
+      Resultado.Add(Caixa);
+  end;
+  
+  { Procurar em caixas fechados }
+  for i := 0 to FCaixasFechados.Count - 1 do
+  begin
+    Caixa := FCaixasFechados[i];
+    if Trunc(Caixa.DataAbertura) = Trunc(AData) then
+      Resultado.Add(Caixa);
+  end;
+  
+  Result := Resultado;
 end;
 
-procedure TRepositorioCaixa.FecharCaixa(AID: Integer);
+function TRepositorioCaixa.ObterCaixasPorOperador(AOperadorID: Integer): TObjectList<TCaixa>;
 var
+  Resultado: TObjectList<TCaixa>;
+  i: Integer;
   Caixa: TCaixa;
 begin
-  Caixa := ObterCaixa(AID);
-  if Assigned(Caixa) then
+  Resultado := TObjectList<TCaixa>.Create(False);
+  
+  { Procurar em caixas abertos }
+  for i := 0 to FCaixasAbertos.Count - 1 do
   begin
-    Caixa.Fechar;
-    if FCaixaAberto = Caixa then
-      FCaixaAberto := nil;
+    Caixa := FCaixasAbertos[i];
+    if Caixa.Operador.ID = AOperadorID then
+      Resultado.Add(Caixa);
   end;
+  
+  { Procurar em caixas fechados }
+  for i := 0 to FCaixasFechados.Count - 1 do
+  begin
+    Caixa := FCaixasFechados[i];
+    if Caixa.Operador.ID = AOperadorID then
+      Resultado.Add(Caixa);
+  end;
+  
+  Result := Resultado;
 end;
 
-function TRepositorioCaixa.ObterCaixaAberto: TCaixa;
+function TRepositorioCaixa.ObterCaixaMaisRecente: TCaixa;
+var
+  i: Integer;
+  MaisRecente: TCaixa;
 begin
-  Result := FCaixaAberto;
+  Result := nil;
+  MaisRecente := nil;
+  
+  { Procurar em caixas abertos }
+  for i := 0 to FCaixasAbertos.Count - 1 do
+  begin
+    if not Assigned(MaisRecente) or 
+       (FCaixasAbertos[i].DataAbertura > MaisRecente.DataAbertura) then
+      MaisRecente := FCaixasAbertos[i];
+  end;
+  
+  { Procurar em caixas fechados }
+  for i := 0 to FCaixasFechados.Count - 1 do
+  begin
+    if not Assigned(MaisRecente) or 
+       (FCaixasFechados[i].DataAbertura > MaisRecente.DataAbertura) then
+      MaisRecente := FCaixasFechados[i];
+  end;
+  
+  Result := MaisRecente;
 end;
 
-function TRepositorioCaixa.TemCaixaAberto: Boolean;
+{ ============================================================================
+  ESTATÍSTICAS
+  ============================================================================ }
+
+function TRepositorioCaixa.ObterTotalCaixas: Integer;
 begin
-  Result := Assigned(FCaixaAberto) and FCaixaAberto.EstaAberto;
+  Result := FCaixasAbertos.Count + FCaixasFechados.Count;
+end;
+
+function TRepositorioCaixa.ObterTotalCaixasAbertos: Integer;
+begin
+  Result := FCaixasAbertos.Count;
+end;
+
+function TRepositorioCaixa.ObterTotalCaixasFechados: Integer;
+begin
+  Result := FCaixasFechados.Count;
 end;
 
 function TRepositorioCaixa.ObterTotalVendas: Double;
 var
   i: Integer;
+  Total: Double;
 begin
-  Result := 0;
-  for i := 0 to FCaixas.Count - 1 do
-    Result := Result + FCaixas[i].TotalVendas;
+  Total := 0;
+  
+  { Somar caixas abertos }
+  for i := 0 to FCaixasAbertos.Count - 1 do
+    Total := Total + FCaixasAbertos[i].TotalVendas;
+  
+  { Somar caixas fechados }
+  for i := 0 to FCaixasFechados.Count - 1 do
+    Total := Total + FCaixasFechados[i].TotalVendas;
+  
+  Result := Total;
 end;
 
-function TRepositorioCaixa.ObterTotalVendasPorOperador(AOperadorID: Integer): Double;
+function TRepositorioCaixa.ObterTotalDescontos: Double;
 var
   i: Integer;
+  Total: Double;
 begin
-  Result := 0;
-  for i := 0 to FCaixas.Count - 1 do
-  begin
-    if FCaixas[i].Operador.ID = AOperadorID then
-      Result := Result + FCaixas[i].TotalVendas;
-  end;
+  Total := 0;
+  
+  { Somar caixas abertos }
+  for i := 0 to FCaixasAbertos.Count - 1 do
+    Total := Total + FCaixasAbertos[i].TotalDesconto;
+  
+  { Somar caixas fechados }
+  for i := 0 to FCaixasFechados.Count - 1 do
+    Total := Total + FCaixasFechados[i].TotalDesconto;
+  
+  Result := Total;
 end;
 
-function TRepositorioCaixa.ObterQuantidadeCaixas: Integer;
-begin
-  Result := FCaixas.Count;
-end;
-
-function TRepositorioCaixa.ObterQuantidadeAbertos: Integer;
+function TRepositorioCaixa.ObterTotalAcrescimos: Double;
 var
   i: Integer;
+  Total: Double;
 begin
-  Result := 0;
-  for i := 0 to FCaixas.Count - 1 do
-  begin
-    if FCaixas[i].EstaAberto then
-      Inc(Result);
-  end;
+  Total := 0;
+  
+  { Somar caixas abertos }
+  for i := 0 to FCaixasAbertos.Count - 1 do
+    Total := Total + FCaixasAbertos[i].TotalAcrescimo;
+  
+  { Somar caixas fechados }
+  for i := 0 to FCaixasFechados.Count - 1 do
+    Total := Total + FCaixasFechados[i].TotalAcrescimo;
+  
+  Result := Total;
 end;
 
-function TRepositorioCaixa.ObterQuantidadeFechados: Integer;
+function TRepositorioCaixa.ObterTotalSangrias: Double;
 var
   i: Integer;
+  Total: Double;
 begin
-  Result := 0;
-  for i := 0 to FCaixas.Count - 1 do
-  begin
-    if FCaixas[i].EstaFechado then
-      Inc(Result);
-  end;
+  Total := 0;
+  
+  { Somar caixas abertos }
+  for i := 0 to FCaixasAbertos.Count - 1 do
+    Total := Total + FCaixasAbertos[i].TotalSangria;
+  
+  { Somar caixas fechados }
+  for i := 0 to FCaixasFechados.Count - 1 do
+    Total := Total + FCaixasFechados[i].TotalSangria;
+  
+  Result := Total;
 end;
 
-function TRepositorioCaixa.ObterValorTotalCaixas: Double;
+function TRepositorioCaixa.ObterTotalSuprimentos: Double;
 var
   i: Integer;
+  Total: Double;
 begin
-  Result := 0;
-  for i := 0 to FCaixas.Count - 1 do
-    Result := Result + FCaixas[i].SaldoFinal;
+  Total := 0;
+  
+  { Somar caixas abertos }
+  for i := 0 to FCaixasAbertos.Count - 1 do
+    Total := Total + FCaixasAbertos[i].TotalSuprimento;
+  
+  { Somar caixas fechados }
+  for i := 0 to FCaixasFechados.Count - 1 do
+    Total := Total + FCaixasFechados[i].TotalSuprimento;
+  
+  Result := Total;
 end;
 
-function TRepositorioCaixa.ObterResumoGeral: string;
+function TRepositorioCaixa.ObterRelatorioDesempenho: string;
 begin
   Result := '';
-  Result := Result + 'RESUMO GERAL DE CAIXAS' + sLineBreak + sLineBreak;
-  Result := Result + Format('Total de Caixas: %d', [ObterQuantidadeCaixas]) + sLineBreak;
-  Result := Result + Format('Caixas Abertos: %d', [ObterQuantidadeAbertos]) + sLineBreak;
-  Result := Result + Format('Caixas Fechados: %d', [ObterQuantidadeFechados]) + sLineBreak;
+  Result := Result + '╔════════════════════════════════════════════════════════════╗' + sLineBreak;
+  Result := Result + '║              RELATÓRIO DE DESEMPENHO DO CAIXA              ║' + sLineBreak;
+  Result := Result + '╚════════════════════════════════════════════════════════════╝' + sLineBreak;
   Result := Result + sLineBreak;
-  Result := Result + Format('Total de Vendas: R$ %.2f', [ObterTotalVendas]) + sLineBreak;
-  Result := Result + Format('Valor Total Caixas: R$ %.2f', [ObterValorTotalCaixas]) + sLineBreak;
+  
+  Result := Result + '─── ESTATÍSTICAS GERAIS ───' + sLineBreak;
+  Result := Result + 'Total de Caixas: ' + IntToStr(ObterTotalCaixas) + sLineBreak;
+  Result := Result + 'Caixas Abertos: ' + IntToStr(ObterTotalCaixasAbertos) + sLineBreak;
+  Result := Result + 'Caixas Fechados: ' + IntToStr(ObterTotalCaixasFechados) + sLineBreak;
+  Result := Result + sLineBreak;
+  
+  Result := Result + '─── TOTALIZADORES ───' + sLineBreak;
+  Result := Result + 'Total de Vendas: R$ ' + FormatFloat('0.00', ObterTotalVendas) + sLineBreak;
+  Result := Result + 'Total de Descontos: R$ ' + FormatFloat('0.00', ObterTotalDescontos) + sLineBreak;
+  Result := Result + 'Total de Acréscimos: R$ ' + FormatFloat('0.00', ObterTotalAcrescimos) + sLineBreak;
+  Result := Result + sLineBreak;
+  
+  Result := Result + '─── MOVIMENTAÇÕES ───' + sLineBreak;
+  Result := Result + 'Total de Sangrias: R$ ' + FormatFloat('0.00', ObterTotalSangrias) + sLineBreak;
+  Result := Result + 'Total de Suprimentos: R$ ' + FormatFloat('0.00', ObterTotalSuprimentos) + sLineBreak;
+  Result := Result + sLineBreak;
+  
+  Result := Result + '─── CAIXA MAIS RECENTE ───' + sLineBreak;
+  if Assigned(ObterCaixaMaisRecente) then
+  begin
+    Result := Result + 'ID: ' + IntToStr(ObterCaixaMaisRecente.ID) + sLineBreak;
+    Result := Result + 'Operador: ' + ObterCaixaMaisRecente.Operador.Nome + sLineBreak;
+    Result := Result + 'Abertura: ' + FormatDateTime('dd/mm/yyyy hh:mm:ss', ObterCaixaMaisRecente.DataAbertura) + sLineBreak;
+  end
+  else
+  begin
+    Result := Result + 'Nenhum caixa registrado';
+  end;
+end;
+
+{ ============================================================================
+  VALIDAÇÕES
+  ============================================================================ }
+
+function TRepositorioCaixa.TemCaixaAberto: Boolean;
+begin
+  Result := Assigned(FCaixaAtual) and FCaixaAtual.EstaAberto;
+end;
+
+function TRepositorioCaixa.TemCaixaAtual: Boolean;
+begin
+  Result := Assigned(FCaixaAtual);
 end;
 
 end.
