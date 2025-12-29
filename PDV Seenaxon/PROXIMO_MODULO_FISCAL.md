@@ -1,4 +1,4 @@
-# Próximo Módulo Essencial: Conformidade Fiscal e Emissão de Cupons Fiscais
+# Próximo Módulo Essencial: Conformidade Fiscal e Emissão de NFCe
 
 ## 📋 Análise Situacional
 
@@ -16,66 +16,150 @@ O sistema possui:
 
 | Aspecto | Status | Criticidade |
 |--------|--------|-------------|
-| **Emissão de Cupom Fiscal** | ⚠️ Simulado | 🔴 CRÍTICA |
-| **Integração com ECF** | ❌ Não existe | 🔴 CRÍTICA |
+| **Emissão de NFCe** | ❌ Não existe | 🔴 CRÍTICA |
+| **Integração com SEFAZ** | ❌ Não existe | 🔴 CRÍTICA |
 | **Conformidade com SEFAZ** | ❌ Não existe | 🔴 CRÍTICA |
-| **Integração com NFe** | ⚠️ Planejada | 🟠 ALTA |
-| **Integração com SAT** | ❌ Não existe | 🟠 ALTA |
-| **Integração com RFB** | ❌ Não existe | 🟠 ALTA |
 | **Certificado Digital** | ❌ Não existe | 🔴 CRÍTICA |
+| **Integração com NFe** | ⚠️ Planejada | 🟠 ALTA |
+| **Auditoria Fiscal** | ⚠️ Parcial | 🟠 ALTA |
 | **Validação de CNPJ/CPF** | ⚠️ Básica | 🟡 MÉDIA |
 
 ---
 
-## 🎯 Próximo Módulo Essencial: Sistema de Emissão Fiscal (SEF)
+## 🎯 Próximo Módulo Essencial: Sistema de Emissão de NFCe (SENF)
 
 ### Propósito
 
-Garantir a conformidade fiscal brasileira através da emissão de cupons fiscais eletrônicos (CFe) e integração com equipamentos fiscais certificados.
+Garantir a conformidade fiscal brasileira através da emissão de Notas Fiscais do Consumidor Eletrônicas (NFCe) integradas com a SEFAZ (Secretaria da Fazenda).
 
-### Componentes Principais
+### Por Que NFCe e Não SAT?
 
-#### 1. **Módulo de Certificado Digital** (uCertificadoDigital.pas)
+**SAT será descontinuado em 2026** conforme determinação da SEFAZ. A solução moderna e obrigatória é a **NFCe** (Nota Fiscal do Consumidor Eletrônica) que oferece:
+
+- ✅ Validade indefinida (não descontinua)
+- ✅ Integração direta com SEFAZ
+- ✅ Suporte a múltiplos estados
+- ✅ Compatibilidade com sistemas futuros
+- ✅ Melhor rastreabilidade
+- ✅ Conformidade com legislação atual
+
+---
+
+## 🏗️ Componentes do Módulo SENF
+
+### 1. **Módulo de Certificado Digital** (uCertificadoDigital.pas)
 - Carregamento de certificado A1 (PFX)
 - Validação de certificado
-- Renovação de certificado
+- Renovação automática
 - Armazenamento seguro
+- Suporte a e-CNPJ
 
-#### 2. **Módulo de Validação Fiscal** (uValidacaoFiscal.pas)
+#### Funcionalidades
+```pascal
+function CarregarCertificado(AArquivo: string; ASenha: string): Boolean;
+function ValidarCertificado: Boolean;
+function ObterDataValidade: TDateTime;
+function EstaVencido: Boolean;
+function AssinarXML(AXML: string): string;
+function ValidarAssinatura(AXML: string): Boolean;
+```
+
+### 2. **Módulo de Validação Fiscal** (uValidacaoFiscal.pas)
 - Validação de CNPJ/CPF
 - Validação de dados fiscais
 - Conformidade com regras da SEFAZ
 - Verificação de duplicação
+- Validação de ICMS/PIS/COFINS
 
-#### 3. **Módulo de Emissão de CFe** (uEmissaoCFe.pas)
-- Geração de XML do cupom fiscal eletrônico
-- Assinatura digital do cupom
-- Envio para SAT ou servidor SEFAZ
-- Recebimento de resposta
+#### Funcionalidades
+```pascal
+function ValidarCNPJ(ACNPJ: string): Boolean;
+function ValidarCPF(ACPF: string): Boolean;
+function ValidarDadosFiscais(AVenda: TVenda): Boolean;
+function VerificarDuplicacao(AVenda: TVenda): Boolean;
+function ValidarAliquotasImposto(AProduto: TProduto): Boolean;
+```
 
-#### 4. **Módulo de Integração com SAT** (uIntegracaoSAT.pas)
-- Comunicação com equipamento SAT
-- Envio de cupom para SAT
-- Recebimento de resposta
+### 3. **Módulo de Emissão de NFCe** (uEmissaoNFCe.pas)
+- Geração de XML da NFCe
+- Assinatura digital do XML
+- Validação de esquema XSD
+- Numeração sequencial
 - Tratamento de erros
 
-#### 5. **Módulo de Integração com NFe** (uIntegracaoNFe.pas)
+#### Funcionalidades
+```pascal
+function GerarNFCe(AVenda: TVenda): string;
+function AssinarNFCe(AXML: string): string;
+function ValidarXSD(AXML: string): Boolean;
+function ObterProximoNumero: Integer;
+function CalcularDigitoVerificador(AChave: string): Integer;
+```
+
+### 4. **Módulo de Integração com SEFAZ** (uIntegracaoSEFAZ.pas)
+- Comunicação com webservice da SEFAZ
+- Envio de NFCe para autorização
+- Recebimento de resposta
+- Tratamento de erros
+- Suporte a múltiplos estados
+
+#### Funcionalidades
+```pascal
+function EnviarNFCe(AXML: string): TRespuestaSEFAZ;
+function ConsultarStatusNFCe(AChave: string): TStatusNFCe;
+function CancelarNFCe(AChave: string; AMotivo: string): Boolean;
+function InutilizarNumero(ANumeroInicio, ANumeroFim: Integer): Boolean;
+function ObtenerCertificadoSEFAZ: string;
+```
+
+### 5. **Módulo de Integração com NFe** (uIntegracaoNFe.pas)
 - Geração de NFe para vendas B2B
 - Envio para SEFAZ
 - Rastreamento de NFe
 - Cancelamento de NFe
+- Complementação de NFCe para NFe
 
-#### 6. **Módulo de Armazenamento Fiscal** (uArmazenamentoFiscal.pas)
-- Armazenamento de cupons emitidos
+#### Funcionalidades
+```pascal
+function GerarNFe(AVenda: TVenda): string;
+function EnviarNFe(AXML: string): TRespostaSEFAZ;
+function ConsultarStatusNFe(AChave: string): TStatusNFe;
+function CancelarNFe(AChave: string; AMotivo: string): Boolean;
+function ComplementarNFCeParaNFe(AChaveNFCe: string): string;
+```
+
+### 6. **Módulo de Armazenamento Fiscal** (uArmazenamentoFiscal.pas)
+- Armazenamento de NFCe emitidas
 - Histórico de emissões
-- Backup de cupons
-- Recuperação de cupons
+- Backup de NFCe
+- Recuperação de NFCe
+- Conformidade com legislação
 
-#### 7. **Módulo de Auditoria Fiscal** (uAuditoriaFiscal.pas)
+#### Funcionalidades
+```pascal
+function SalvarNFCe(AChave: string; AXML: string; ARespostaSEFAZ: string): Boolean;
+function ObterNFCePorChave(AChave: string): TNFCe;
+function ObterNFCesPorPeriodo(ADataInicio, ADataFim: TDateTime): TObjectList<TNFCe>;
+function FazerBackupNFCe(AArquivoDestino: string): Boolean;
+function RestaurarBackupNFCe(AArquivoOrigem: string): Boolean;
+function VerificarIntegridade: Boolean;
+```
+
+### 7. **Módulo de Auditoria Fiscal** (uAuditoriaFiscal.pas)
 - Registro de todas as operações fiscais
 - Rastreabilidade completa
 - Conformidade com legislação
 - Relatórios para fiscalização
+- Conformidade com LGPD
+
+#### Funcionalidades
+```pascal
+function RegistrarOperacaoFiscal(AOperacao: string; ADetalhes: string): Boolean;
+function ObterHistoricoOperacoes(ADataInicio, ADataFim: TDateTime): TStringList;
+function GerarRelatoriAuditoria(ADataInicio, ADataFim: TDateTime): string;
+function VerificarConformidade: Boolean;
+function ExportarParaFiscalizacao(AArquivo: string): Boolean;
+```
 
 ---
 
@@ -89,7 +173,7 @@ Garantir a conformidade fiscal brasileira através da emissão de cupons fiscais
                      │
                      ▼
 ┌─────────────────────────────────────────────────────────────┐
-│         Sistema de Emissão Fiscal (SEF)                     │
+│    Sistema de Emissão de NFCe (SENF)                        │
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │  ┌──────────────────────────────────────────────────────┐  │
@@ -97,30 +181,34 @@ Garantir a conformidade fiscal brasileira através da emissão de cupons fiscais
 │  │  - Validar CNPJ/CPF                                  │  │
 │  │  - Validar dados da venda                            │  │
 │  │  - Verificar duplicação                              │  │
+│  │  - Validar alíquotas de imposto                      │  │
 │  └──────────────────────────────────────────────────────┘  │
 │                     │                                        │
 │                     ▼                                        │
 │  ┌──────────────────────────────────────────────────────┐  │
-│  │  Geração de CFe (Cupom Fiscal Eletrônico)           │  │
-│  │  - Montar XML do cupom                               │  │
+│  │  Geração de NFCe                                     │  │
+│  │  - Montar XML da NFCe                                │  │
+│  │  - Validar contra XSD                                │  │
 │  │  - Assinar digitalmente                              │  │
-│  │  - Validar assinatura                                │  │
+│  │  - Gerar chave de acesso                             │  │
 │  └──────────────────────────────────────────────────────┘  │
 │                     │                                        │
 │                     ▼                                        │
 │  ┌──────────────────────────────────────────────────────┐  │
-│  │  Integração com SAT/SEFAZ                            │  │
-│  │  - Enviar CFe                                        │  │
-│  │  - Receber resposta                                  │  │
-│  │  - Tratar erros                                      │  │
+│  │  Integração com SEFAZ                                │  │
+│  │  - Enviar NFCe para autorização                      │  │
+│  │  - Receber resposta da SEFAZ                         │  │
+│  │  - Tratar erros e validações                         │  │
+│  │  - Suportar múltiplos estados                        │  │
 │  └──────────────────────────────────────────────────────┘  │
 │                     │                                        │
 │                     ▼                                        │
 │  ┌──────────────────────────────────────────────────────┐  │
 │  │  Armazenamento e Auditoria                           │  │
-│  │  - Salvar cupom emitido                              │  │
+│  │  - Salvar NFCe autorizada                            │  │
 │  │  - Registrar em auditoria                            │  │
 │  │  - Gerar backup                                      │  │
+│  │  - Manter conformidade legal                         │  │
 │  └──────────────────────────────────────────────────────┘  │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
@@ -128,16 +216,17 @@ Garantir a conformidade fiscal brasileira através da emissão de cupons fiscais
                      ▼
 ┌─────────────────────────────────────────────────────────────┐
 │         Banco de Dados SQLite                               │
-│  - Cupons Emitidos                                          │
+│  - NFCe Emitidas                                            │
 │  - Histórico Fiscal                                         │
 │  - Auditoria                                                │
 │  - Certificados                                             │
+│  - Sequência de Numeração                                   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🔐 Fluxo de Emissão de Cupom Fiscal
+## 🔄 Fluxo de Emissão de NFCe
 
 ```
 1. VENDA FINALIZADA
@@ -146,37 +235,42 @@ Garantir a conformidade fiscal brasileira através da emissão de cupons fiscais
    └─ Abre tela de emissão fiscal
    
 2. VALIDAÇÃO FISCAL
-   ├─ Validar CNPJ/CPF do cliente (se houver)
+   ├─ Validar CNPJ/CPF do cliente (obrigatório para NFCe)
    ├─ Validar dados da empresa
    ├─ Validar itens da venda
+   ├─ Validar alíquotas de imposto
    ├─ Verificar duplicação
    └─ Se OK → Prosseguir | Se Erro → Alertar operador
    
-3. GERAÇÃO DE CFe
+3. GERAÇÃO DE NFCe
+   ├─ Obter próximo número de sequência
    ├─ Montar XML com dados da venda
-   ├─ Incluir informações fiscais
+   ├─ Incluir informações fiscais (ICMS, PIS, COFINS)
    ├─ Incluir dados do operador
    ├─ Incluir dados do caixa
+   ├─ Calcular chave de acesso
+   ├─ Validar contra XSD
    └─ Assinar digitalmente com certificado
    
-4. ENVIO PARA SAT/SEFAZ
-   ├─ Conectar ao equipamento SAT ou servidor SEFAZ
-   ├─ Enviar CFe assinado
+4. ENVIO PARA SEFAZ
+   ├─ Conectar ao webservice da SEFAZ
+   ├─ Enviar NFCe assinada
    ├─ Aguardar resposta
    ├─ Validar resposta
-   └─ Se OK → Sucesso | Se Erro → Tratamento de erro
+   └─ Se OK → Autorizada | Se Erro → Tratamento de erro
    
 5. ARMAZENAMENTO
-   ├─ Salvar cupom emitido no banco
-   ├─ Salvar resposta do SAT/SEFAZ
+   ├─ Salvar NFCe autorizada no banco
+   ├─ Salvar resposta da SEFAZ
    ├─ Registrar em auditoria
    ├─ Gerar backup
-   └─ Imprimir cupom
+   └─ Imprimir DANFE (Documento Auxiliar da NFCe)
    
 6. CONFIRMAÇÃO AO OPERADOR
-   ├─ Exibir número do cupom
+   ├─ Exibir número da NFCe
    ├─ Exibir chave de acesso
    ├─ Exibir QR code
+   ├─ Exibir DANFE
    └─ Oferecer opção de reimpressão
 ```
 
@@ -186,20 +280,23 @@ Garantir a conformidade fiscal brasileira através da emissão de cupons fiscais
 
 ### Dependências Externas
 
-1. **Certificado Digital A1**
+1. **Certificado Digital A1 (e-CNPJ)**
    - Arquivo PFX com chave privada
    - Senha de acesso
    - Validade mínima de 1 ano
+   - Emitido por AC ICP-Brasil
 
-2. **Equipamento SAT** (opcional)
-   - Equipamento SAT-CF-e certificado
-   - Driver de comunicação
-   - Configuração de porta serial/USB
-
-3. **Acesso à SEFAZ** (alternativa ao SAT)
-   - Credenciais de acesso
+2. **Acesso à SEFAZ**
+   - Credenciais de acesso (CNPJ, senha)
    - Certificado digital
-   - Ambiente de teste e produção
+   - Ambiente de teste (SEFAZ-RS)
+   - Ambiente de produção (SEFAZ estadual)
+
+3. **Configuração Estadual**
+   - Código de estado
+   - Código de município
+   - Regime tributário
+   - Alíquotas de imposto
 
 ### Bibliotecas Necessárias
 
@@ -215,8 +312,9 @@ uses
   uCriptografiaSenha,
   uValidacaoFiscal,
   uCertificadoDigital,
-  uEmissaoCFe,
-  uIntegracaoSAT,
+  uEmissaoNFCe,
+  uIntegracaoSEFAZ,
+  uIntegracaoNFe,
   uArmazenamentoFiscal,
   uAuditoriaFiscal;
 ```
@@ -225,23 +323,31 @@ uses
 
 ## 🗄️ Estrutura de Tabelas Adicionais
 
-### Tabela: CupomsFiscais
+### Tabela: NFCeEmitidas
 
 ```sql
-CREATE TABLE CupomsFiscais (
+CREATE TABLE NFCeEmitidas (
   ID INTEGER PRIMARY KEY AUTOINCREMENT,
   VendaID INTEGER NOT NULL,
-  NumeroCupom TEXT UNIQUE NOT NULL,
+  NumeroNFCe INTEGER NOT NULL,
   ChaveAcesso TEXT UNIQUE NOT NULL,
-  XMLCupom TEXT NOT NULL,
+  XMLNFCe TEXT NOT NULL,
   XMLResposta TEXT,
-  StatusEmissao INTEGER,
+  StatusAutorizacao INTEGER,
   DataEmissao DATETIME DEFAULT CURRENT_TIMESTAMP,
-  DataResposta DATETIME,
+  DataAutorizacao DATETIME,
   MotivoCancelamento TEXT,
   DataCancelamento DATETIME,
-  FOREIGN KEY (VendaID) REFERENCES Vendas(ID)
+  CNPJCPF TEXT,
+  ValorTotal REAL,
+  FOREIGN KEY (VendaID) REFERENCES Vendas(ID),
+  UNIQUE(NumeroNFCe)
 );
+
+CREATE INDEX idx_nfce_chave ON NFCeEmitidas(ChaveAcesso);
+CREATE INDEX idx_nfce_numero ON NFCeEmitidas(NumeroNFCe);
+CREATE INDEX idx_nfce_data ON NFCeEmitidas(DataEmissao);
+CREATE INDEX idx_nfce_status ON NFCeEmitidas(StatusAutorizacao);
 ```
 
 ### Tabela: HistoricoFiscal
@@ -249,13 +355,18 @@ CREATE TABLE CupomsFiscais (
 ```sql
 CREATE TABLE HistoricoFiscal (
   ID INTEGER PRIMARY KEY AUTOINCREMENT,
-  CupomID INTEGER NOT NULL,
+  NFCeID INTEGER NOT NULL,
   Operacao TEXT NOT NULL,
   Resultado TEXT NOT NULL,
+  CodigoErro TEXT,
+  MensagemErro TEXT,
   Detalhes TEXT,
   DataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (CupomID) REFERENCES CupomsFiscais(ID)
+  FOREIGN KEY (NFCeID) REFERENCES NFCeEmitidas(ID)
 );
+
+CREATE INDEX idx_historico_nfce ON HistoricoFiscal(NFCeID);
+CREATE INDEX idx_historico_data ON HistoricoFiscal(DataHora);
 ```
 
 ### Tabela: CertificadosDigitais
@@ -268,7 +379,43 @@ CREATE TABLE CertificadosDigitais (
   Senha TEXT NOT NULL,
   DataValidade DATETIME NOT NULL,
   DataCadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
-  Ativo BOOLEAN DEFAULT 1
+  Ativo BOOLEAN DEFAULT 1,
+  CNPJ TEXT,
+  Thumbprint TEXT UNIQUE
+);
+
+CREATE INDEX idx_cert_ativo ON CertificadosDigitais(Ativo);
+CREATE INDEX idx_cert_validade ON CertificadosDigitais(DataValidade);
+```
+
+### Tabela: SequenciaNFCe
+
+```sql
+CREATE TABLE SequenciaNFCe (
+  ID INTEGER PRIMARY KEY AUTOINCREMENT,
+  Estado TEXT NOT NULL,
+  UltimoNumero INTEGER DEFAULT 0,
+  DataUltimaAtualizacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(Estado)
+);
+```
+
+### Tabela: ConfiguracaoFiscal
+
+```sql
+CREATE TABLE ConfiguracaoFiscal (
+  ID INTEGER PRIMARY KEY AUTOINCREMENT,
+  CNPJ TEXT NOT NULL,
+  RazaoSocial TEXT NOT NULL,
+  NomeFantasia TEXT,
+  Estado TEXT NOT NULL,
+  Municipio TEXT NOT NULL,
+  RegimeTributario INTEGER,
+  AmbienteSEFAZ INTEGER,
+  CertificadoID INTEGER,
+  DataCadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
+  DataAtualizacao DATETIME,
+  FOREIGN KEY (CertificadoID) REFERENCES CertificadosDigitais(ID)
 );
 ```
 
@@ -279,13 +426,15 @@ CREATE TABLE CertificadosDigitais (
 | Benefício | Descrição |
 |-----------|-----------|
 | **Conformidade Legal** | Atende legislação fiscal brasileira |
-| **Rastreabilidade** | Todas as operações registradas |
-| **Segurança** | Assinatura digital de cupons |
+| **Futuro Garantido** | NFCe não será descontinuada (SAT descontinua em 2026) |
+| **Rastreabilidade** | Todas as operações registradas na SEFAZ |
+| **Segurança** | Assinatura digital de NFCe |
 | **Auditoria** | Histórico completo para fiscalização |
-| **Integração** | Funciona com SAT ou SEFAZ |
+| **Integração** | Funciona com SEFAZ de todos os estados |
 | **Confiabilidade** | Tratamento robusto de erros |
-| **Performance** | Emissão rápida de cupons |
+| **Performance** | Emissão rápida de NFCe |
 | **Escalabilidade** | Suporta múltiplos caixas |
+| **Modernidade** | Compatível com sistemas futuros |
 
 ---
 
@@ -298,25 +447,25 @@ CREATE TABLE CertificadosDigitais (
 - [ ] Implementar auditoria fiscal
 
 ### Fase 2: Emissão (Semana 3-4)
-- [ ] Criar módulo de geração de CFe
+- [ ] Criar módulo de geração de NFCe
 - [ ] Implementar assinatura digital
+- [ ] Validar contra XSD
 - [ ] Criar testes unitários
-- [ ] Documentar formato de CFe
 
 ### Fase 3: Integração (Semana 5-6)
-- [ ] Integrar com SAT
 - [ ] Integrar com SEFAZ
 - [ ] Implementar tratamento de erros
+- [ ] Suportar múltiplos estados
 - [ ] Criar testes de integração
 
 ### Fase 4: Interface (Semana 7)
 - [ ] Criar tela de configuração fiscal
-- [ ] Criar tela de emissão de cupom
+- [ ] Criar tela de emissão de NFCe
 - [ ] Criar tela de reimpressão
 - [ ] Criar tela de cancelamento
 
 ### Fase 5: Testes e Produção (Semana 8)
-- [ ] Testes em ambiente de teste
+- [ ] Testes em ambiente de teste (SEFAZ-RS)
 - [ ] Testes em ambiente de produção
 - [ ] Documentação final
 - [ ] Treinamento de operadores
@@ -325,10 +474,10 @@ CREATE TABLE CertificadosDigitais (
 
 ## 📚 Referências Normativas
 
-1. **Lei nº 12.865/2013** - Institui o Cupom Fiscal Eletrônico (CFe)
-2. **Decreto nº 8.820/2016** - Regulamenta o CFe
-3. **RESOLUÇÃO SAT nº 14/2015** - Especificação técnica do SAT
-4. **Manual de Orientação do Contribuinte** - SEFAZ
+1. **Lei nº 12.865/2013** - Institui a NFCe
+2. **Decreto nº 8.820/2016** - Regulamenta a NFCe
+3. **Manual de Orientação do Contribuinte** - SEFAZ
+4. **Especificação Técnica da NFCe** - SEFAZ
 5. **Documentação ACBr** - Biblioteca de integração fiscal brasileira
 
 ---
@@ -340,33 +489,55 @@ CREATE TABLE CertificadosDigitais (
 Usar a biblioteca **ACBr** (Automação Comercial Brasileira) que é:
 - ✅ Open source
 - ✅ Mantida pela comunidade brasileira
-- ✅ Suporta SAT, NFe, SEFAZ
+- ✅ Suporta NFCe, NFe, SEFAZ
 - ✅ Compatível com Delphi
 - ✅ Bem documentada
+- ✅ Amplamente testada em produção
 
 ### Integração com ACBr
 
 ```pascal
 uses
-  ACBrSAT,
-  ACBrNFe,
-  ACBrValidador;
+  ACBrNFCe,
+  ACBrValidador,
+  ACBrCertificados;
 
-procedure EmitirCupomFiscal;
+procedure EmitirNFCe;
 var
-  ACBrSAT: TACBrSAT;
+  ACBrNFCe: TACBrNFCe;
+  Certificado: TACBrCertificado;
 begin
-  ACBrSAT := TACBrSAT.Create(nil);
+  ACBrNFCe := TACBrNFCe.Create(nil);
   try
-    ACBrSAT.ArqCFe := 'cupom.xml';
-    ACBrSAT.Enviar;
+    { Configurar certificado }
+    Certificado := TACBrCertificado.Create;
+    Certificado.ArquivoPFX := 'certificado.pfx';
+    Certificado.Senha := 'senha123';
+    ACBrNFCe.Certificado := Certificado;
     
-    if ACBrSAT.Resposta.Sucesso then
-      ShowMessage('Cupom emitido: ' + ACBrSAT.Resposta.NumCupom)
+    { Configurar ambiente }
+    ACBrNFCe.ConfiguracaoWebServices.Ambiente := taHomologacao; // ou taProducao
+    ACBrNFCe.ConfiguracaoWebServices.UF := 'SP';
+    
+    { Montar NFCe }
+    ACBrNFCe.NotasFiscais.Clear;
+    with ACBrNFCe.NotasFiscais.Add.NFCe do
+    begin
+      Infra.ID := 'NFCe35240101234567000123550010000000011234567890';
+      Infra.Versao := '4.00';
+      { ... adicionar itens ... }
+    end;
+    
+    { Enviar }
+    ACBrNFCe.Enviar;
+    
+    if ACBrNFCe.WebServices.Autorizacao.Resposta.cStat = 100 then
+      ShowMessage('NFCe autorizada: ' + ACBrNFCe.WebServices.Autorizacao.Resposta.chNFe)
     else
-      ShowMessage('Erro: ' + ACBrSAT.Resposta.Erro);
+      ShowMessage('Erro: ' + ACBrNFCe.WebServices.Autorizacao.Resposta.xMotivo);
   finally
-    ACBrSAT.Free;
+    Certificado.Free;
+    ACBrNFCe.Free;
   end;
 end;
 ```
@@ -375,16 +546,18 @@ end;
 
 ## ✅ Conclusão
 
-O próximo módulo essencial é o **Sistema de Emissão Fiscal (SEF)** que garante:
+O próximo módulo essencial é o **Sistema de Emissão de NFCe (SENF)** que garante:
 
 1. ✅ Conformidade com legislação fiscal brasileira
-2. ✅ Emissão de cupons fiscais eletrônicos (CFe)
-3. ✅ Integração com equipamentos SAT
-4. ✅ Integração com SEFAZ
-5. ✅ Rastreabilidade completa
-6. ✅ Auditoria profissional
-7. ✅ Segurança através de assinatura digital
+2. ✅ Emissão de Notas Fiscais do Consumidor Eletrônicas (NFCe)
+3. ✅ Integração com SEFAZ
+4. ✅ Rastreabilidade completa
+5. ✅ Auditoria profissional
+6. ✅ Segurança através de assinatura digital
+7. ✅ Futuro garantido (NFCe não será descontinuada)
 
 **Estimativa de Implementação**: 8 semanas com equipe de 2 desenvolvedores
 
-**Prioridade**: 🔴 CRÍTICA - Sem este módulo, o PDV não pode ser usado em produção no Brasil
+**Prioridade**: 🔴 **CRÍTICA** - Sem este módulo, o PDV não pode ser usado em produção no Brasil
+
+**Diferencial**: Ao implementar NFCe agora, o PDV Seenaxon estará preparado para o futuro, enquanto sistemas baseados em SAT precisarão ser refeitos em 2026.
