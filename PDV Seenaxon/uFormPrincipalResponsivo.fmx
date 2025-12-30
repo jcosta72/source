@@ -24,8 +24,8 @@ object FormPrincipalResponsivo: TFormPrincipalResponsivo
       TabOrder = 0
       object RectangloCabecalho: TRectangle
         Align = Client
-        Fill.Color = $FF1A1A1A
-        Stroke.Color = $FF1A1A1A
+        Fill.Color = claBlack
+        Stroke.Color = claBlack
         Size.Width = 1280.000000000000000000
         Size.Height = 80.000000000000000000
       end
