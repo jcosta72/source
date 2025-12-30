@@ -1,0 +1,244 @@
+object FormFinalizarVenda: TFormFinalizarVenda
+  Left = 0
+  Top = 0
+  Caption = 'PDV Seenaxon - Finalizar Venda'
+  ClientHeight = 600
+  ClientWidth = 900
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  DesignerMasterStyle = 0
+  OnCreate = FormCreate
+  OnShow = FormShow
+  object PanelPrincipal: TPanel
+    Align = Client
+    Padding.Left = 0.000000000000000000
+    Padding.Top = 0.000000000000000000
+    Padding.Right = 0.000000000000000000
+    Padding.Bottom = 0.000000000000000000
+    Size.Width = 900.000000000000000000
+    Size.Height = 600.000000000000000000
+    TabOrder = 0
+    object PanelCabecalho: TPanel
+      Align = Top
+      Padding.Left = 10.000000000000000000
+      Padding.Top = 10.000000000000000000
+      Padding.Right = 10.000000000000000000
+      Padding.Bottom = 10.000000000000000000
+      Size.Width = 900.000000000000000000
+      Size.Height = 60.000000000000000000
+      TabOrder = 0
+      object RectangloCabecalho: TRectangle
+        Align = Client
+        Fill.Color = claBlue
+        Stroke.Color = claBlue
+        Size.Width = 880.000000000000000000
+        Size.Height = 40.000000000000000000
+      end
+      object LabelTitulo: TLabel
+        Align = Left
+        Size.Width = 400.000000000000000000
+        Size.Height = 40.000000000000000000
+        Text = 'Finalizar Venda'
+        Font.Size = 16.000000000000000000
+        Font.Style = [fsBold]
+        TextSettings.FontColor = claWhite
+      end
+      object ButtonFechar: TButton
+        Align = Right
+        Margins.Left = 5.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 40.000000000000000000
+        Text = 'Fechar'
+        TabOrder = 0
+      end
+    end
+    object PanelCorpo: TPanel
+      Align = Client
+      Padding.Left = 10.000000000000000000
+      Padding.Top = 10.000000000000000000
+      Padding.Right = 10.000000000000000000
+      Padding.Bottom = 10.000000000000000000
+      Size.Width = 900.000000000000000000
+      Size.Height = 530.000000000000000000
+      TabOrder = 1
+      object LayoutResumoVenda: TLayout
+        Align = Top
+        Size.Width = 880.000000000000000000
+        Size.Height = 30.000000000000000000
+        object LabelResumo: TLabel
+          Align = Client
+          Text = 'RESUMO DA VENDA'
+          Font.Size = 12.000000000000000000
+          Font.Style = [fsBold]
+        end
+      end
+      object MemoResumoVenda: TMemo
+        Align = Top
+        Margins.Top = 5.000000000000000000
+        Size.Width = 880.000000000000000000
+        Size.Height = 120.000000000000000000
+        ReadOnly = True
+        TabOrder = 0
+        Viewport.Width = 876.000000000000000000
+        Viewport.Height = 116.000000000000000000
+      end
+      object LayoutPagamento: TLayout
+        Align = Top
+        Margins.Top = 10.000000000000000000
+        Size.Width = 880.000000000000000000
+        Size.Height = 200.000000000000000000
+        object LabelPagamento: TLabel
+          Align = Top
+          Size.Width = 880.000000000000000000
+          Size.Height = 25.000000000000000000
+          Text = 'DADOS DE PAGAMENTO'
+          Font.Size = 12.000000000000000000
+          Font.Style = [fsBold]
+        end
+        object LayoutFormaPagamento: TLayout
+          Align = Top
+          Margins.Top = 5.000000000000000000
+          Size.Width = 880.000000000000000000
+          Size.Height = 40.000000000000000000
+          object LabelFormaPagamento: TLabel
+            Align = Left
+            Size.Width = 150.000000000000000000
+            Size.Height = 40.000000000000000000
+            Text = 'Forma de Pagamento:'
+            Font.Size = 11.000000000000000000
+          end
+          object ComboFormaPagamento: TComboBox
+            Align = Client
+            Margins.Left = 5.000000000000000000
+            Size.Width = 725.000000000000000000
+            Size.Height = 40.000000000000000000
+            Items.Strings = (
+              'Dinheiro'
+              'Cart'#227'o de D'#233'bito'
+              'Cart'#227'o de Cr'#233'dito'
+              'PIX'
+              'Cheque')
+            ItemIndex = 0
+            TabOrder = 0
+          end
+        end
+        object LayoutValorTotal: TLayout
+          Align = Top
+          Margins.Top = 5.000000000000000000
+          Size.Width = 880.000000000000000000
+          Size.Height = 40.000000000000000000
+          object LabelValorTotal: TLabel
+            Align = Left
+            Size.Width = 150.000000000000000000
+            Size.Height = 40.000000000000000000
+            Text = 'Valor Total:'
+            Font.Size = 11.000000000000000000
+          end
+          object EditValorTotal: TEdit
+            Align = Client
+            Margins.Left = 5.000000000000000000
+            Size.Width = 725.000000000000000000
+            Size.Height = 40.000000000000000000
+            Font.Size = 11.000000000000000000
+            ReadOnly = True
+            TabOrder = 0
+            Text = 'R$ 0,00'
+          end
+        end
+        object LayoutValorPago: TLayout
+          Align = Top
+          Margins.Top = 5.000000000000000000
+          Size.Width = 880.000000000000000000
+          Size.Height = 40.000000000000000000
+          object LabelValorPago: TLabel
+            Align = Left
+            Size.Width = 150.000000000000000000
+            Size.Height = 40.000000000000000000
+            Text = 'Valor Pago:'
+            Font.Size = 11.000000000000000000
+          end
+          object EditValorPago: TEdit
+            Align = Client
+            Margins.Left = 5.000000000000000000
+            Size.Width = 725.000000000000000000
+            Size.Height = 40.000000000000000000
+            Font.Size = 11.000000000000000000
+            TabOrder = 0
+            Text = '0'
+          end
+        end
+        object LayoutTroco: TLayout
+          Align = Top
+          Margins.Top = 5.000000000000000000
+          Size.Width = 880.000000000000000000
+          Size.Height = 40.000000000000000000
+          object LabelTroco: TLabel
+            Align = Left
+            Size.Width = 150.000000000000000000
+            Size.Height = 40.000000000000000000
+            Text = 'Troco:'
+            Font.Size = 11.000000000000000000
+          end
+          object EditTroco: TEdit
+            Align = Client
+            Margins.Left = 5.000000000000000000
+            Size.Width = 725.000000000000000000
+            Size.Height = 40.000000000000000000
+            Font.Size = 11.000000000000000000
+            ReadOnly = True
+            TabOrder = 0
+            Text = 'R$ 0,00'
+          end
+        end
+      end
+      object LayoutStatus: TLayout
+        Align = Top
+        Margins.Top = 10.000000000000000000
+        Size.Width = 880.000000000000000000
+        Size.Height = 30.000000000000000000
+        object LabelStatus: TLabel
+          Align = Client
+          Text = 'Processando...'
+          Font.Size = 11.000000000000000000
+        end
+      end
+      object ProgressBar: TProgressBar
+        Align = Top
+        Margins.Top = 5.000000000000000000
+        Size.Width = 880.000000000000000000
+        Size.Height = 20.000000000000000000
+        Value = 0.000000000000000000
+      end
+      object LayoutBotoes: TLayout
+        Align = Bottom
+        Size.Width = 880.000000000000000000
+        Size.Height = 50.000000000000000000
+        object ButtonProcessarPagamento: TButton
+          Align = Left
+          Margins.Right = 5.000000000000000000
+          Size.Width = 430.000000000000000000
+          Size.Height = 50.000000000000000000
+          Text = 'Processar Pagamento'
+          Font.Size = 12.000000000000000000
+          Font.Style = [fsBold]
+          TabOrder = 0
+        end
+        object ButtonCancelar: TButton
+          Align = Client
+          Size.Width = 430.000000000000000000
+          Size.Height = 50.000000000000000000
+          Text = 'Cancelar'
+          TabOrder = 1
+        end
+      end
+    end
+  end
+  object TimerProcessamento: TTimer
+    Enabled = False
+    Interval = 100
+    OnTimer = TimerProcessamentoTimer
+    Left = 800
+    Top = 500
+  end
+end

@@ -1,0 +1,223 @@
+object FormVendas: TFormVendas
+  Left = 0
+  Top = 0
+  Caption = 'PDV Seenaxon - Gerenciamento de Vendas'
+  ClientHeight = 720
+  ClientWidth = 1280
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  DesignerMasterStyle = 0
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  object PanelPrincipal: TPanel
+    Align = Client
+    Padding.Left = 0.000000000000000000
+    Padding.Top = 0.000000000000000000
+    Padding.Right = 0.000000000000000000
+    Padding.Bottom = 0.000000000000000000
+    Size.Width = 1280.000000000000000000
+    Size.Height = 720.000000000000000000
+    TabOrder = 0
+    object PanelCabecalho: TPanel
+      Align = Top
+      Padding.Left = 10.000000000000000000
+      Padding.Top = 10.000000000000000000
+      Padding.Right = 10.000000000000000000
+      Padding.Bottom = 10.000000000000000000
+      Size.Width = 1280.000000000000000000
+      Size.Height = 60.000000000000000000
+      TabOrder = 0
+      object LabelTitulo: TLabel
+        Align = Left
+        Size.Width = 400.000000000000000000
+        Size.Height = 40.000000000000000000
+        Text = 'Gerenciamento de Vendas'
+        Font.Size = 16.000000000000000000
+        Font.Style = [fsBold]
+      end
+      object LabelStatusCaixa: TLabel
+        Position.X = 410.000000000000000000
+        Position.Y = 10.000000000000000000
+        Width = 200.000000000000000000
+        Height = 40.000000000000000000
+        Text = 'Caixa: Fechado'
+        Font.Size = 12.000000000000000000
+        TextSettings.FontColor = claRed
+      end
+      object ButtonSair: TButton
+        Align = Right
+        Margins.Left = 5.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 40.000000000000000000
+        Text = 'Sair'
+        TabOrder = 0
+      end
+    end
+    object PanelConteudo: TPanel
+      Align = Client
+      Padding.Left = 5.000000000000000000
+      Padding.Top = 5.000000000000000000
+      Padding.Right = 5.000000000000000000
+      Padding.Bottom = 5.000000000000000000
+      Size.Width = 1280.000000000000000000
+      Size.Height = 655.000000000000000000
+      TabOrder = 1
+      object PanelEsquerda: TPanel
+        Align = Left
+        Padding.Left = 10.000000000000000000
+        Padding.Top = 10.000000000000000000
+        Padding.Right = 10.000000000000000000
+        Padding.Bottom = 10.000000000000000000
+        Size.Width = 640.000000000000000000
+        Size.Height = 645.000000000000000000
+        TabOrder = 0
+        object LayoutProdutos: TLayout
+          Align = Top
+          Size.Width = 620.000000000000000000
+          Size.Height = 50.000000000000000000
+          object LabelProdutos: TLabel
+            Align = Left
+            Size.Width = 100.000000000000000000
+            Size.Height = 50.000000000000000000
+            Text = 'Buscar:'
+            Font.Size = 11.000000000000000000
+          end
+          object EditBuscaProduto: TEdit
+            Align = Client
+            Margins.Left = 5.000000000000000000
+            Size.Width = 515.000000000000000000
+            Size.Height = 50.000000000000000000
+            Font.Size = 11.000000000000000000
+            TabOrder = 0
+          end
+        end
+        object ListBoxProdutos: TListBox
+          Align = Client
+          Margins.Top = 5.000000000000000000
+          Size.Width = 620.000000000000000000
+          Size.Height = 590.000000000000000000
+          ItemHeight = 40.000000000000000000
+          TabOrder = 1
+          Viewport.Width = 616.000000000000000000
+          Viewport.Height = 586.000000000000000000
+        end
+      end
+      object PanelDireita: TPanel
+        Align = Right
+        Padding.Left = 10.000000000000000000
+        Padding.Top = 10.000000000000000000
+        Padding.Right = 10.000000000000000000
+        Padding.Bottom = 10.000000000000000000
+        Size.Width = 640.000000000000000000
+        Size.Height = 645.000000000000000000
+        TabOrder = 1
+        object LayoutCarrinho: TLayout
+          Align = Top
+          Size.Width = 620.000000000000000000
+          Size.Height = 30.000000000000000000
+          object LabelCarrinho: TLabel
+            Align = Client
+            Text = 'CARRINHO'
+            Font.Size = 12.000000000000000000
+            Font.Style = [fsBold]
+          end
+        end
+        object ListBoxCarrinho: TListBox
+          Align = Top
+          Margins.Top = 5.000000000000000000
+          Size.Width = 620.000000000000000000
+          Size.Height = 250.000000000000000000
+          ItemHeight = 40.000000000000000000
+          TabOrder = 0
+          Viewport.Width = 616.000000000000000000
+          Viewport.Height = 246.000000000000000000
+        end
+        object LayoutQuantidade: TLayout
+          Align = Top
+          Margins.Top = 5.000000000000000000
+          Size.Width = 620.000000000000000000
+          Size.Height = 50.000000000000000000
+          object LabelQuantidade: TLabel
+            Align = Left
+            Size.Width = 100.000000000000000000
+            Size.Height = 50.000000000000000000
+            Text = 'Quantidade:'
+            Font.Size = 11.000000000000000000
+          end
+          object EditQuantidade: TEdit
+            Align = Client
+            Margins.Left = 5.000000000000000000
+            Size.Width = 515.000000000000000000
+            Size.Height = 50.000000000000000000
+            Font.Size = 11.000000000000000000
+            TabOrder = 0
+            Text = '1'
+          end
+        end
+        object LayoutResumo: TLayout
+          Align = Top
+          Margins.Top = 5.000000000000000000
+          Size.Width = 620.000000000000000000
+          Size.Height = 30.000000000000000000
+          object LabelResumo: TLabel
+            Align = Client
+            Text = 'RESUMO'
+            Font.Size = 12.000000000000000000
+            Font.Style = [fsBold]
+          end
+        end
+        object MemoResumo: TMemo
+          Align = Top
+          Margins.Top = 5.000000000000000000
+          Size.Width = 620.000000000000000000
+          Size.Height = 100.000000000000000000
+          ReadOnly = True
+          TabOrder = 1
+          Viewport.Width = 616.000000000000000000
+          Viewport.Height = 96.000000000000000000
+        end
+        object LayoutBotoes: TLayout
+          Align = Client
+          Margins.Top = 5.000000000000000000
+          Size.Width = 620.000000000000000000
+          Size.Height = 180.000000000000000000
+          object ButtonAdicionarProduto: TButton
+            Align = Top
+            Margins.Bottom = 5.000000000000000000
+            Size.Width = 620.000000000000000000
+            Size.Height = 40.000000000000000000
+            Text = 'Adicionar Produto'
+            TabOrder = 0
+          end
+          object ButtonRemoverItem: TButton
+            Align = Top
+            Margins.Bottom = 5.000000000000000000
+            Size.Width = 620.000000000000000000
+            Size.Height = 40.000000000000000000
+            Text = 'Remover Item'
+            TabOrder = 1
+          end
+          object ButtonFinalizarVenda: TButton
+            Align = Top
+            Margins.Bottom = 5.000000000000000000
+            Size.Width = 620.000000000000000000
+            Size.Height = 50.000000000000000000
+            Text = 'Finalizar Venda'
+            Font.Size = 12.000000000000000000
+            Font.Style = [fsBold]
+            TabOrder = 2
+          end
+          object ButtonLimparCarrinho: TButton
+            Align = Top
+            Margins.Bottom = 5.000000000000000000
+            Size.Width = 620.000000000000000000
+            Size.Height = 40.000000000000000000
+            Text = 'Limpar Carrinho'
+            TabOrder = 3
+          end
+        end
+      end
+    end
+  end
+end
