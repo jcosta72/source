@@ -285,7 +285,7 @@ begin
   FVendaAtual := TVenda.Create;
   FVendaAtual.ID := GerarProximoID;
   FVendaAtual.OperadorID := AOperadorID;
-  FVendaAtual.DataHora := Now;
+  FVendaAtual.DataVenda := Now;
   
   Result := FVendaAtual;
 end;
@@ -689,7 +689,7 @@ begin
   for I := 0 to FVendas.Count - 1 do
   begin
     Venda := FVendas[I];
-    if (Venda.DataHora >= ADataInicio) and (Venda.DataHora <= ADataFim) then
+    if (Venda.DataVenda >= ADataInicio) and (Venda.DataVenda <= ADataFim) then
       Result.Add(Venda);
   end;
 end;
@@ -856,7 +856,7 @@ begin
   
   for I := 1 to FVendas.Count - 1 do
   begin
-    if FVendas[I].DataHora > Result.DataHora then
+    if FVendas[I].DataVenda > Result.DataVenda then
       Result := FVendas[I];
   end;
 end;
