@@ -77,9 +77,9 @@ type
     property DataVenda: TDateTime read FDataVenda write FDataVenda;
     property DataFinalizacao: TDateTime read FDataFinalizacao;
     property OperadorID: Integer read FOperadorID write FOperadorID;
-    property Status: TStatusVenda read FStatus;
-    property FormaPagamento: TFormaPagamento read FFormaPagamento;
-    property ValorRecebido: Double read FValorRecebido;
+    property Status: TStatusVenda read FStatus write FStatus;
+    property FormaPagamento: TFormaPagamento read FFormaPagamento write FFormaPagamento;
+    property ValorRecebido: Double read FValorRecebido write FValorRecebido;
     property Troco: Double read FTroco;
     property QuantidadeItens: Integer read GetQuantidadeItens;
     property NumeroNFe: string read FNumeroNFe write FNumeroNFe;

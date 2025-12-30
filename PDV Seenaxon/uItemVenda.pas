@@ -43,8 +43,8 @@ type
     
     // Propriedades
     property Produto: TProduto read FProduto;
-    property Quantidade: Double read FQuantidade;
-    property ValorUnitario: Double read FValorUnitario;
+    property Quantidade: Double read FQuantidade write SetQuantidade;
+    property ValorUnitario: Double read FValorUnitario write SetValorUnitario;
     property ValorTotal: Double read FValorTotal;
     property Desconto: Double read FDesconto;
     property DescontoPercentual: Boolean read FDescontoPercentual;

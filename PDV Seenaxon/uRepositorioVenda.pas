@@ -9,9 +9,6 @@ uses
 type
   {$REGION 'Tipos'}
   
-  // Status da venda
-  TStatusVenda = (svPendente, svFinalizada, svCancelada);
-  
   // Tipo de filtro
   TTipoFiltroVenda = (tfTodas, tfPendentes, tfFinalizadas, tfCanceladas);
   
@@ -83,7 +80,7 @@ type
     /// <param name="AFormaPagemento">Forma de pagamento (1=Dinheiro, 2=Cartão, 3=PIX)</param>
     /// <param name="AValorPago">Valor pago pelo cliente</param>
     /// <returns>True se finalizado com sucesso</returns>
-    function FinalizarVenda(AFormaPagamento: Integer; AValorPago: Double): Boolean;
+    function FinalizarVenda(AFormaPagamento: TFormaPagamento; AValorRecebido: Double): Boolean;
     
     /// <summary>Cancelar venda atual</summary>
     /// <returns>True se cancelado com sucesso</returns>
@@ -137,7 +134,7 @@ type
     /// <summary>Filtrar vendas por forma de pagamento</summary>
     /// <param name="AFormaPagamento">Forma de pagamento</param>
     /// <returns>Lista de vendas encontradas</returns>
-    function FiltrarPorFormaPagamento(AFormaPagamento: Integer): TObjectList<TVenda>;
+    function FiltrarPorFormaPagamento(AFormaPagamento: TFormaPagamento): TObjectList<TVenda>;
     
     /// <summary>Filtrar vendas por data</summary>
     /// <param name="ADataInicio">Data inicial</param>
@@ -415,10 +412,7 @@ begin
   end;
   
   try
-    if APercentual then
-      FVendaAtual.AplicarDescontoPercentual(AValor)
-    else
-      FVendaAtual.AplicarDescontoValor(AValor);
+    FVendaAtual.AplicarDesconto(AValor, APercentual);
     Result := True;
   except
     on E: Exception do
@@ -444,10 +438,7 @@ begin
   end;
   
   try
-    if APercentual then
-      FVendaAtual.AplicarAcrescimoPercentual(AValor)
-    else
-      FVendaAtual.AplicarAcrescimoValor(AValor);
+    FVendaAtual.AplicarAcrescimo(AValor, APercentual);
     Result := True;
   except
     on E: Exception do
@@ -455,7 +446,7 @@ begin
   end;
 end;
 
-function TRepositorioVenda.FinalizarVenda(AFormaPagamento: Integer; AValorPago: Double): Boolean;
+function TRepositorioVenda.FinalizarVenda(AFormaPagamento: TFormaPagamento; AValorRecebido: Double): Boolean;
 begin
   Result := False;
   FUltimoErro := '';
@@ -472,22 +463,16 @@ begin
     Exit;
   end;
   
-  if (AFormaPagamento < 1) or (AFormaPagamento > 3) then
+  if AValorRecebido < FVendaAtual.Total then
   begin
-    FUltimoErro := 'Forma de pagamento inválida (1=Dinheiro, 2=Cartão, 3=PIX)';
-    Exit;
-  end;
-  
-  if AValorPago < FVendaAtual.Total then
-  begin
-    FUltimoErro := 'Valor pago insuficiente';
+    FUltimoErro := 'Valor recebido insuficiente';
     Exit;
   end;
   
   try
     FVendaAtual.FormaPagamento := AFormaPagamento;
-    FVendaAtual.ValorPago := AValorPago;
-    FVendaAtual.Status := Integer(svFinalizada);
+    FVendaAtual.ValorRecebido := AValorRecebido;
+    FVendaAtual.Status := svFinalizada;
     
     // Adicionar ao repositório
     FVendas.Add(FVendaAtual);
@@ -512,7 +497,7 @@ begin
   end;
   
   try
-    FVendaAtual.Status := Integer(svCancelada);
+    FVendaAtual.Status := svCancelada;
     FVendas.Add(FVendaAtual);
     FVendaAtual := nil;
     Result := True;
@@ -644,7 +629,7 @@ begin
   for I := 0 to FVendas.Count - 1 do
   begin
     Venda := FVendas[I];
-    if Venda.Status = Integer(AStatus) then
+    if Venda.Status = AStatus then
       Result.Add(Venda);
   end;
 end;
@@ -664,7 +649,7 @@ begin
   end;
 end;
 
-function TRepositorioVenda.FiltrarPorFormaPagamento(AFormaPagamento: Integer): TObjectList<TVenda>;
+function TRepositorioVenda.FiltrarPorFormaPagamento(AFormaPagamento: TFormaPagamento): TObjectList<TVenda>;
 var
   I: Integer;
   Venda: TVenda;
@@ -726,7 +711,7 @@ begin
   
   for I := 0 to FVendas.Count - 1 do
   begin
-    if FVendas[I].Status = Integer(svFinalizada) then
+    if FVendas[I].Status = svFinalizada then
       Inc(Result);
   end;
 end;
@@ -739,7 +724,7 @@ begin
   
   for I := 0 to FVendas.Count - 1 do
   begin
-    if FVendas[I].Status = Integer(svPendente) then
+    if FVendas[I].Status = svAberta then
       Inc(Result);
   end;
 end;
@@ -752,7 +737,7 @@ begin
   
   for I := 0 to FVendas.Count - 1 do
   begin
-    if FVendas[I].Status = Integer(svCancelada) then
+    if FVendas[I].Status = svCancelada then
       Inc(Result);
   end;
 end;
@@ -765,7 +750,7 @@ begin
   
   for I := 0 to FVendas.Count - 1 do
   begin
-    if FVendas[I].Status = Integer(svFinalizada) then
+    if FVendas[I].Status = svFinalizada then
       Result := Result + FVendas[I].Total;
   end;
 end;
@@ -818,7 +803,7 @@ function TRepositorioVenda.ObterMenorVenda: Double;
 var
   I: Integer;
 begin
-  Result := MaxDouble;
+  Result := High(Double);
   
   for I := 0 to FVendas.Count - 1 do
   begin
@@ -826,7 +811,7 @@ begin
       Result := FVendas[I].Total;
   end;
   
-  if Result = MaxDouble then
+  if Result = High(Double) then
     Result := 0;
 end;
 
