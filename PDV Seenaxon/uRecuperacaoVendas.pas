@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, System.Generics.Collections, System.IOUtils,
   System.DateUtils, Xml.XMLIntf, Xml.XMLDoc,
-  uVenda, uItemVenda, uProduto, uRepositorioProdutos;
+  uVenda, uItemVenda, uProduto, uRepositorioProduto;
 
 type
   { Enumeração para definir o formato de arquivo }
@@ -17,7 +17,7 @@ type
     FDiretorio: string;
     FArquivoVendaPendente: string;
     FFormatoArquivo: TFormatoArquivo;
-    FRepositorioProdutos: TRepositorioProdutos;
+    FRepositorioProdutos: TRepositorioProduto;
     FUltimoErro: string;
     
     { Métodos privados para obter caminho e salvar em diferentes formatos }

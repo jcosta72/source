@@ -9,7 +9,7 @@ uses
   uVenda,
   uOperador,
   uCaixa,
-  uRepositorioProdutos;
+  uRepositorioProduto;
 
 type
   TTestes = class
