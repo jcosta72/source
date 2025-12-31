@@ -1,4 +1,4 @@
-unit uFormLogin;
+﻿unit uFormLogin;
 
 interface
 
@@ -7,144 +7,142 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
   FMX.Edit, FMX.Layouts, FMX.Objects, FMX.ListBox, FMX.Controls.Presentation,
   FMX.ScrollBox, FireDAC.Comp.Client, FireDAC.Stan.Param, Data.DB,
-  uOperador, uRepositorioOperador, uDMConexao;
+  uOperador, uRepositorioOperador, uDMConexao, System.Generics.Collections;
 
-type
-  {$REGION 'Constantes'}
-  
-  const
-    // Constantes de segurança
-    TENTATIVAS_MAXIMAS = 3;           // Máximo de tentativas de login
-    TEMPO_BLOQUEIO_MINUTOS = 15;      // Tempo de bloqueio após tentativas
-    TEMPO_ESPERA_ENTRE_TENTATIVAS = 2; // Segundos entre tentativas
-    
-    // Constantes de UI
-    ALTURA_BOTAO_OPERADOR = 60;
-    ESPACAMENTO_BOTOES = 5;
-    LARGURA_MINIMA_FORM = 400;
-    ALTURA_MINIMA_FORM = 600;
-  
-  {$ENDREGION}
-
-  {$REGION 'Tipos'}
-  
   // Resultado do login
-  type
-    TResultadoLogin = record
-      Sucesso: Boolean;
-      Operador: TOperador;
-      Mensagem: string;
-      BloqueadoAte: TDateTime;
-    end;
-  
-  {$ENDREGION}
+type
+  TResultadoLogin = record
+    Sucesso: Boolean;
+    Operador: TOperador;
+    Mensagem: string;
+    BloqueadoAte: TDateTime;
+  end;
 
-  {$REGION 'Classe TFormLogin'}
-  
   TFormLogin = class(TForm)
-    // Componentes de Layout
-    LayoutPrincipal: TLayout;
-    LayoutTitulo: TLayout;
-    LayoutCorpo: TLayout;
-    LayoutRodape: TLayout;
-    
+
     // Componentes de Título
     LabelTitulo: TLabel;
     LabelSubtitulo: TLabel;
-    RectangloDivisor: TRectangle;
-    
+
     // Componentes de Entrada
     LabelMatricula: TLabel;
     EditMatricula: TEdit;
-    
+
     LabelSenha: TLabel;
     EditSenha: TEdit;
-    
+
     // Componentes de Mensagem
     LabelMensagem: TLabel;
-    
+
     // Componentes de Operadores Rápidos
     LabelOperadoresRapidos: TLabel;
-    ScrollBoxOperadores: TScrollBox;
-    LayoutOperadores: TLayout;
-    
+
     // Botões
     ButtonEntrar: TButton;
-    ButtonLimpar: TButton;
     ButtonSair: TButton;
-    
-    // Componentes de Status
-    LabelTentativas: TLabel;
-    ProgressBarTentativas: TProgressBar;
-    
+
     // Eventos
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
-    
+
     procedure ButtonEntrarClick(Sender: TObject);
     procedure ButtonLimparClick(Sender: TObject);
     procedure ButtonSairClick(Sender: TObject);
-    
+
     procedure EditMatriculaChange(Sender: TObject);
     procedure EditSenhaChange(Sender: TObject);
-    
+
     procedure OperadorRapidoClick(Sender: TObject);
-    
+
   private
     FRepositorio: TRepositorioOperador;
     FOperadorAtual: TOperador;
     FTentativasLogin: Integer;
     FBloqueadoAte: TDateTime;
     FUltimaMatricula: string;
-    
+
+    //Labels
+    LabelTentativas: TLabel;
+
+    //ProgressBar
+    ProgressBarTentativas: TProgressBar;
+
+    //ScrollBox
+    ScrollBoxOperadores: TScrollBox;
+
+    //Button
+    ButtonLimpar: TButton;
+
+    //Layouts
+    LayoutPrincipal: TLayout;
+    LayoutTitulo: TLayout;
+    LayoutCorpo: TLayout;
+    LayoutOperadores: TLayout;
+    LayoutRodape: TLayout;
+
+    //Rectangle
+    RectangloDivisor: TRectangle;
+
     /// <summary>Inicializar componentes</summary>
     procedure InicializarComponentes;
-    
+
     /// <summary>Configurar estilos e cores</summary>
     procedure ConfigurarEstilos;
-    
+
     /// <summary>Carregar operadores rápidos</summary>
     procedure CarregarOperadoresRapidos;
-    
+
     /// <summary>Criar botão de operador rápido</summary>
     function CriarBotaoOperador(AOperador: TOperador): TButton;
-    
+
     /// <summary>Realizar login</summary>
     function RealizarLogin: TResultadoLogin;
-    
+
     /// <summary>Validar entrada</summary>
     function ValidarEntrada: TResultadoLogin;
-    
+
     /// <summary>Verificar bloqueio por força bruta</summary>
     function VerificarBloqueio: TResultadoLogin;
-    
+
     /// <summary>Atualizar UI após tentativa de login</summary>
     procedure AtualizarUIAposTentativa(AResultado: TResultadoLogin);
-    
+
     /// <summary>Exibir mensagem de erro</summary>
     procedure ExibirMensagem(AMensagem: string; AErro: Boolean = False);
-    
+
     /// <summary>Limpar campos de entrada</summary>
     procedure LimparCampos;
-    
+
     /// <summary>Habilitar/desabilitar controles</summary>
     procedure HabilitarControles(AHabilitar: Boolean);
-    
+
     /// <summary>Atualizar indicador de tentativas</summary>
     procedure AtualizarIndicadorTentativas;
-    
+
     /// <summary>Registrar tentativa de login em log</summary>
     procedure RegistrarTentativaLogin(ASucesso: Boolean; AMotivo: string = '');
-    
+
   public
     /// <summary>Obter operador autenticado</summary>
     function GetOperadorAutenticado: TOperador;
-    
+
     // Propriedades
     property OperadorAutenticado: TOperador read GetOperadorAutenticado;
   end;
+
+const
+  // Constantes de segurança
+  TENTATIVAS_MAXIMAS = 3;           // Máximo de tentativas de login
+  TEMPO_BLOQUEIO_MINUTOS = 15;      // Tempo de bloqueio após tentativas
+  TEMPO_ESPERA_ENTRE_TENTATIVAS = 2; // Segundos entre tentativas
+
+  // Constantes de UI
+  ALTURA_BOTAO_OPERADOR = 60;
+  ESPACAMENTO_BOTOES = 5;
+  LARGURA_MINIMA_FORM = 400;
+  ALTURA_MINIMA_FORM = 600;
 
 var
   FormLogin: TFormLogin;
@@ -257,11 +255,11 @@ begin
   
   RectangloDivisor := TRectangle.Create(Self);
   RectangloDivisor.Parent := LayoutTitulo;
-  RectangloDivisor.Fill.Color := TAlphaColorRec.Create(255, 69, 0, 255); // #FF4500
+  RectangloDivisor.Fill.Color := $FFFF4500;
   RectangloDivisor.Stroke.Kind := TBrushKind.None;
   RectangloDivisor.Height := 2;
   RectangloDivisor.Align := TAlignLayout.Bottom;
-  
+
   // Layout Corpo
   LayoutCorpo := TLayout.Create(Self);
   LayoutCorpo.Parent := LayoutPrincipal;
@@ -353,8 +351,8 @@ begin
   LayoutOperadores := TLayout.Create(Self);
   LayoutOperadores.Parent := ScrollBoxOperadores;
   LayoutOperadores.Align := TAlignLayout.Top;
-  LayoutOperadores.AutoSize := True;
-  
+//LayoutOperadores.AutoSize := True;
+
   // Layout Rodapé
   LayoutRodape := TLayout.Create(Self);
   LayoutRodape.Parent := LayoutPrincipal;

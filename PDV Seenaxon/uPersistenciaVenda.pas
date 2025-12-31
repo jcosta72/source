@@ -1,4 +1,4 @@
-unit uPersistenciaVenda;
+﻿unit uPersistenciaVenda;
 
 interface
 
@@ -185,32 +185,34 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := ASQL;
-    
-    { Adicionar parâmetros }
-    for i := 0 to Length(AParams) - 1 do
-    begin
-      case AParams[i].VType of
-        vtInteger:
-          Query.ParamByName('P' + IntToStr(i + 1)).AsInteger := AParams[i].VInteger;
-        vtString:
-          Query.ParamByName('P' + IntToStr(i + 1)).AsString := string(AParams[i].VString);
-        vtExtended:
-          Query.ParamByName('P' + IntToStr(i + 1)).AsFloat := AParams[i].VExtended^;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := ASQL;
+
+      { Adicionar parâmetros }
+      for i := 0 to Length(AParams) - 1 do
+      begin
+        case AParams[i].VType of
+          vtInteger:
+            Query.ParamByName('P' + IntToStr(i + 1)).AsInteger := AParams[i].VInteger;
+          vtString:
+            Query.ParamByName('P' + IntToStr(i + 1)).AsString := string(AParams[i].VString);
+          vtExtended:
+            Query.ParamByName('P' + IntToStr(i + 1)).AsFloat := AParams[i].VExtended^;
+        end;
       end;
-    end;
-    
-    { Executar }
-    Query.ExecSQL;
-    
-    Result := True;
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao executar SQL: ' + E.Message;
-      Result := False;
+
+      { Executar }
+      Query.ExecSQL;
+
+      Result := True;
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao executar SQL: ' + E.Message;
+        Result := False;
+      end;
     end;
   finally
     Query.Free;
@@ -234,8 +236,8 @@ begin
     if ExecutarSQL(
       'INSERT INTO Vendas (OperadorID, CaixaID, Subtotal, Desconto, Acrescimo, Total, FormaPagamento, ValorPago, Troco, Status, DataVenda) ' +
       'VALUES (:P1, :P2, :P3, :P4, :P5, :P6, :P7, :P8, :P9, :P10, :P11)',
-      [AVenda.OperadorID, AVenda.CaixaID, AVenda.Subtotal, AVenda.Desconto, AVenda.Acrescimo, AVenda.Total, 
-       AVenda.FormaPagamento, AVenda.ValorPago, AVenda.Troco, 0, Now]
+      [AVenda.OperadorID, AVenda.CaixaID, AVenda.Subtotal, AVenda.Desconto, AVenda.Acrescimo, AVenda.Total,
+       Integer(AVenda.FormaPagamento), AVenda.ValorRecebido, AVenda.Troco, 0, Now]
     ) then
     begin
       Result := True;
@@ -264,7 +266,7 @@ begin
       'UPDATE Vendas SET OperadorID = :P1, CaixaID = :P2, Subtotal = :P3, Desconto = :P4, Acrescimo = :P5, Total = :P6, ' +
       'FormaPagamento = :P7, ValorPago = :P8, Troco = :P9, Status = :P10, DataAtualizacao = :P11 WHERE ID = :P12',
       [AVenda.OperadorID, AVenda.CaixaID, AVenda.Subtotal, AVenda.Desconto, AVenda.Acrescimo, AVenda.Total,
-       AVenda.FormaPagamento, AVenda.ValorPago, AVenda.Troco, AVenda.Status, Now, AVenda.ID]
+       Integer(AVenda.FormaPagamento), AVenda.ValorRecebido, AVenda.Troco, Integer(AVenda.Status), Now, AVenda.ID]
     ) then
     begin
       Result := True;
@@ -310,33 +312,35 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM Vendas WHERE ID = :P1';
-    Query.ParamByName('P1').AsInteger := AID;
-    Query.Open;
-    
-    if not Query.Eof then
-    begin
-      Result := TVenda.Create;
-      Result.ID := Query.FieldByName('ID').AsInteger;
-      Result.OperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Result.CaixaID := Query.FieldByName('CaixaID').AsInteger;
-      Result.Subtotal := Query.FieldByName('Subtotal').AsFloat;
-      Result.Desconto := Query.FieldByName('Desconto').AsFloat;
-      Result.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
-      Result.Total := Query.FieldByName('Total').AsFloat;
-      Result.FormaPagamento := Query.FieldByName('FormaPagamento').AsInteger;
-      Result.ValorPago := Query.FieldByName('ValorPago').AsFloat;
-      Result.Troco := Query.FieldByName('Troco').AsFloat;
-      Result.Status := Query.FieldByName('Status').AsInteger;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter venda: ' + E.Message;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM Vendas WHERE ID = :P1';
+      Query.ParamByName('P1').AsInteger := AID;
+      Query.Open;
+
+      if not Query.Eof then
+      begin
+        Result := TVenda.Create;
+        Result.ID := Query.FieldByName('ID').AsInteger;
+        Result.OperadorID := Query.FieldByName('OperadorID').AsInteger;
+        Result.CaixaID := Query.FieldByName('CaixaID').AsInteger;
+        Result.Subtotal := Query.FieldByName('Subtotal').AsFloat;
+        Result.Desconto := Query.FieldByName('Desconto').AsFloat;
+        Result.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
+        Result.Total := Query.FieldByName('Total').AsFloat;
+        Result.FormaPagamento := TFormaPagamento(Query.FieldByName('FormaPagamento').AsInteger);
+        Result.ValorRecebido := Query.FieldByName('ValorPago').AsFloat;
+        Result.Troco := Query.FieldByName('Troco').AsFloat;
+        Result.Status := TStatusVenda(Query.FieldByName('Status').AsInteger);
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter venda: ' + E.Message;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -352,36 +356,38 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM Vendas ORDER BY DataVenda DESC';
-    Query.Open;
-    
-    while not Query.Eof do
-    begin
-      Venda := TVenda.Create;
-      Venda.ID := Query.FieldByName('ID').AsInteger;
-      Venda.OperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Venda.CaixaID := Query.FieldByName('CaixaID').AsInteger;
-      Venda.Subtotal := Query.FieldByName('Subtotal').AsFloat;
-      Venda.Desconto := Query.FieldByName('Desconto').AsFloat;
-      Venda.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
-      Venda.Total := Query.FieldByName('Total').AsFloat;
-      Venda.FormaPagamento := Query.FieldByName('FormaPagamento').AsInteger;
-      Venda.ValorPago := Query.FieldByName('ValorPago').AsFloat;
-      Venda.Troco := Query.FieldByName('Troco').AsFloat;
-      Venda.Status := Query.FieldByName('Status').AsInteger;
-      
-      Result.Add(Venda);
-      Query.Next;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter vendas: ' + E.Message;
-      Result.Free;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM Vendas ORDER BY DataVenda DESC';
+      Query.Open;
+
+      while not Query.Eof do
+      begin
+        Venda := TVenda.Create;
+        Venda.ID := Query.FieldByName('ID').AsInteger;
+        Venda.OperadorID := Query.FieldByName('OperadorID').AsInteger;
+        Venda.CaixaID := Query.FieldByName('CaixaID').AsInteger;
+        Venda.Subtotal := Query.FieldByName('Subtotal').AsFloat;
+        Venda.Desconto := Query.FieldByName('Desconto').AsFloat;
+        Venda.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
+        Venda.Total := Query.FieldByName('Total').AsFloat;
+        Venda.FormaPagamento := TFormaPagamento(Query.FieldByName('FormaPagamento').AsInteger);
+        Venda.ValorRecebido := Query.FieldByName('ValorPago').AsFloat;
+        Venda.Troco := Query.FieldByName('Troco').AsFloat;
+        Venda.Status := TStatusVenda(Query.FieldByName('Status').AsInteger);
+
+        Result.Add(Venda);
+        Query.Next;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter vendas: ' + E.Message;
+        Result.Free;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -397,37 +403,39 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM Vendas WHERE OperadorID = :P1 ORDER BY DataVenda DESC';
-    Query.ParamByName('P1').AsInteger := AOperadorID;
-    Query.Open;
-    
-    while not Query.Eof do
-    begin
-      Venda := TVenda.Create;
-      Venda.ID := Query.FieldByName('ID').AsInteger;
-      Venda.OperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Venda.CaixaID := Query.FieldByName('CaixaID').AsInteger;
-      Venda.Subtotal := Query.FieldByName('Subtotal').AsFloat;
-      Venda.Desconto := Query.FieldByName('Desconto').AsFloat;
-      Venda.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
-      Venda.Total := Query.FieldByName('Total').AsFloat;
-      Venda.FormaPagamento := Query.FieldByName('FormaPagamento').AsInteger;
-      Venda.ValorPago := Query.FieldByName('ValorPago').AsFloat;
-      Venda.Troco := Query.FieldByName('Troco').AsFloat;
-      Venda.Status := Query.FieldByName('Status').AsInteger;
-      
-      Result.Add(Venda);
-      Query.Next;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter vendas por operador: ' + E.Message;
-      Result.Free;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM Vendas WHERE OperadorID = :P1 ORDER BY DataVenda DESC';
+      Query.ParamByName('P1').AsInteger := AOperadorID;
+      Query.Open;
+
+      while not Query.Eof do
+      begin
+        Venda := TVenda.Create;
+        Venda.ID := Query.FieldByName('ID').AsInteger;
+        Venda.OperadorID := Query.FieldByName('OperadorID').AsInteger;
+        Venda.CaixaID := Query.FieldByName('CaixaID').AsInteger;
+        Venda.Subtotal := Query.FieldByName('Subtotal').AsFloat;
+        Venda.Desconto := Query.FieldByName('Desconto').AsFloat;
+        Venda.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
+        Venda.Total := Query.FieldByName('Total').AsFloat;
+        Venda.FormaPagamento := TFormaPagamento(Query.FieldByName('FormaPagamento').AsInteger);
+        Venda.ValorRecebido := Query.FieldByName('ValorPago').AsFloat;
+        Venda.Troco := Query.FieldByName('Troco').AsFloat;
+        Venda.Status := TStatusVenda(Query.FieldByName('Status').AsInteger);
+
+        Result.Add(Venda);
+        Query.Next;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter vendas por operador: ' + E.Message;
+        Result.Free;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -443,37 +451,39 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM Vendas WHERE CaixaID = :P1 ORDER BY DataVenda DESC';
-    Query.ParamByName('P1').AsInteger := ACaixaID;
-    Query.Open;
-    
-    while not Query.Eof do
-    begin
-      Venda := TVenda.Create;
-      Venda.ID := Query.FieldByName('ID').AsInteger;
-      Venda.OperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Venda.CaixaID := Query.FieldByName('CaixaID').AsInteger;
-      Venda.Subtotal := Query.FieldByName('Subtotal').AsFloat;
-      Venda.Desconto := Query.FieldByName('Desconto').AsFloat;
-      Venda.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
-      Venda.Total := Query.FieldByName('Total').AsFloat;
-      Venda.FormaPagamento := Query.FieldByName('FormaPagamento').AsInteger;
-      Venda.ValorPago := Query.FieldByName('ValorPago').AsFloat;
-      Venda.Troco := Query.FieldByName('Troco').AsFloat;
-      Venda.Status := Query.FieldByName('Status').AsInteger;
-      
-      Result.Add(Venda);
-      Query.Next;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter vendas por caixa: ' + E.Message;
-      Result.Free;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM Vendas WHERE CaixaID = :P1 ORDER BY DataVenda DESC';
+      Query.ParamByName('P1').AsInteger := ACaixaID;
+      Query.Open;
+
+      while not Query.Eof do
+      begin
+        Venda := TVenda.Create;
+        Venda.ID := Query.FieldByName('ID').AsInteger;
+        Venda.OperadorID := Query.FieldByName('OperadorID').AsInteger;
+        Venda.CaixaID := Query.FieldByName('CaixaID').AsInteger;
+        Venda.Subtotal := Query.FieldByName('Subtotal').AsFloat;
+        Venda.Desconto := Query.FieldByName('Desconto').AsFloat;
+        Venda.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
+        Venda.Total := Query.FieldByName('Total').AsFloat;
+        Venda.FormaPagamento := TFormaPagamento(Query.FieldByName('FormaPagamento').AsInteger);
+        Venda.ValorRecebido := Query.FieldByName('ValorPago').AsFloat;
+        Venda.Troco := Query.FieldByName('Troco').AsFloat;
+        Venda.Status := TStatusVenda(Query.FieldByName('Status').AsInteger);
+
+        Result.Add(Venda);
+        Query.Next;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter vendas por caixa: ' + E.Message;
+        Result.Free;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -489,38 +499,40 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM Vendas WHERE DataVenda BETWEEN :P1 AND :P2 ORDER BY DataVenda DESC';
-    Query.ParamByName('P1').AsDateTime := ADataInicio;
-    Query.ParamByName('P2').AsDateTime := ADataFim;
-    Query.Open;
-    
-    while not Query.Eof do
-    begin
-      Venda := TVenda.Create;
-      Venda.ID := Query.FieldByName('ID').AsInteger;
-      Venda.OperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Venda.CaixaID := Query.FieldByName('CaixaID').AsInteger;
-      Venda.Subtotal := Query.FieldByName('Subtotal').AsFloat;
-      Venda.Desconto := Query.FieldByName('Desconto').AsFloat;
-      Venda.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
-      Venda.Total := Query.FieldByName('Total').AsFloat;
-      Venda.FormaPagamento := Query.FieldByName('FormaPagamento').AsInteger;
-      Venda.ValorPago := Query.FieldByName('ValorPago').AsFloat;
-      Venda.Troco := Query.FieldByName('Troco').AsFloat;
-      Venda.Status := Query.FieldByName('Status').AsInteger;
-      
-      Result.Add(Venda);
-      Query.Next;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter vendas por período: ' + E.Message;
-      Result.Free;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM Vendas WHERE DataVenda BETWEEN :P1 AND :P2 ORDER BY DataVenda DESC';
+      Query.ParamByName('P1').AsDateTime := ADataInicio;
+      Query.ParamByName('P2').AsDateTime := ADataFim;
+      Query.Open;
+
+      while not Query.Eof do
+      begin
+        Venda := TVenda.Create;
+        Venda.ID := Query.FieldByName('ID').AsInteger;
+        Venda.OperadorID := Query.FieldByName('OperadorID').AsInteger;
+        Venda.CaixaID := Query.FieldByName('CaixaID').AsInteger;
+        Venda.Subtotal := Query.FieldByName('Subtotal').AsFloat;
+        Venda.Desconto := Query.FieldByName('Desconto').AsFloat;
+        Venda.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
+        Venda.Total := Query.FieldByName('Total').AsFloat;
+        Venda.FormaPagamento := TFormaPagamento(Query.FieldByName('FormaPagamento').AsInteger);
+        Venda.ValorRecebido := Query.FieldByName('ValorPago').AsFloat;
+        Venda.Troco := Query.FieldByName('Troco').AsFloat;
+        Venda.Status := TStatusVenda(Query.FieldByName('Status').AsInteger);
+
+        Result.Add(Venda);
+        Query.Next;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter vendas por período: ' + E.Message;
+        Result.Free;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -536,37 +548,39 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM Vendas WHERE FormaPagamento = :P1 ORDER BY DataVenda DESC';
-    Query.ParamByName('P1').AsInteger := AFormaPagamento;
-    Query.Open;
-    
-    while not Query.Eof do
-    begin
-      Venda := TVenda.Create;
-      Venda.ID := Query.FieldByName('ID').AsInteger;
-      Venda.OperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Venda.CaixaID := Query.FieldByName('CaixaID').AsInteger;
-      Venda.Subtotal := Query.FieldByName('Subtotal').AsFloat;
-      Venda.Desconto := Query.FieldByName('Desconto').AsFloat;
-      Venda.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
-      Venda.Total := Query.FieldByName('Total').AsFloat;
-      Venda.FormaPagamento := Query.FieldByName('FormaPagamento').AsInteger;
-      Venda.ValorPago := Query.FieldByName('ValorPago').AsFloat;
-      Venda.Troco := Query.FieldByName('Troco').AsFloat;
-      Venda.Status := Query.FieldByName('Status').AsInteger;
-      
-      Result.Add(Venda);
-      Query.Next;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter vendas por forma de pagamento: ' + E.Message;
-      Result.Free;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM Vendas WHERE FormaPagamento = :P1 ORDER BY DataVenda DESC';
+      Query.ParamByName('P1').AsInteger := AFormaPagamento;
+      Query.Open;
+
+      while not Query.Eof do
+      begin
+        Venda := TVenda.Create;
+        Venda.ID := Query.FieldByName('ID').AsInteger;
+        Venda.OperadorID := Query.FieldByName('OperadorID').AsInteger;
+        Venda.CaixaID := Query.FieldByName('CaixaID').AsInteger;
+        Venda.Subtotal := Query.FieldByName('Subtotal').AsFloat;
+        Venda.Desconto := Query.FieldByName('Desconto').AsFloat;
+        Venda.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
+        Venda.Total := Query.FieldByName('Total').AsFloat;
+        Venda.FormaPagamento := TFormaPagamento(Query.FieldByName('FormaPagamento').AsInteger);
+        Venda.ValorRecebido := Query.FieldByName('ValorPago').AsFloat;
+        Venda.Troco := Query.FieldByName('Troco').AsFloat;
+        Venda.Status := TStatusVenda(Query.FieldByName('Status').AsInteger);
+
+        Result.Add(Venda);
+        Query.Next;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter vendas por forma de pagamento: ' + E.Message;
+        Result.Free;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -590,7 +604,7 @@ begin
     if ExecutarSQL(
       'INSERT INTO ItensVenda (VendaID, ProdutoID, Quantidade, ValorUnitario, Desconto, Total, UnidadeMedida) ' +
       'VALUES (:P1, :P2, :P3, :P4, :P5, :P6, :P7)',
-      [AVendaID, AItem.Produto.ID, AItem.Quantidade, AItem.ValorUnitario, AItem.Desconto, AItem.Total, Ord(AItem.Produto.UnidadeMedida)]
+      [AVendaID, AItem.Produto.ID, AItem.Quantidade, AItem.ValorUnitario, AItem.Desconto, AItem.ValorTotal, Ord(AItem.Produto.UnidadeMedida)]
     ) then
     begin
       Result := True;
@@ -617,7 +631,7 @@ begin
     { SQL de atualização - Suporte a decimais }
     if ExecutarSQL(
       'UPDATE ItensVenda SET Quantidade = :P1, ValorUnitario = :P2, Desconto = :P3, Total = :P4 WHERE ID = :P5',
-      [AItem.Quantidade, AItem.ValorUnitario, AItem.Desconto, AItem.Total, AItemID]
+      [AItem.Quantidade, AItem.ValorUnitario, AItem.Desconto, AItem.ValorTotal, AItemID]
     ) then
     begin
       Result := True;
@@ -660,29 +674,31 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM ItensVenda WHERE VendaID = :P1 ORDER BY ID';
-    Query.ParamByName('P1').AsInteger := AVendaID;
-    Query.Open;
-    
-    while not Query.Eof do
-    begin
-      Item := TItemVenda.Create(nil);
-      Item.Quantidade := Query.FieldByName('Quantidade').AsFloat;
-      Item.ValorUnitario := Query.FieldByName('ValorUnitario').AsFloat;
-      Item.Desconto := Query.FieldByName('Desconto').AsFloat;
-      
-      Result.Add(Item);
-      Query.Next;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter itens de venda: ' + E.Message;
-      Result.Free;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM ItensVenda WHERE VendaID = :P1 ORDER BY ID';
+      Query.ParamByName('P1').AsInteger := AVendaID;
+      Query.Open;
+
+      while not Query.Eof do
+      begin
+        Item := TItemVenda.Create(nil);
+        Item.Quantidade := Query.FieldByName('Quantidade').AsFloat;
+        Item.ValorUnitario := Query.FieldByName('ValorUnitario').AsFloat;
+        Item.Desconto := Query.FieldByName('Desconto').AsFloat;
+
+        Result.Add(Item);
+        Query.Next;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter itens de venda: ' + E.Message;
+        Result.Free;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -745,29 +761,31 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM Vendas WHERE Status = 0 ORDER BY DataVenda DESC LIMIT 1';
-    Query.Open;
-    
-    if not Query.Eof then
-    begin
-      Result := TVenda.Create;
-      Result.ID := Query.FieldByName('ID').AsInteger;
-      Result.OperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Result.CaixaID := Query.FieldByName('CaixaID').AsInteger;
-      Result.Subtotal := Query.FieldByName('Subtotal').AsFloat;
-      Result.Desconto := Query.FieldByName('Desconto').AsFloat;
-      Result.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
-      Result.Total := Query.FieldByName('Total').AsFloat;
-      Result.Status := Query.FieldByName('Status').AsInteger;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao recuperar venda pendente: ' + E.Message;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM Vendas WHERE Status = 0 ORDER BY DataVenda DESC LIMIT 1';
+      Query.Open;
+
+      if not Query.Eof then
+      begin
+        Result := TVenda.Create;
+        Result.ID := Query.FieldByName('ID').AsInteger;
+        Result.OperadorID := Query.FieldByName('OperadorID').AsInteger;
+        Result.CaixaID := Query.FieldByName('CaixaID').AsInteger;
+        Result.Subtotal := Query.FieldByName('Subtotal').AsFloat;
+        Result.Desconto := Query.FieldByName('Desconto').AsFloat;
+        Result.Acrescimo := Query.FieldByName('Acrescimo').AsFloat;
+        Result.Total := Query.FieldByName('Total').AsFloat;
+        Result.Status := TStatusVenda(Query.FieldByName('Status').AsInteger);
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao recuperar venda pendente: ' + E.Message;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -798,19 +816,21 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT SUM(Total) as Total FROM Vendas WHERE Status = 1';
-    Query.Open;
-    
-    if not Query.Eof then
-      Result := Query.FieldByName('Total').AsFloat;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter total de vendas: ' + E.Message;
-      Result := 0;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT SUM(Total) as Total FROM Vendas WHERE Status = 1';
+      Query.Open;
+
+      if not Query.Eof then
+        Result := Query.FieldByName('Total').AsFloat;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter total de vendas: ' + E.Message;
+        Result := 0;
+      end;
     end;
   finally
     Query.Free;
@@ -825,19 +845,21 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT COUNT(*) as Total FROM Vendas WHERE Status = 1';
-    Query.Open;
-    
-    if not Query.Eof then
-      Result := Query.FieldByName('Total').AsInteger;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter quantidade de vendas: ' + E.Message;
-      Result := 0;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT COUNT(*) as Total FROM Vendas WHERE Status = 1';
+      Query.Open;
+
+      if not Query.Eof then
+        Result := Query.FieldByName('Total').AsInteger;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter quantidade de vendas: ' + E.Message;
+        Result := 0;
+      end;
     end;
   finally
     Query.Free;
@@ -852,19 +874,21 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT AVG(Total) as Media FROM Vendas WHERE Status = 1';
-    Query.Open;
-    
-    if not Query.Eof then
-      Result := Query.FieldByName('Media').AsFloat;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter valor médio de venda: ' + E.Message;
-      Result := 0;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT AVG(Total) as Media FROM Vendas WHERE Status = 1';
+      Query.Open;
+
+      if not Query.Eof then
+        Result := Query.FieldByName('Media').AsFloat;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter valor médio de venda: ' + E.Message;
+        Result := 0;
+      end;
     end;
   finally
     Query.Free;
@@ -879,19 +903,21 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT MAX(Total) as Maior FROM Vendas WHERE Status = 1';
-    Query.Open;
-    
-    if not Query.Eof then
-      Result := Query.FieldByName('Maior').AsFloat;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter maior venda: ' + E.Message;
-      Result := 0;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT MAX(Total) as Maior FROM Vendas WHERE Status = 1';
+      Query.Open;
+
+      if not Query.Eof then
+        Result := Query.FieldByName('Maior').AsFloat;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter maior venda: ' + E.Message;
+        Result := 0;
+      end;
     end;
   finally
     Query.Free;
@@ -906,19 +932,21 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT MIN(Total) as Menor FROM Vendas WHERE Status = 1';
-    Query.Open;
-    
-    if not Query.Eof then
-      Result := Query.FieldByName('Menor').AsFloat;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter menor venda: ' + E.Message;
-      Result := 0;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT MIN(Total) as Menor FROM Vendas WHERE Status = 1';
+      Query.Open;
+
+      if not Query.Eof then
+        Result := Query.FieldByName('Menor').AsFloat;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter menor venda: ' + E.Message;
+        Result := 0;
+      end;
     end;
   finally
     Query.Free;
@@ -933,19 +961,21 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT SUM(Desconto) as Total FROM Vendas WHERE Status = 1';
-    Query.Open;
-    
-    if not Query.Eof then
-      Result := Query.FieldByName('Total').AsFloat;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter total de descontos: ' + E.Message;
-      Result := 0;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT SUM(Desconto) as Total FROM Vendas WHERE Status = 1';
+      Query.Open;
+
+      if not Query.Eof then
+        Result := Query.FieldByName('Total').AsFloat;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter total de descontos: ' + E.Message;
+        Result := 0;
+      end;
     end;
   finally
     Query.Free;
@@ -960,19 +990,21 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT SUM(Acrescimo) as Total FROM Vendas WHERE Status = 1';
-    Query.Open;
-    
-    if not Query.Eof then
-      Result := Query.FieldByName('Total').AsFloat;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter total de acréscimos: ' + E.Message;
-      Result := 0;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT SUM(Acrescimo) as Total FROM Vendas WHERE Status = 1';
+      Query.Open;
+
+      if not Query.Eof then
+        Result := Query.FieldByName('Total').AsFloat;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter total de acréscimos: ' + E.Message;
+        Result := 0;
+      end;
     end;
   finally
     Query.Free;
@@ -987,19 +1019,21 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT SUM(Quantidade) as Total FROM ItensVenda WHERE VendaID IN (SELECT ID FROM Vendas WHERE Status = 1)';
-    Query.Open;
-    
-    if not Query.Eof then
-      Result := Trunc(Query.FieldByName('Total').AsFloat);
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter quantidade de produtos vendidos: ' + E.Message;
-      Result := 0;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT SUM(Quantidade) as Total FROM ItensVenda WHERE VendaID IN (SELECT ID FROM Vendas WHERE Status = 1)';
+      Query.Open;
+
+      if not Query.Eof then
+        Result := Trunc(Query.FieldByName('Total').AsFloat);
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter quantidade de produtos vendidos: ' + E.Message;
+        Result := 0;
+      end;
     end;
   finally
     Query.Free;

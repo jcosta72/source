@@ -1,4 +1,4 @@
-unit uFormGerenciamentoCaixa;
+﻿unit uFormGerenciamentoCaixa;
 
 interface
 
@@ -13,7 +13,7 @@ uses
 type
   TFormGerenciamentoCaixa = class(TForm)
     LayoutPrincipal: TLayout;
-    LayoutCabecalho: TLayout;
+    LayoutCabecalho: TRectangle;
     LabelTitulo: TLabel;
     ButtonFechar: TButton;
     LayoutConteudo: TLayout;

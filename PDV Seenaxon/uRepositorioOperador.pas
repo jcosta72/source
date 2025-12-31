@@ -1,4 +1,4 @@
-unit uRepositorioOperador;
+﻿unit uRepositorioOperador;
 
 interface
 
@@ -7,17 +7,12 @@ uses
   FireDAC.Stan.Param, Data.DB, uOperador, uCriptografiaSenha, uDMConexao;
 
 type
-  {$REGION 'Tipos e Constantes'}
-  
   // Resultado de operações
-  type
     TResultadoOperacao = record
       Sucesso: Boolean;
       Mensagem: string;
       RegistrosAfetados: Integer;
     end;
-  
-  {$ENDREGION}
 
   {$REGION 'Classe TRepositorioOperador'}
   

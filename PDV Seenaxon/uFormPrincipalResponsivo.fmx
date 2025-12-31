@@ -7,78 +7,95 @@ object FormPrincipalResponsivo: TFormPrincipalResponsivo
   Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
-  DesignerMasterStyle = 0
+  FormFactor.Devices = [Desktop, iPhone, iPad]
   OnCreate = FormCreate
-  OnShow = FormShow
   OnDestroy = FormDestroy
   OnResize = FormResize
+  OnShow = FormShow
+  DesignerMasterStyle = 0
   object LayoutPrincipal: TLayout
     Align = Client
     Size.Width = 1280.000000000000000000
     Size.Height = 720.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 0
     object LayoutCabecalho: TLayout
       Align = Top
       Size.Width = 1280.000000000000000000
       Size.Height = 80.000000000000000000
+      Size.PlatformDefault = False
       TabOrder = 0
       object RectangloCabecalho: TRectangle
         Align = Client
         Fill.Color = claBlack
-        Stroke.Color = claBlack
-        Size.Width = 1280.000000000000000000
+        Size.Width = 340.000000000000000000
         Size.Height = 80.000000000000000000
+        Size.PlatformDefault = False
       end
       object LabelTitulo: TLabel
         Align = Left
         Margins.Left = 10.000000000000000000
         Margins.Top = 10.000000000000000000
         Margins.Bottom = 10.000000000000000000
+        Position.X = 10.000000000000000000
+        Position.Y = 10.000000000000000000
         Size.Width = 400.000000000000000000
         Size.Height = 60.000000000000000000
-        Text = 'PDV SEENAXON'
-        Font.Size = 24.000000000000000000
-        Font.Style = [fsBold]
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 24.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
+        Text = 'PDV SEENAXON'
       end
       object LabelOperador: TLabel
         Align = Left
         Margins.Left = 10.000000000000000000
         Margins.Top = 10.000000000000000000
         Margins.Bottom = 10.000000000000000000
+        Position.X = 420.000000000000000000
+        Position.Y = 10.000000000000000000
         Size.Width = 200.000000000000000000
         Size.Height = 60.000000000000000000
-        Text = 'Operador: -'
-        Font.Size = 14.000000000000000000
-        Font.Style = [fsBold]
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 14.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
+        Text = 'Operador: -'
       end
       object LabelCaixa: TLabel
         Align = Left
         Margins.Left = 10.000000000000000000
         Margins.Top = 10.000000000000000000
         Margins.Bottom = 10.000000000000000000
+        Position.X = 630.000000000000000000
+        Position.Y = 10.000000000000000000
         Size.Width = 200.000000000000000000
         Size.Height = 60.000000000000000000
-        Text = 'Caixa: Fechado'
-        Font.Size = 12.000000000000000000
+        Size.PlatformDefault = False
         TextSettings.FontColor = claRed
+        Text = 'Caixa: Fechado'
       end
       object ButtonSair: TButton
         Align = Right
-        Margins.Right = 10.000000000000000000
         Margins.Top = 15.000000000000000000
+        Margins.Right = 10.000000000000000000
         Margins.Bottom = 15.000000000000000000
+        Position.X = 1170.000000000000000000
+        Position.Y = 15.000000000000000000
         Size.Width = 100.000000000000000000
         Size.Height = 50.000000000000000000
-        Text = 'Sair'
+        Size.PlatformDefault = False
         TabOrder = 0
+        Text = 'Sair'
+        OnClick = ButtonSairClick
       end
     end
     object LayoutMenu: TLayout
       Align = Top
+      Position.Y = 80.000000000000000000
       Size.Width = 1280.000000000000000000
       Size.Height = 60.000000000000000000
+      Size.PlatformDefault = False
       TabOrder = 1
       object ButtonVenda: TButton
         Align = Left
@@ -86,10 +103,14 @@ object FormPrincipalResponsivo: TFormPrincipalResponsivo
         Margins.Top = 10.000000000000000000
         Margins.Right = 5.000000000000000000
         Margins.Bottom = 10.000000000000000000
+        Position.X = 10.000000000000000000
+        Position.Y = 10.000000000000000000
         Size.Width = 150.000000000000000000
         Size.Height = 40.000000000000000000
-        Text = 'Venda'
+        Size.PlatformDefault = False
         TabOrder = 0
+        Text = 'Venda'
+        OnClick = ButtonVendaClick
       end
       object ButtonCaixa: TButton
         Align = Left
@@ -97,10 +118,13 @@ object FormPrincipalResponsivo: TFormPrincipalResponsivo
         Margins.Top = 10.000000000000000000
         Margins.Right = 5.000000000000000000
         Margins.Bottom = 10.000000000000000000
+        Position.X = 170.000000000000000000
+        Position.Y = 10.000000000000000000
         Size.Width = 150.000000000000000000
         Size.Height = 40.000000000000000000
-        Text = 'Caixa'
+        Size.PlatformDefault = False
         TabOrder = 1
+        Text = 'Caixa'
       end
       object ButtonRelatorios: TButton
         Align = Left
@@ -108,143 +132,179 @@ object FormPrincipalResponsivo: TFormPrincipalResponsivo
         Margins.Top = 10.000000000000000000
         Margins.Right = 10.000000000000000000
         Margins.Bottom = 10.000000000000000000
+        Position.X = 330.000000000000000000
+        Position.Y = 10.000000000000000000
         Size.Width = 150.000000000000000000
         Size.Height = 40.000000000000000000
-        Text = 'Relatórios'
+        Size.PlatformDefault = False
         TabOrder = 2
+        Text = 'Relat'#243'rios'
       end
     end
     object LayoutCorpo: TLayout
       Align = Client
       Size.Width = 1280.000000000000000000
-      Size.Height = 580.000000000000000000
+      Size.Height = 550.000000000000000000
+      Size.PlatformDefault = False
       TabOrder = 2
       object LayoutPainelEsquerdo: TLayout
         Align = Left
         Size.Width = 768.000000000000000000
-        Size.Height = 580.000000000000000000
+        Size.Height = 550.000000000000000000
+        Size.PlatformDefault = False
         TabOrder = 0
         object LabelProdutos: TLabel
           Align = Top
           Margins.Left = 10.000000000000000000
           Margins.Top = 10.000000000000000000
           Margins.Right = 10.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 10.000000000000000000
           Size.Width = 748.000000000000000000
           Size.Height = 25.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
           Text = 'PRODUTOS'
-          Font.Size = 12.000000000000000000
-          Font.Style = [fsBold]
         end
         object EditBuscaProduto: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
           Align = Top
+          TabOrder = 0
+          TextSettings.Font.Size = 11.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 40.000000000000000000
+          Hint = 'Digite para buscar produtos...'
           Margins.Left = 10.000000000000000000
           Margins.Top = 5.000000000000000000
           Margins.Right = 10.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 748.000000000000000000
           Size.Height = 40.000000000000000000
-          Font.Size = 11.000000000000000000
-          Hint = 'Digite para buscar produtos...'
-          TabOrder = 0
-          Text = ''
+          Size.PlatformDefault = False
         end
         object GridProdutos: TStringGrid
           Align = Client
+          CanFocus = True
+          ClipChildren = True
           Margins.Left = 10.000000000000000000
           Margins.Top = 5.000000000000000000
           Margins.Right = 10.000000000000000000
           Margins.Bottom = 10.000000000000000000
           Size.Width = 748.000000000000000000
-          Size.Height = 505.000000000000000000
-          RowCount = 1
-          ColumnCount = 4
-          RowHeight = 30.000000000000000000
-          DefaultRowHeight = 30.000000000000000000
+          Size.Height = 450.000000000000000000
+          Size.PlatformDefault = False
           TabOrder = 1
+          RowHeight = 30.000000000000000000
+          RowCount = 1
+          Viewport.Width = 744.000000000000000000
+          Viewport.Height = 425.000000000000000000
         end
       end
       object LayoutPainelDireito: TLayout
         Align = Right
+        Position.X = 768.000000000000000000
         Size.Width = 512.000000000000000000
-        Size.Height = 580.000000000000000000
+        Size.Height = 550.000000000000000000
+        Size.PlatformDefault = False
         TabOrder = 1
         object LabelCarrinho: TLabel
           Align = Top
           Margins.Left = 10.000000000000000000
           Margins.Top = 10.000000000000000000
           Margins.Right = 10.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 10.000000000000000000
           Size.Width = 492.000000000000000000
           Size.Height = 25.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
           Text = 'CARRINHO'
-          Font.Size = 12.000000000000000000
-          Font.Style = [fsBold]
         end
         object GridCarrinho: TStringGrid
           Align = Top
+          CanFocus = True
+          ClipChildren = True
           Margins.Left = 10.000000000000000000
           Margins.Top = 5.000000000000000000
           Margins.Right = 10.000000000000000000
           Margins.Bottom = 5.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 40.000000000000000000
           Size.Width = 492.000000000000000000
           Size.Height = 150.000000000000000000
-          RowCount = 1
-          ColumnCount = 4
-          RowHeight = 30.000000000000000000
-          DefaultRowHeight = 30.000000000000000000
+          Size.PlatformDefault = False
           TabOrder = 0
+          RowHeight = 30.000000000000000000
+          RowCount = 1
+          Viewport.Width = 488.000000000000000000
+          Viewport.Height = 125.000000000000000000
         end
         object LabelResumo: TLabel
           Align = Top
           Margins.Left = 10.000000000000000000
           Margins.Top = 5.000000000000000000
           Margins.Right = 10.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 200.000000000000000000
           Size.Width = 492.000000000000000000
           Size.Height = 25.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
           Text = 'RESUMO'
-          Font.Size = 12.000000000000000000
-          Font.Style = [fsBold]
         end
         object LabelSubtotal: TLabel
           Align = Top
           Margins.Left = 10.000000000000000000
           Margins.Top = 2.000000000000000000
           Margins.Right = 10.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 227.000000000000000000
           Size.Width = 492.000000000000000000
           Size.Height = 20.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 11.000000000000000000
           Text = 'Subtotal: R$ 0,00'
-          Font.Size = 11.000000000000000000
         end
         object LabelDesconto: TLabel
           Align = Top
           Margins.Left = 10.000000000000000000
           Margins.Top = 2.000000000000000000
           Margins.Right = 10.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 249.000000000000000000
           Size.Width = 492.000000000000000000
           Size.Height = 20.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 11.000000000000000000
           Text = 'Desconto: R$ 0,00'
-          Font.Size = 11.000000000000000000
         end
         object LabelAcrescimo: TLabel
           Align = Top
           Margins.Left = 10.000000000000000000
           Margins.Top = 2.000000000000000000
           Margins.Right = 10.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 271.000000000000000000
           Size.Width = 492.000000000000000000
           Size.Height = 20.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 11.000000000000000000
           Text = 'Acr'#233'scimo: R$ 0,00'
-          Font.Size = 11.000000000000000000
         end
         object LabelTotal: TLabel
           Align = Top
           Margins.Left = 10.000000000000000000
           Margins.Top = 5.000000000000000000
           Margins.Right = 10.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 296.000000000000000000
           Size.Width = 492.000000000000000000
           Size.Height = 30.000000000000000000
-          Text = 'TOTAL: R$ 0,00'
-          Font.Size = 14.000000000000000000
-          Font.Style = [fsBold]
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 14.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
           TextSettings.FontColor = claGreen
+          Text = 'TOTAL: R$ 0,00'
         end
         object LayoutBotoesAcao: TLayout
           Align = Client
@@ -253,81 +313,98 @@ object FormPrincipalResponsivo: TFormPrincipalResponsivo
           Margins.Right = 10.000000000000000000
           Margins.Bottom = 10.000000000000000000
           Size.Width = 492.000000000000000000
-          Size.Height = 283.000000000000000000
+          Size.Height = 209.000000000000000000
+          Size.PlatformDefault = False
           TabOrder = 1
           object ButtonAdicionarProduto: TButton
             Align = Top
             Margins.Bottom = 5.000000000000000000
             Size.Width = 492.000000000000000000
             Size.Height = 40.000000000000000000
-            Text = 'Adicionar Produto'
+            Size.PlatformDefault = False
             TabOrder = 0
+            Text = 'Adicionar Produto'
+            OnClick = ButtonAdicionarProdutoClick
           end
           object ButtonRemoverItem: TButton
             Align = Top
             Margins.Bottom = 5.000000000000000000
+            Position.Y = 45.000000000000000000
             Size.Width = 492.000000000000000000
             Size.Height = 40.000000000000000000
-            Text = 'Remover Item'
+            Size.PlatformDefault = False
             TabOrder = 1
+            Text = 'Remover Item'
+            OnClick = ButtonRemoverItemClick
           end
           object ButtonAplicarDesconto: TButton
             Align = Top
             Margins.Bottom = 5.000000000000000000
+            Position.Y = 90.000000000000000000
             Size.Width = 492.000000000000000000
             Size.Height = 40.000000000000000000
-            Text = 'Aplicar Desconto'
+            Size.PlatformDefault = False
             TabOrder = 2
+            Text = 'Aplicar Desconto'
+            OnClick = ButtonAplicarDescontoClick
           end
           object ButtonFinalizarVenda: TButton
             Align = Top
             Margins.Bottom = 5.000000000000000000
+            Position.Y = 135.000000000000000000
             Size.Width = 492.000000000000000000
             Size.Height = 50.000000000000000000
-            Text = 'Finalizar Venda'
-            Font.Size = 12.000000000000000000
-            Font.Style = [fsBold]
+            Size.PlatformDefault = False
             TabOrder = 3
+            Text = 'Finalizar Venda'
+            TextSettings.Font.StyleExt = {00070000000000000004000000}
+            OnClick = ButtonFinalizarVendaClick
           end
           object ButtonLimparCarrinho: TButton
             Align = Top
+            Position.Y = 190.000000000000000000
             Size.Width = 492.000000000000000000
             Size.Height = 40.000000000000000000
-            Text = 'Limpar Carrinho'
+            Size.PlatformDefault = False
             TabOrder = 4
+            Text = 'Limpar Carrinho'
           end
         end
       end
     end
     object LayoutRodape: TLayout
       Align = Bottom
+      Position.Y = 690.000000000000000000
       Size.Width = 1280.000000000000000000
       Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
       TabOrder = 3
       object LabelStatusBar: TLabel
         Align = Left
         Margins.Left = 10.000000000000000000
+        Position.X = 10.000000000000000000
         Size.Width = 600.000000000000000000
         Size.Height = 30.000000000000000000
-        Text = 'Pronto'
-        Font.Size = 10.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 10.000000000000000000
         TextSettings.FontColor = claGray
+        Text = 'Pronto'
       end
       object LabelHora: TLabel
         Align = Right
         Margins.Right = 10.000000000000000000
+        Position.X = 1170.000000000000000000
         Size.Width = 100.000000000000000000
         Size.Height = 30.000000000000000000
-        Text = '00:00:00'
-        Font.Size = 10.000000000000000000
-        TextAlignment = Trailing
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 10.000000000000000000
         TextSettings.FontColor = claGray
+        Text = '00:00:00'
       end
     end
   end
   object TimerAtualizacao: TTimer
     Enabled = False
-    Interval = 1000
     OnTimer = TimerAtualizacaoTimer
     Left = 1200
     Top = 650

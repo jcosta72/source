@@ -1,4 +1,4 @@
-unit uItemVenda;
+﻿unit uItemVenda;
 
 interface
 
@@ -46,7 +46,7 @@ type
     property Quantidade: Double read FQuantidade write SetQuantidade;
     property ValorUnitario: Double read FValorUnitario write SetValorUnitario;
     property ValorTotal: Double read FValorTotal;
-    property Desconto: Double read FDesconto;
+    property Desconto: Double read FDesconto write FDesconto;
     property DescontoPercentual: Boolean read FDescontoPercentual;
     property Indice: Integer read FIndice write FIndice;
   end;

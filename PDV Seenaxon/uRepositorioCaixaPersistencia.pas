@@ -1,11 +1,11 @@
-unit uRepositorioCaixaPersistencia;
+﻿unit uRepositorioCaixaPersistencia;
 
 interface
 
 uses
-  System.SysUtils, System.Generics.Collections, System.DateUtils,
+  System.SysUtils, System.Generics.Collections, System.DateUtils, System.Variants,
   FireDAC.Comp.Client, FireDAC.Stan.Param,
-  uCaixa, uOperador, uDMConexao;
+  uCaixa, uOperador, uDMConexao, Data.DB;
 
 type
   { Classe para persistência de caixas em banco de dados }
@@ -332,9 +332,9 @@ begin
         Query.FieldByName('SaldoInicial').AsFloat
       );
       
-      Caixa.FDataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
+      Caixa.DataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
       if not Query.FieldByName('DataFechamento').IsNull then
-        Caixa.FDataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
+        Caixa.DataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
       
       Result := Caixa;
     end;

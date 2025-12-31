@@ -1,4 +1,4 @@
-unit uPersistenciaOperador;
+﻿unit uPersistenciaOperador;
 
 interface
 
@@ -170,32 +170,33 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := ASQL;
-    
-    { Adicionar parâmetros }
-    for i := 0 to Length(AParams) - 1 do
-    begin
-      case AParams[i].VType of
-        vtInteger:
-          Query.ParamByName('P' + IntToStr(i + 1)).AsInteger := AParams[i].VInteger;
-        vtString:
-          Query.ParamByName('P' + IntToStr(i + 1)).AsString := string(AParams[i].VString);
-        vtExtended:
-          Query.ParamByName('P' + IntToStr(i + 1)).AsFloat := AParams[i].VExtended^;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := ASQL;
+
+      { Adicionar parâmetros }
+      for i := 0 to Length(AParams) - 1 do
+      begin
+        case AParams[i].VType of
+          vtInteger:
+            Query.ParamByName('P' + IntToStr(i + 1)).AsInteger := AParams[i].VInteger;
+          vtString:
+            Query.ParamByName('P' + IntToStr(i + 1)).AsString := string(AParams[i].VString);
+          vtExtended:
+            Query.ParamByName('P' + IntToStr(i + 1)).AsFloat := AParams[i].VExtended^;
+        end;
       end;
-    end;
-    
-    { Executar }
-    Query.ExecSQL;
-    
-    Result := True;
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao executar SQL: ' + E.Message;
-      Result := False;
+
+      { Executar }
+      Query.ExecSQL;
+
+      Result := True;
+      FUltimoErro := '';
+    except on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao executar SQL: ' + E.Message;
+        Result := False;
+      end;
     end;
   finally
     Query.Free;
@@ -296,29 +297,31 @@ var
 begin
   Result := nil;
   Query := TFDQuery.Create(nil);
-  
+
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM Operadores WHERE ID = :P1';
-    Query.ParamByName('P1').AsInteger := AID;
-    Query.Open;
-    
-    if not Query.Eof then
-    begin
-      Result := TOperador.Create;
-      Result.ID := Query.FieldByName('ID').AsInteger;
-      Result.Nome := Query.FieldByName('Nome').AsString;
-      Result.Matricula := Query.FieldByName('Matricula').AsString;
-      Result.Senha := Query.FieldByName('Senha').AsString;
-      Result.Ativo := Query.FieldByName('Ativo').AsBoolean;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter operador: ' + E.Message;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM Operadores WHERE ID = :P1';
+      Query.ParamByName('P1').AsInteger := AID;
+      Query.Open;
+
+      if not Query.Eof then
+      begin
+        Result := TOperador.Create;
+        Result.ID := Query.FieldByName('ID').AsInteger;
+        Result.Nome := Query.FieldByName('Nome').AsString;
+        Result.Matricula := Query.FieldByName('Matricula').AsString;
+        Result.Senha := Query.FieldByName('Senha').AsString;
+        Result.Ativo := Query.FieldByName('Ativo').AsBoolean;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter operador: ' + E.Message;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -331,29 +334,31 @@ var
 begin
   Result := nil;
   Query := TFDQuery.Create(nil);
-  
+
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM Operadores WHERE Matricula = :P1';
-    Query.ParamByName('P1').AsString := AMatricula;
-    Query.Open;
-    
-    if not Query.Eof then
-    begin
-      Result := TOperador.Create;
-      Result.ID := Query.FieldByName('ID').AsInteger;
-      Result.Nome := Query.FieldByName('Nome').AsString;
-      Result.Matricula := Query.FieldByName('Matricula').AsString;
-      Result.Senha := Query.FieldByName('Senha').AsString;
-      Result.Ativo := Query.FieldByName('Ativo').AsBoolean;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter operador: ' + E.Message;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM Operadores WHERE Matricula = :P1';
+      Query.ParamByName('P1').AsString := AMatricula;
+      Query.Open;
+
+      if not Query.Eof then
+      begin
+        Result := TOperador.Create;
+        Result.ID := Query.FieldByName('ID').AsInteger;
+        Result.Nome := Query.FieldByName('Nome').AsString;
+        Result.Matricula := Query.FieldByName('Matricula').AsString;
+        Result.Senha := Query.FieldByName('Senha').AsString;
+        Result.Ativo := Query.FieldByName('Ativo').AsBoolean;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter operador: ' + E.Message;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -369,30 +374,32 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM Operadores ORDER BY Nome';
-    Query.Open;
-    
-    while not Query.Eof do
-    begin
-      Operador := TOperador.Create;
-      Operador.ID := Query.FieldByName('ID').AsInteger;
-      Operador.Nome := Query.FieldByName('Nome').AsString;
-      Operador.Matricula := Query.FieldByName('Matricula').AsString;
-      Operador.Senha := Query.FieldByName('Senha').AsString;
-      Operador.Ativo := Query.FieldByName('Ativo').AsBoolean;
-      
-      Result.Add(Operador);
-      Query.Next;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter operadores: ' + E.Message;
-      Result.Free;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM Operadores ORDER BY Nome';
+      Query.Open;
+
+      while not Query.Eof do
+      begin
+        Operador := TOperador.Create;
+        Operador.ID := Query.FieldByName('ID').AsInteger;
+        Operador.Nome := Query.FieldByName('Nome').AsString;
+        Operador.Matricula := Query.FieldByName('Matricula').AsString;
+        Operador.Senha := Query.FieldByName('Senha').AsString;
+        Operador.Ativo := Query.FieldByName('Ativo').AsBoolean;
+
+        Result.Add(Operador);
+        Query.Next;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter operadores: ' + E.Message;
+        Result.Free;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -408,30 +415,32 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM Operadores WHERE Ativo = 1 ORDER BY Nome';
-    Query.Open;
-    
-    while not Query.Eof do
-    begin
-      Operador := TOperador.Create;
-      Operador.ID := Query.FieldByName('ID').AsInteger;
-      Operador.Nome := Query.FieldByName('Nome').AsString;
-      Operador.Matricula := Query.FieldByName('Matricula').AsString;
-      Operador.Senha := Query.FieldByName('Senha').AsString;
-      Operador.Ativo := Query.FieldByName('Ativo').AsBoolean;
-      
-      Result.Add(Operador);
-      Query.Next;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter operadores ativos: ' + E.Message;
-      Result.Free;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM Operadores WHERE Ativo = 1 ORDER BY Nome';
+      Query.Open;
+
+      while not Query.Eof do
+      begin
+        Operador := TOperador.Create;
+        Operador.ID := Query.FieldByName('ID').AsInteger;
+        Operador.Nome := Query.FieldByName('Nome').AsString;
+        Operador.Matricula := Query.FieldByName('Matricula').AsString;
+        Operador.Senha := Query.FieldByName('Senha').AsString;
+        Operador.Ativo := Query.FieldByName('Ativo').AsBoolean;
+
+        Result.Add(Operador);
+        Query.Next;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter operadores ativos: ' + E.Message;
+        Result.Free;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -447,30 +456,32 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM Operadores WHERE Ativo = 0 ORDER BY Nome';
-    Query.Open;
-    
-    while not Query.Eof do
-    begin
-      Operador := TOperador.Create;
-      Operador.ID := Query.FieldByName('ID').AsInteger;
-      Operador.Nome := Query.FieldByName('Nome').AsString;
-      Operador.Matricula := Query.FieldByName('Matricula').AsString;
-      Operador.Senha := Query.FieldByName('Senha').AsString;
-      Operador.Ativo := Query.FieldByName('Ativo').AsBoolean;
-      
-      Result.Add(Operador);
-      Query.Next;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter operadores inativos: ' + E.Message;
-      Result.Free;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM Operadores WHERE Ativo = 0 ORDER BY Nome';
+      Query.Open;
+
+      while not Query.Eof do
+      begin
+        Operador := TOperador.Create;
+        Operador.ID := Query.FieldByName('ID').AsInteger;
+        Operador.Nome := Query.FieldByName('Nome').AsString;
+        Operador.Matricula := Query.FieldByName('Matricula').AsString;
+        Operador.Senha := Query.FieldByName('Senha').AsString;
+        Operador.Ativo := Query.FieldByName('Ativo').AsBoolean;
+
+        Result.Add(Operador);
+        Query.Next;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter operadores inativos: ' + E.Message;
+        Result.Free;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -538,20 +549,22 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT Ativo FROM Operadores WHERE ID = :P1';
-    Query.ParamByName('P1').AsInteger := AID;
-    Query.Open;
-    
-    if not Query.Eof then
-      Result := Query.FieldByName('Ativo').AsBoolean;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao verificar se operador está ativo: ' + E.Message;
-      Result := False;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT Ativo FROM Operadores WHERE ID = :P1';
+      Query.ParamByName('P1').AsInteger := AID;
+      Query.Open;
+
+      if not Query.Eof then
+        Result := Query.FieldByName('Ativo').AsBoolean;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao verificar se operador está ativo: ' + E.Message;
+        Result := False;
+      end;
     end;
   finally
     Query.Free;
@@ -566,20 +579,22 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT Bloqueado FROM Operadores WHERE ID = :P1';
-    Query.ParamByName('P1').AsInteger := AID;
-    Query.Open;
-    
-    if not Query.Eof then
-      Result := Query.FieldByName('Bloqueado').AsBoolean;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao verificar se operador está bloqueado: ' + E.Message;
-      Result := False;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT Bloqueado FROM Operadores WHERE ID = :P1';
+      Query.ParamByName('P1').AsInteger := AID;
+      Query.Open;
+
+      if not Query.Eof then
+        Result := Query.FieldByName('Bloqueado').AsBoolean;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao verificar se operador está bloqueado: ' + E.Message;
+        Result := False;
+      end;
     end;
   finally
     Query.Free;
@@ -810,28 +825,30 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT * FROM LogAcessoOperador WHERE OperadorID = :P1 ORDER BY DataHora DESC LIMIT :P2';
-    Query.ParamByName('P1').AsInteger := AOperadorID;
-    Query.ParamByName('P2').AsInteger := AUltimos;
-    Query.Open;
-    
-    while not Query.Eof do
-    begin
-      Result.Add(
-        FormatDateTime('dd/mm/yyyy hh:mm:ss', Query.FieldByName('DataHora').AsDateTime) + ' - ' +
-        Query.FieldByName('Motivo').AsString
-      );
-      Query.Next;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter histórico de logins: ' + E.Message;
-      Result.Free;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT * FROM LogAcessoOperador WHERE OperadorID = :P1 ORDER BY DataHora DESC LIMIT :P2';
+      Query.ParamByName('P1').AsInteger := AOperadorID;
+      Query.ParamByName('P2').AsInteger := AUltimos;
+      Query.Open;
+
+      while not Query.Eof do
+      begin
+        Result.Add(
+          FormatDateTime('dd/mm/yyyy hh:mm:ss', Query.FieldByName('DataHora').AsDateTime) + ' - ' +
+          Query.FieldByName('Motivo').AsString
+        );
+        Query.Next;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter histórico de logins: ' + E.Message;
+        Result.Free;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -850,19 +867,21 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT COUNT(*) as Total FROM Operadores';
-    Query.Open;
-    
-    if not Query.Eof then
-      Result := Query.FieldByName('Total').AsInteger;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter quantidade de operadores: ' + E.Message;
-      Result := 0;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT COUNT(*) as Total FROM Operadores';
+      Query.Open;
+
+      if not Query.Eof then
+        Result := Query.FieldByName('Total').AsInteger;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter quantidade de operadores: ' + E.Message;
+        Result := 0;
+      end;
     end;
   finally
     Query.Free;
@@ -877,19 +896,21 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT COUNT(*) as Total FROM Operadores WHERE Ativo = 1';
-    Query.Open;
-    
-    if not Query.Eof then
-      Result := Query.FieldByName('Total').AsInteger;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter quantidade de operadores ativos: ' + E.Message;
-      Result := 0;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT COUNT(*) as Total FROM Operadores WHERE Ativo = 1';
+      Query.Open;
+
+      if not Query.Eof then
+        Result := Query.FieldByName('Total').AsInteger;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter quantidade de operadores ativos: ' + E.Message;
+        Result := 0;
+      end;
     end;
   finally
     Query.Free;
@@ -904,19 +925,21 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text := 'SELECT COUNT(*) as Total FROM Operadores WHERE Ativo = 0';
-    Query.Open;
-    
-    if not Query.Eof then
-      Result := Query.FieldByName('Total').AsInteger;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter quantidade de operadores inativos: ' + E.Message;
-      Result := 0;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text := 'SELECT COUNT(*) as Total FROM Operadores WHERE Ativo = 0';
+      Query.Open;
+
+      if not Query.Eof then
+        Result := Query.FieldByName('Total').AsInteger;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter quantidade de operadores inativos: ' + E.Message;
+        Result := 0;
+      end;
     end;
   finally
     Query.Free;
@@ -931,30 +954,32 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text :=
-      'SELECT o.* FROM Operadores o ' +
-      'JOIN Vendas v ON o.ID = v.OperadorID ' +
-      'GROUP BY o.ID ' +
-      'ORDER BY COUNT(v.ID) DESC ' +
-      'LIMIT 1';
-    Query.Open;
-    
-    if not Query.Eof then
-    begin
-      Result := TOperador.Create;
-      Result.ID := Query.FieldByName('ID').AsInteger;
-      Result.Nome := Query.FieldByName('Nome').AsString;
-      Result.Matricula := Query.FieldByName('Matricula').AsString;
-      Result.Ativo := Query.FieldByName('Ativo').AsBoolean;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter operador com mais vendas: ' + E.Message;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text :=
+        'SELECT o.* FROM Operadores o ' +
+        'JOIN Vendas v ON o.ID = v.OperadorID ' +
+        'GROUP BY o.ID ' +
+        'ORDER BY COUNT(v.ID) DESC ' +
+        'LIMIT 1';
+      Query.Open;
+
+      if not Query.Eof then
+      begin
+        Result := TOperador.Create;
+        Result.ID := Query.FieldByName('ID').AsInteger;
+        Result.Nome := Query.FieldByName('Nome').AsString;
+        Result.Matricula := Query.FieldByName('Matricula').AsString;
+        Result.Ativo := Query.FieldByName('Ativo').AsBoolean;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter operador com mais vendas: ' + E.Message;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;
@@ -969,30 +994,32 @@ begin
   Query := TFDQuery.Create(nil);
   
   try
-    Query.Connection := FConexao;
-    Query.SQL.Text :=
-      'SELECT o.*, AVG(v.Total) as TicketMedio FROM Operadores o ' +
-      'JOIN Vendas v ON o.ID = v.OperadorID ' +
-      'GROUP BY o.ID ' +
-      'ORDER BY TicketMedio DESC ' +
-      'LIMIT 1';
-    Query.Open;
-    
-    if not Query.Eof then
-    begin
-      Result := TOperador.Create;
-      Result.ID := Query.FieldByName('ID').AsInteger;
-      Result.Nome := Query.FieldByName('Nome').AsString;
-      Result.Matricula := Query.FieldByName('Matricula').AsString;
-      Result.Ativo := Query.FieldByName('Ativo').AsBoolean;
-    end;
-    
-    FUltimoErro := '';
-  except
-    on E: Exception do
-    begin
-      FUltimoErro := 'Erro ao obter operador com melhor ticket: ' + E.Message;
-      Result := nil;
+    try
+      Query.Connection := FConexao;
+      Query.SQL.Text :=
+        'SELECT o.*, AVG(v.Total) as TicketMedio FROM Operadores o ' +
+        'JOIN Vendas v ON o.ID = v.OperadorID ' +
+        'GROUP BY o.ID ' +
+        'ORDER BY TicketMedio DESC ' +
+        'LIMIT 1';
+      Query.Open;
+
+      if not Query.Eof then
+      begin
+        Result := TOperador.Create;
+        Result.ID := Query.FieldByName('ID').AsInteger;
+        Result.Nome := Query.FieldByName('Nome').AsString;
+        Result.Matricula := Query.FieldByName('Matricula').AsString;
+        Result.Ativo := Query.FieldByName('Ativo').AsBoolean;
+      end;
+
+      FUltimoErro := '';
+    except
+      on E: Exception do
+      begin
+        FUltimoErro := 'Erro ao obter operador com melhor ticket: ' + E.Message;
+        Result := nil;
+      end;
     end;
   finally
     Query.Free;

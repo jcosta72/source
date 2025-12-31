@@ -1,9 +1,10 @@
-unit uImpressoraFiscal;
+﻿unit uImpressoraFiscal;
 
 interface
 
 uses
   System.SysUtils, System.Classes,
+  FMX.Dialogs,
   uCaixa, uOperador, uVenda, uItemVenda;
 
 type
@@ -28,7 +29,7 @@ type
     function CentralizarTexto(ATexto: string; ALargura: Integer = 48): string;
     function RepetirCaractere(ACaractere: Char; AQuantidade: Integer): string;
   public
-    constructor Create(ACaixa: TCaixa; AOperador: TOperador);
+    constructor Create;
     destructor Destroy; override;
     
     // Configuração
@@ -44,8 +45,8 @@ type
     procedure SalvarCupomVenda(AVenda: TVenda; AArquivo: string);
     
     // Propriedades
-    property Caixa: TCaixa read FCaixa;
-    property Operador: TOperador read FOperador;
+    property Caixa: TCaixa read FCaixa write FCaixa;
+    property Operador: TOperador read FOperador write FOperador;
     property EmpresaNome: string read FEmpresaNome write FEmpresaNome;
     property EmpresaCNPJ: string read FEmpresaCNPJ write FEmpresaCNPJ;
     property EmpresaIE: string read FEmpresaIE write FEmpresaIE;
@@ -54,19 +55,19 @@ type
 
 implementation
 
-constructor TImpressoraFiscal.Create(ACaixa: TCaixa; AOperador: TOperador);
+constructor TImpressoraFiscal.Create;
 begin
   inherited Create;
-  FCaixa := ACaixa;
-  FOperador := AOperador;
-  FEmpresaNome := 'PDV SEENAXON';
-  FEmpresaCNPJ := '00.000.000/0000-00';
-  FEmpresaIE := '00.000.000.000.000';
-  FEmpresaEndereco := 'Rua Exemplo, 123 - São Paulo - SP';
-  FEmpresaTelefone := '(11) 3000-0000';
-  FEmpresaSite := 'www.seenaxon.com.br';
-  FNumeroCupom := 1;
-  FSerieECF := '001';
+//  FCaixa := ACaixa;
+//  FOperador := AOperador;
+//  FEmpresaNome := 'PDV SEENAXON';
+//  FEmpresaCNPJ := '00.000.000/0000-00';
+//  FEmpresaIE := '00.000.000.000.000';
+//  FEmpresaEndereco := 'Rua Exemplo, 123 - São Paulo - SP';
+//  FEmpresaTelefone := '(11) 3000-0000';
+//  FEmpresaSite := 'www.seenaxon.com.br';
+//  FNumeroCupom := 1;
+//  FSerieECF := '001';
 end;
 
 destructor TImpressoraFiscal.Destroy;

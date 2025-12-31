@@ -1,35 +1,38 @@
-unit uCaixa;
+﻿unit uCaixa;
 
 interface
 
 uses
   System.SysUtils, System.Generics.Collections, System.DateUtils,
-  uVenda, uOperador;
+  uVenda, uOperador, System.TypInfo;
 
 type
   { Enumeração para status do caixa }
   TStatusCaixa = (scFechado, scAberto, scFechando);
-  
+
   { Enumeração para tipo de movimentação }
   TTipoMovimentacao = (tmSangria, tmSuprimento);
-  
+
   { Classe para registrar movimentações (sangria/suprimento) }
   TMovimentacao = class
   private
     FID: Integer;
     FTipo: TTipoMovimentacao;
+    FTipoNome: string;
     FValor: Double;
     FData: TDateTime;
     FMotivo: string;
     FOperador: string;
+    procedure SetTipo(const Value: TTipoMovimentacao);
   public
     constructor Create(AID: Integer; ATipo: TTipoMovimentacao; AValor: Double; 
       AMotivo, AOperador: string);
     
-    property ID: Integer read FID;
-    property Tipo: TTipoMovimentacao read FTipo;
+    property ID: Integer read FID write FID;
+    property Tipo: TTipoMovimentacao read FTipo write SetTipo;
+    property TipoNome: string read FTipoNome;
     property Valor: Double read FValor;
-    property Data: TDateTime read FData;
+    property Data: TDateTime read FData write FData;
     property Motivo: string read FMotivo;
     property Operador: string read FOperador;
     
@@ -44,6 +47,7 @@ type
     FVendas: TObjectList<TVenda>;
     FMovimentacoes: TObjectList<TMovimentacao>;
     FStatus: TStatusCaixa;
+    FStatusNome: string;
     FDataAbertura: TDateTime;
     FDataFechamento: TDateTime;
     FSaldoInicial: Double;
@@ -63,16 +67,18 @@ type
     FTotalPIX: Double;
     FDiferenca: Double;
     FProximoIDMovimentacao: Integer;
-    
+    FTeste: string;
+
     procedure CalcularTotalizadores;
     procedure ValidarCaixa;
     function CalcularSaldoFinal: Double;
+    procedure SetStatus(const Value: TStatusCaixa);
   public
     constructor Create(AID: Integer; AOperador: TOperador; ASaldoInicial: Double = 0);
     destructor Destroy; override;
-    
+
     { ========== OPERAÇÕES DE CAIXA ========== }
-    
+
     { Abertura do caixa }
     procedure Abrir(ASaldoInicial: Double = 0);
     
@@ -142,9 +148,10 @@ type
     property Operador: TOperador read FOperador;
     property Vendas: TObjectList<TVenda> read FVendas;
     property Movimentacoes: TObjectList<TMovimentacao> read FMovimentacoes;
-    property Status: TStatusCaixa read FStatus;
-    property DataAbertura: TDateTime read FDataAbertura;
-    property DataFechamento: TDateTime read FDataFechamento;
+    property Status: TStatusCaixa read FStatus write SetStatus;
+    property StatusNome: string read FStatusNome;
+    property DataAbertura: TDateTime read FDataAbertura write FDataAbertura;
+    property DataFechamento: TDateTime read FDataFechamento write FDataFechamento;
     property SaldoInicial: Double read FSaldoInicial;
     property SaldoFinal: Double read FSaldoFinal;
     property TotalVendas: Double read FTotalVendas;
@@ -189,6 +196,16 @@ begin
     tmSuprimento: Result := 'Suprimento';
   else
     Result := 'Desconhecido';
+  end;
+end;
+
+procedure TMovimentacao.SetTipo(const Value: TTipoMovimentacao);
+begin
+  FTipo := Value;
+
+  case FTipo of
+    tmSangria: FTipoNome := 'Sangria';
+    tmSuprimento: FTipoNome := 'Suprimento';
   end;
 end;
 
@@ -321,7 +338,8 @@ begin
   CalcularTotalizadores;
 end;
 
-{ ============================================================================
+{
+============================================================================
   MOVIMENTAÇÕES (SANGRIA/SUPRIMENTO)
   ============================================================================ }
 
@@ -421,6 +439,17 @@ end;
   CONSULTAS
   ============================================================================ }
 
+procedure TCaixa.SetStatus(const Value: TStatusCaixa);
+begin
+  FStatus := Value;
+
+  case FStatus of
+    scFechado: FStatusNome := 'Fechado';
+    scAberto: FStatusNome := 'Aberto';
+    scFechando: FStatusNome := 'Fechando';
+  end;
+end;
+
 function TCaixa.GetVenda(AIndex: Integer): TVenda;
 begin
   if (AIndex < 0) or (AIndex >= FVendas.Count) then
@@ -458,7 +487,7 @@ begin
   for i := 0 to FVendas.Count - 1 do
   begin
     Venda := FVendas[i];
-    if Venda.FormaPagamento = AForma then
+    if Venda.FormaPagamento = TFormaPagamento(AForma) then
       Resultado.Add(Venda);
   end;
   
@@ -555,7 +584,7 @@ begin
   Result := Result + '║                    RESUMO DO CAIXA                         ║' + sLineBreak;
   Result := Result + '╚════════════════════════════════════════════════════════════╝' + sLineBreak;
   Result := Result + sLineBreak;
-  
+
   Result := Result + 'ID do Caixa: ' + IntToStr(FID) + sLineBreak;
   Result := Result + 'Operador: ' + FOperador.Nome + sLineBreak;
   Result := Result + 'Status: ' + GetEnumName(TypeInfo(TStatusCaixa), Ord(FStatus)) + sLineBreak;
@@ -597,7 +626,7 @@ end;
 
 function TCaixa.PodeFechar: Boolean;
 begin
-  Result := EstaAberto and (FVendas.Count > 0 or FMovimentacoes.Count > 0);
+  Result := (EstaAberto and ((FVendas.Count > 0) or (FMovimentacoes.Count > 0)));
 end;
 
 function TCaixa.EstaAberto: Boolean;
@@ -639,14 +668,14 @@ begin
     FTotalVendas := FTotalVendas + Venda.Total;
     FTotalDesconto := FTotalDesconto + Venda.Desconto;
     FTotalAcrescimo := FTotalAcrescimo + Venda.Acrescimo;
-    FQuantidadeVendas := Inc(FQuantidadeVendas);
+    Inc(FQuantidadeVendas);
     FQuantidadeProdutos := FQuantidadeProdutos + Venda.QuantidadeItens;
     
     { Formas de pagamento }
     case Venda.FormaPagamento of
-      1: FTotalDinheiro := FTotalDinheiro + Venda.Total;
-      2: FTotalCartao := FTotalCartao + Venda.Total;
-      3: FTotalPIX := FTotalPIX + Venda.Total;
+      TFormaPagamento(0): FTotalDinheiro := FTotalDinheiro + Venda.Total;
+      TFormaPagamento(1): FTotalCartao := FTotalCartao + Venda.Total;
+      TFormaPagamento(2): FTotalPIX := FTotalPIX + Venda.Total;
     end;
     
     { Maior e menor venda }

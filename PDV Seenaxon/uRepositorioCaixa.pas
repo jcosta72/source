@@ -1,4 +1,4 @@
-unit uRepositorioCaixa;
+﻿unit uRepositorioCaixa;
 
 interface
 
@@ -30,7 +30,7 @@ type
     function FecharCaixa: Boolean;
     
     { Cancelar caixa atual }
-    procedure CancelarCaixa;
+    function CancelarCaixa: Boolean;
     
     { Obter caixa atual }
     function GetCaixaAtual: TCaixa;
@@ -213,10 +213,12 @@ begin
   end;
 end;
 
-procedure TRepositorioCaixa.CancelarCaixa;
+function TRepositorioCaixa.CancelarCaixa: Boolean;
 var
   Indice: Integer;
 begin
+  Result := False;
+
   if not Assigned(FCaixaAtual) then
     Exit;
   
@@ -229,6 +231,8 @@ begin
     
     FCaixaAtual := nil;
     FUltimoErro := '';
+
+    Result := True;
   except
     on E: Exception do
       FUltimoErro := 'Erro ao cancelar caixa: ' + E.Message;
@@ -488,6 +492,8 @@ begin
 end;
 
 function TRepositorioCaixa.ObterRelatorioDesempenho: string;
+var
+  LCaixa: TCaixa;
 begin
   Result := '';
   Result := Result + '╔════════════════════════════════════════════════════════════╗' + sLineBreak;
@@ -513,7 +519,8 @@ begin
   Result := Result + sLineBreak;
   
   Result := Result + '─── CAIXA MAIS RECENTE ───' + sLineBreak;
-  if Assigned(ObterCaixaMaisRecente) then
+  LCaixa := ObterCaixaMaisRecente;
+  if Assigned(LCaixa) then
   begin
     Result := Result + 'ID: ' + IntToStr(ObterCaixaMaisRecente.ID) + sLineBreak;
     Result := Result + 'Operador: ' + ObterCaixaMaisRecente.Operador.Nome + sLineBreak;

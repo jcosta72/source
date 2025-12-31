@@ -1,4 +1,4 @@
-unit uVenda;
+﻿unit uVenda;
 
 interface
 
@@ -23,6 +23,7 @@ type
     FDataVenda: TDateTime;
     FDataFinalizacao: TDateTime;
     FOperadorID: Integer;
+    FCaixaID: Integer;
     FStatus: TStatusVenda;
     FFormaPagamento: TFormaPagamento;
     FValorRecebido: Double;
@@ -68,19 +69,20 @@ type
     // Propriedades
     property ID: Integer read FID write FID;
     property Itens: TObjectList<TItemVenda> read FItens;
-    property Subtotal: Double read FSubtotal;
-    property Desconto: Double read FDesconto;
+    property Subtotal: Double read FSubtotal write FSubtotal;
+    property Desconto: Double read FDesconto write FDesconto;
     property DescontoPercentual: Boolean read FDescontoPercentual;
-    property Acrescimo: Double read FAcrescimo;
+    property Acrescimo: Double read FAcrescimo write FAcrescimo;
     property AcrescimoPercentual: Boolean read FAcrescimoPercentual;
-    property Total: Double read FTotal;
+    property Total: Double read FTotal write FTotal;
     property DataVenda: TDateTime read FDataVenda write FDataVenda;
     property DataFinalizacao: TDateTime read FDataFinalizacao;
     property OperadorID: Integer read FOperadorID write FOperadorID;
+    property CaixaID: Integer read FCaixaID write FCaixaID;
     property Status: TStatusVenda read FStatus write FStatus;
     property FormaPagamento: TFormaPagamento read FFormaPagamento write FFormaPagamento;
     property ValorRecebido: Double read FValorRecebido write FValorRecebido;
-    property Troco: Double read FTroco;
+    property Troco: Double read FTroco write FTroco;
     property QuantidadeItens: Integer read GetQuantidadeItens;
     property NumeroNFe: string read FNumeroNFe write FNumeroNFe;
     property ChaveAcesso: string read FChaveAcesso write FChaveAcesso;

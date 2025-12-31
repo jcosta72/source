@@ -7,122 +7,133 @@ object FormLogin: TFormLogin
   Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
+  FormFactor.Devices = [Desktop, iPhone, iPad]
   DesignerMasterStyle = 0
   object PanelPrincipal: TPanel
     Align = Client
     Size.Width = 800.000000000000000000
     Size.Height = 600.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 0
     object PanelLogo: TPanel
       Align = Top
       Size.Width = 800.000000000000000000
       Size.Height = 100.000000000000000000
+      Size.PlatformDefault = False
       StyleLookup = 'panelstyle'
       TabOrder = 0
       object LabelTitulo: TLabel
         Position.X = 10.000000000000000000
         Position.Y = 20.000000000000000000
-        Text = 'PDV SEENAXON'
-        Font.Size = 28.000000000000000000
-        Font.Style = [fsBold]
+        TextSettings.Font.Size = 28.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claBlue
+        Text = 'PDV SEENAXON'
       end
       object LabelSubtitulo: TLabel
         Position.X = 10.000000000000000000
         Position.Y = 55.000000000000000000
+        TextSettings.Font.Size = 14.000000000000000000
         Text = 'Frente de Caixa Inteligente - Login do Operador'
-        Font.Size = 14.000000000000000000
       end
     end
     object PanelFormulario: TPanel
       Align = Client
-      Position.Y = 100.000000000000000000
       Size.Width = 800.000000000000000000
       Size.Height = 500.000000000000000000
+      Size.PlatformDefault = False
       TabOrder = 1
       object LabelMatricula: TLabel
         Position.X = 50.000000000000000000
         Position.Y = 30.000000000000000000
         Text = 'Matr'#237'cula do Operador:'
-        Font.Size = 12.000000000000000000
       end
       object EditMatricula: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 0
+        TextSettings.Font.Size = 14.000000000000000000
         Position.X = 50.000000000000000000
         Position.Y = 50.000000000000000000
-        Width = 300.000000000000000000
-        Height = 40.000000000000000000
-        Font.Size = 14.000000000000000000
-        TabOrder = 0
-        Text = ''
+        Size.Width = 300.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
       end
       object LabelSenha: TLabel
         Position.X = 50.000000000000000000
         Position.Y = 100.000000000000000000
         Text = 'Senha:'
-        Font.Size = 12.000000000000000000
       end
       object EditSenha: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 1
+        Password = True
+        TextSettings.Font.Size = 14.000000000000000000
         Position.X = 50.000000000000000000
         Position.Y = 120.000000000000000000
-        Width = 300.000000000000000000
-        Height = 40.000000000000000000
-        Font.Size = 14.000000000000000000
-        Password = True
-        TabOrder = 1
-        Text = ''
+        Size.Width = 300.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
       end
       object PanelBotoes: TPanel
         Position.X = 50.000000000000000000
         Position.Y = 170.000000000000000000
-        Width = 300.000000000000000000
-        Height = 50.000000000000000000
+        Size.Width = 300.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
         TabOrder = 2
         object ButtonEntrar: TButton
           Position.X = 10.000000000000000000
           Position.Y = 10.000000000000000000
-          Width = 140.000000000000000000
-          Height = 30.000000000000000000
-          Text = 'Entrar'
+          Size.Width = 140.000000000000000000
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
           TabOrder = 0
+          Text = 'Entrar'
         end
         object ButtonSair: TButton
           Position.X = 160.000000000000000000
           Position.Y = 10.000000000000000000
-          Width = 130.000000000000000000
-          Height = 30.000000000000000000
-          Text = 'Sair'
+          Size.Width = 130.000000000000000000
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
           TabOrder = 1
+          Text = 'Sair'
         end
       end
       object LabelMensagem: TLabel
         Position.X = 50.000000000000000000
         Position.Y = 230.000000000000000000
-        Width = 300.000000000000000000
-        Height = 30.000000000000000000
-        Text = ''
-        Font.Size = 12.000000000000000000
-        WordWrap = True
+        Size.Width = 300.000000000000000000
+        Size.Height = 30.000000000000000000
+        Size.PlatformDefault = False
       end
       object PanelOperadores: TPanel
         Position.X = 450.000000000000000000
         Position.Y = 30.000000000000000000
-        Width = 300.000000000000000000
-        Height = 400.000000000000000000
+        Size.Width = 300.000000000000000000
+        Size.Height = 400.000000000000000000
+        Size.PlatformDefault = False
         TabOrder = 3
         object LabelOperadoresRapidos: TLabel
           Position.X = 10.000000000000000000
           Position.Y = 10.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
           Text = 'Operadores R'#225'pidos'
-          Font.Size = 12.000000000000000000
-          Font.Style = [fsBold]
         end
         object ListBoxOperadores: TListBox
           Position.X = 10.000000000000000000
           Position.Y = 30.000000000000000000
-          Width = 280.000000000000000000
-          Height = 360.000000000000000000
-          ItemHeight = 40.000000000000000000
+          Size.Width = 280.000000000000000000
+          Size.Height = 360.000000000000000000
+          Size.PlatformDefault = False
           TabOrder = 0
+          DisableFocusEffect = True
+          ItemHeight = 40.000000000000000000
+          DefaultItemStyles.ItemStyle = ''
+          DefaultItemStyles.GroupHeaderStyle = ''
+          DefaultItemStyles.GroupFooterStyle = ''
+          Viewport.Width = 276.000000000000000000
+          Viewport.Height = 356.000000000000000000
         end
       end
     end

@@ -1,4 +1,4 @@
-unit uRelatorios;
+﻿unit uRelatorios;
 
 interface
 
@@ -125,7 +125,7 @@ begin
     Relatorio := Relatorio +
       '═ INFORMAÇÕES DO CAIXA ═' + sLineBreak +
       'ID do Caixa: ' + IntToStr(ACaixa.ID) + sLineBreak +
-      'Operador: ' + ACaixa.OperadorNome + sLineBreak +
+      'Operador: ' + ACaixa.Operador.Nome + sLineBreak +
       'Data de Abertura: ' + FormatDateTime('dd/mm/yyyy hh:mm:ss', ACaixa.DataAbertura) + sLineBreak +
       'Data de Fechamento: ' + FormatDateTime('dd/mm/yyyy hh:mm:ss', ACaixa.DataFechamento) + sLineBreak +
       'Status: ' + ACaixa.StatusNome + sLineBreak +
@@ -192,7 +192,7 @@ begin
   try
     Relatorio := Relatorio +
       'ID do Caixa: ' + IntToStr(ACaixa.ID) + sLineBreak +
-      'Operador: ' + ACaixa.OperadorNome + sLineBreak +
+      'Operador: ' + ACaixa.Operador.Nome + sLineBreak +
       'Data: ' + FormatDateTime('dd/mm/yyyy', ACaixa.DataAbertura) + sLineBreak +
       sLineBreak;
     
@@ -258,7 +258,7 @@ begin
   try
     Relatorio := Relatorio +
       'ID do Caixa: ' + IntToStr(ACaixa.ID) + sLineBreak +
-      'Operador: ' + ACaixa.OperadorNome + sLineBreak +
+      'Operador: ' + ACaixa.Operador.Nome + sLineBreak +
       'Data: ' + FormatDateTime('dd/mm/yyyy', ACaixa.DataAbertura) + sLineBreak +
       sLineBreak;
     

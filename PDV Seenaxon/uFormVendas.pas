@@ -1,13 +1,13 @@
-unit uFormVendas;
+﻿unit uFormVendas;
 
 interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Controls.Presentation, FMX.StdCtrls, FMX.Layouts, FMX.ListBox,
-  FMX.Edit, FMX.Memo.Types, FMX.ScrollBox, FMX.Memo, FMX.Objects,
-  System.Generics.Collections,
+  FMX.Memo.Types, FMX.ScrollBox, FMX.Memo, FMX.Objects,
+  FMX.Types, FMX.Edit, System.Generics.Collections,
   uIntegracaoCaixa, uPersistenciaProduto, uRepositorioVenda,
   uProduto, uVenda, uItemVenda, uCaixa, uOperador, uDMConexao;
 
@@ -129,8 +129,8 @@ begin
   
   { Configurar EditQuantidade }
   EditQuantidade.Text := '1';
-  EditQuantidade.KeyboardType := TKeyboardType.NumbersAndPunctuation;
-  
+  EditQuantidade.KeyboardType := TVirtualKeyboardType.NumbersAndPunctuation;
+
   { Configurar cores }
   LabelStatusCaixa.TextSettings.FontColor := $FFFF0000; { Vermelho }
   
@@ -251,7 +251,7 @@ begin
         Texto := Format('%s | Qtd: %.2f | R$ %.2f', [
           ItemVenda.Produto.Nome,
           ItemVenda.Quantidade,
-          ItemVenda.Total
+          ItemVenda.ValorTotal
         ]);
         
         Item.Text := Texto;
@@ -269,7 +269,7 @@ var
   Resumo: string;
 begin
   try
-    MemoResumo.Clear;
+    MemoResumo.Lines.Clear;
     
     if Assigned(FVendaAtual) then
     begin
@@ -513,7 +513,7 @@ begin
   try
     if Assigned(FVendaAtual) then
     begin
-      FVendaAtual.LimparItens;
+      FVendaAtual.LimparVenda;
       AtualizarListaCarrinho;
       AtualizarResumoVenda;
       ExibirMensagem('Carrinho limpo', 'SUCESSO');

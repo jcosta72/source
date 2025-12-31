@@ -1,4 +1,4 @@
-unit uDMConexao;
+﻿unit uDMConexao;
 
 interface
 
@@ -7,92 +7,84 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.UI.Intf, FireDAC.DAPT,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.Stan.Error,
   FireDAC.Phys.Intf, FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef,
-  FireDAC.Stan.ExprFuncs, FireDAC.Phys.SQLiteWrapper.Custom,
-  FireDAC.Phys.SQLiteWrapper.Stat, Data.DB, FireDAC.Comp.DataSet;
+  FireDAC.Stan.ExprFuncs, FireDAC.Phys.SQLiteWrapper.Stat, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Phys, FireDAC.VCLUI.Wait, System.IOUtils;
 
-type
-  {$REGION 'Tipos e Constantes'}
-  
-  // Constantes de configuração
-  const
-    BANCO_DADOS_NOME = 'pdv_seenaxon.db';
-    BANCO_DADOS_CAMINHO = '';  // Deixar vazio para usar diretório da aplicação
-    TIMEOUT_CONEXAO = 30000;   // 30 segundos
-    POOL_TAMANHO_MINIMO = 1;
-    POOL_TAMANHO_MAXIMO = 5;
-  
-  {$ENDREGION}
-
-  {$REGION 'Classe TDMConexao'}
-  
   /// <summary>
   /// Data Module para gerenciar conexão com banco de dados SQLite
   /// Implementa padrão Singleton para garantir única instância
   /// </summary>
+type
   TDMConexao = class(TDataModule)
     FDConnection: TFDConnection;
     FDPhysSQLiteDriverLink: TFDPhysSQLiteDriverLink;
-    
+
   private
     FIsConectado: Boolean;
     FUltimoErro: string;
-    
+
     /// <summary>Configurar conexão com banco de dados</summary>
     procedure ConfigurarConexao;
-    
+
     /// <summary>Criar banco de dados se não existir</summary>
     procedure CriarBancoDados;
-    
+
     /// <summary>Executar script SQL de inicialização</summary>
     procedure ExecutarScriptInicializacao;
-    
+
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    
+
     /// <summary>Conectar ao banco de dados</summary>
     function Conectar: Boolean;
-    
+
     /// <summary>Desconectar do banco de dados</summary>
     procedure Desconectar;
-    
+
     /// <summary>Verificar se está conectado</summary>
     function EstaConectado: Boolean;
-    
+
     /// <summary>Obter conexão ativa</summary>
     function GetConexao: TFDConnection;
-    
+
     /// <summary>Executar query SQL</summary>
     function ExecutarSQL(ASQL: string; AParams: array of const): Boolean;
-    
+
     /// <summary>Obter último erro</summary>
     function GetUltimoErro: string;
-    
+
     /// <summary>Iniciar transação</summary>
     procedure IniciarTransacao;
-    
+
     /// <summary>Confirmar transação</summary>
     procedure ConfirmarTransacao;
-    
+
     /// <summary>Reverter transação</summary>
     procedure ReverterTransacao;
-    
+
     /// <summary>Verificar integridade do banco de dados</summary>
     function VerificarIntegridade: Boolean;
-    
+
     /// <summary>Fazer backup do banco de dados</summary>
     function FazerBackup(AArquivoDestino: string): Boolean;
-    
+
     /// <summary>Restaurar backup do banco de dados</summary>
     function RestaurarBackup(AArquivoOrigem: string): Boolean;
-    
+
     // Propriedades
     property Conexao: TFDConnection read GetConexao;
     property IsConectado: Boolean read FIsConectado;
     property UltimoErro: string read GetUltimoErro;
   end;
-  
-  {$ENDREGION}
+
+const
+  BANCO_DADOS_NOME = 'pdv_seenaxon.db';
+  BANCO_DADOS_CAMINHO = '';  // Deixar vazio para usar diretório da aplicação
+  TIMEOUT_CONEXAO = 30000;   // 30 segundos
+  POOL_TAMANHO_MINIMO = 1;
+  POOL_TAMANHO_MAXIMO = 5;
 
 var
   DMConexao: TDMConexao;
@@ -285,29 +277,31 @@ begin
   
   Query := TFDQuery.Create(nil);
   try
-    Query.Connection := FDConnection;
-    Query.SQL.Text := ASQL;
-    
-    // Definir parâmetros
-    for I := 0 to High(AParams) do
-    begin
-      case AParams[I].VType of
-        vtInteger:
-          Query.ParamByName('Param' + IntToStr(I)).AsInteger := AParams[I].VInteger;
-        vtString:
-          Query.ParamByName('Param' + IntToStr(I)).AsString := string(AParams[I].VString);
-        vtExtended:
-          Query.ParamByName('Param' + IntToStr(I)).AsFloat := AParams[I].VExtended^;
-        vtBoolean:
-          Query.ParamByName('Param' + IntToStr(I)).AsBoolean := AParams[I].VBoolean;
+    try
+      Query.Connection := FDConnection;
+      Query.SQL.Text := ASQL;
+
+      // Definir parâmetros
+      for I := 0 to High(AParams) do
+      begin
+        case AParams[I].VType of
+          vtInteger:
+            Query.ParamByName('Param' + IntToStr(I)).AsInteger := AParams[I].VInteger;
+          vtString:
+            Query.ParamByName('Param' + IntToStr(I)).AsString := string(AParams[I].VString);
+          vtExtended:
+            Query.ParamByName('Param' + IntToStr(I)).AsFloat := AParams[I].VExtended^;
+          vtBoolean:
+            Query.ParamByName('Param' + IntToStr(I)).AsBoolean := AParams[I].VBoolean;
+        end;
       end;
+
+      Query.ExecSQL;
+      Result := True;
+    except
+      on E: Exception do
+        FUltimoErro := 'Erro ao executar SQL: ' + E.Message;
     end;
-    
-    Query.ExecSQL;
-    Result := True;
-  except
-    on E: Exception do
-      FUltimoErro := 'Erro ao executar SQL: ' + E.Message;
   finally
     Query.Free;
   end;
@@ -362,14 +356,16 @@ begin
   
   Query := TFDQuery.Create(nil);
   try
-    Query.Connection := FDConnection;
-    Query.SQL.Text := 'PRAGMA integrity_check';
-    Query.Open;
-    
-    Result := (Query.RecordCount > 0) and 
-              (Query.Fields[0].AsString = 'ok');
-  except
-    Result := False;
+    try
+      Query.Connection := FDConnection;
+      Query.SQL.Text := 'PRAGMA integrity_check';
+      Query.Open;
+
+      Result := (Query.RecordCount > 0) and
+                (Query.Fields[0].AsString = 'ok');
+    except
+      Result := False;
+    end;
   finally
     Query.Free;
   end;
@@ -390,7 +386,7 @@ begin
     
     if FileExists(CaminhoOrigem) then
     begin
-      CopyFile(PChar(CaminhoOrigem), PChar(AArquivoDestino), False);
+      TFile.Copy(CaminhoOrigem, AArquivoDestino);
       Result := True;
     end
     else
@@ -424,8 +420,8 @@ begin
       CaminhoDestino := BANCO_DADOS_CAMINHO + BANCO_DADOS_NOME;
     
     // Copiar backup
-    CopyFile(PChar(AArquivoOrigem), PChar(CaminhoDestino), False);
-    
+    TFile.Copy(AArquivoOrigem, CaminhoDestino);
+
     // Reconectar
     Result := Conectar;
   except

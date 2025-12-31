@@ -1,4 +1,4 @@
-unit uPersistenciaCaixa;
+﻿unit uPersistenciaCaixa;
 
 interface
 
@@ -7,8 +7,8 @@ uses
   FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.Stan.Def, FireDAC.UI.Intf,
   FireDAC.Phys.Intf, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
   FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs,
-  FireDAC.FMXUI.Wait,
-  uCaixa, uOperador, uMovimentacao;
+  FireDAC.FMXUI.Wait, System.Variants,
+  uCaixa, uOperador, Data.DB;
 
 type
   { Classe responsável pela persistência de caixas em SQLite }
@@ -282,7 +282,7 @@ begin
     
     Params := TFDParams.Create;
     try
-      Params.CreateParam(ftInteger, 'OperadorID', ptInput).Value := ACaixa.OperadorID;
+      Params.CreateParam(ftInteger, 'OperadorID', ptInput).Value := ACaixa.Operador.ID;
       Params.CreateParam(ftDateTime, 'DataAbertura', ptInput).Value := ACaixa.DataAbertura;
       Params.CreateParam(ftFloat, 'SaldoInicial', ptInput).Value := ACaixa.SaldoInicial;
       Params.CreateParam(ftFloat, 'TotalVendas', ptInput).Value := ACaixa.TotalVendas;
@@ -300,7 +300,7 @@ begin
       Result := ExecutarSQL(SQL, Params);
       
       if Result then
-        ACaixa.FID := FUltimoID;
+        ACaixa.ID := FUltimoID;
     finally
       Params.Free;
     end;
@@ -416,11 +416,11 @@ begin
         Query.FieldByName('SaldoInicial').AsFloat
       );
       
-      Caixa.FOperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Caixa.FDataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
-      
+      Caixa.Operador.ID := Query.FieldByName('OperadorID').AsInteger;
+      Caixa.DataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
+
       if not Query.FieldByName('DataFechamento').IsNull then
-        Caixa.FDataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
+        Caixa.DataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
       
       Result := Caixa;
     end;
@@ -455,11 +455,11 @@ begin
         Query.FieldByName('SaldoInicial').AsFloat
       );
       
-      Caixa.FOperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Caixa.FDataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
+      Caixa.Operador.ID := Query.FieldByName('OperadorID').AsInteger;
+      Caixa.DataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
       
       if not Query.FieldByName('DataFechamento').IsNull then
-        Caixa.FDataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
+        Caixa.DataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
       
       Caixas.Add(Caixa);
       Query.Next;
@@ -500,8 +500,8 @@ begin
         Query.FieldByName('SaldoInicial').AsFloat
       );
       
-      Caixa.FOperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Caixa.FDataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
+      Caixa.Operador.ID := Query.FieldByName('OperadorID').AsInteger;
+      Caixa.DataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
       
       Caixas.Add(Caixa);
       Query.Next;
@@ -542,11 +542,11 @@ begin
         Query.FieldByName('SaldoInicial').AsFloat
       );
       
-      Caixa.FOperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Caixa.FDataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
-      
+      Caixa.Operador.ID := Query.FieldByName('OperadorID').AsInteger;
+      Caixa.DataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
+
       if not Query.FieldByName('DataFechamento').IsNull then
-        Caixa.FDataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
+        Caixa.DataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
       
       Caixas.Add(Caixa);
       Query.Next;
@@ -591,8 +591,8 @@ begin
         Query.FieldByName('SaldoInicial').AsFloat
       );
       
-      Caixa.FOperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Caixa.FDataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
+      Caixa.Operador.ID := Query.FieldByName('OperadorID').AsInteger;
+      Caixa.DataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
       
       Result := Caixa;
     end;
@@ -634,12 +634,12 @@ begin
         nil,
         Query.FieldByName('SaldoInicial').AsFloat
       );
-      
-      Caixa.FOperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Caixa.FDataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
+
+      Caixa.Operador.ID := Query.FieldByName('OperadorID').AsInteger;
+      Caixa.DataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
       
       if not Query.FieldByName('DataFechamento').IsNull then
-        Caixa.FDataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
+        Caixa.DataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
       
       Caixas.Add(Caixa);
       Query.Next;
@@ -686,11 +686,11 @@ begin
         Query.FieldByName('SaldoInicial').AsFloat
       );
       
-      Caixa.FOperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Caixa.FDataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
+      Caixa.Operador.ID := Query.FieldByName('OperadorID').AsInteger;
+      Caixa.DataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
       
       if not Query.FieldByName('DataFechamento').IsNull then
-        Caixa.FDataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
+        Caixa.DataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
       
       Caixas.Add(Caixa);
       Query.Next;
@@ -740,11 +740,11 @@ begin
         Query.FieldByName('SaldoInicial').AsFloat
       );
       
-      Caixa.FOperadorID := Query.FieldByName('OperadorID').AsInteger;
-      Caixa.FDataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
-      
+      Caixa.Operador.ID := Query.FieldByName('OperadorID').AsInteger;
+      Caixa.DataAbertura := Query.FieldByName('DataAbertura').AsDateTime;
+
       if not Query.FieldByName('DataFechamento').IsNull then
-        Caixa.FDataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
+        Caixa.DataFechamento := Query.FieldByName('DataFechamento').AsDateTime;
       
       Caixas.Add(Caixa);
       Query.Next;
@@ -791,7 +791,7 @@ begin
     Params := TFDParams.Create;
     try
       Params.CreateParam(ftInteger, 'CaixaID', ptInput).Value := ACaixaID;
-      Params.CreateParam(ftInteger, 'OperadorID', ptInput).Value := AMovimentacao.OperadorID;
+      Params.CreateParam(ftInteger, 'OperadorID', ptInput).Value := AMovimentacao.Operador.ToInteger ;
       Params.CreateParam(ftString, 'Tipo', ptInput).Value := AMovimentacao.Tipo;
       Params.CreateParam(ftFloat, 'Valor', ptInput).Value := AMovimentacao.Valor;
       Params.CreateParam(ftDateTime, 'Data', ptInput).Value := AMovimentacao.Data;
@@ -800,7 +800,7 @@ begin
       Result := ExecutarSQL(SQL, Params);
       
       if Result then
-        AMovimentacao.FID := FUltimoID;
+        AMovimentacao.ID := FUltimoID;
     finally
       Params.Free;
     end;
@@ -835,13 +835,13 @@ begin
     begin
       Movimentacao := TMovimentacao.Create(
         Query.FieldByName('ID').AsInteger,
-        Query.FieldByName('Tipo').AsString,
+        TTipoMovimentacao(Query.FieldByName('Tipo').Asinteger),
         Query.FieldByName('Valor').AsFloat,
         Query.FieldByName('Motivo').AsString,
-        Query.FieldByName('OperadorID').AsInteger
+        Query.FieldByName('OperadorID').AsString
       );
       
-      Movimentacao.FData := Query.FieldByName('Data').AsDateTime;
+      Movimentacao.Data := Query.FieldByName('Data').AsDateTime;
       
       Movimentacoes.Add(Movimentacao);
       Query.Next;
@@ -886,13 +886,13 @@ begin
     begin
       Movimentacao := TMovimentacao.Create(
         Query.FieldByName('ID').AsInteger,
-        Query.FieldByName('Tipo').AsString,
+        TTipoMovimentacao(Query.FieldByName('Tipo').AsInteger),
         Query.FieldByName('Valor').AsFloat,
         Query.FieldByName('Motivo').AsString,
-        Query.FieldByName('OperadorID').AsInteger
+        Query.FieldByName('OperadorID').AsString
       );
       
-      Movimentacao.FData := Query.FieldByName('Data').AsDateTime;
+      Movimentacao.Data := Query.FieldByName('Data').AsDateTime;
       
       Movimentacoes.Add(Movimentacao);
       Query.Next;

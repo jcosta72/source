@@ -7,17 +7,15 @@ object FormFinalizarVenda: TFormFinalizarVenda
   Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
-  DesignerMasterStyle = 0
+  FormFactor.Devices = [Desktop, iPhone, iPad]
   OnCreate = FormCreate
   OnShow = FormShow
+  DesignerMasterStyle = 0
   object PanelPrincipal: TPanel
     Align = Client
-    Padding.Left = 0.000000000000000000
-    Padding.Top = 0.000000000000000000
-    Padding.Right = 0.000000000000000000
-    Padding.Bottom = 0.000000000000000000
     Size.Width = 900.000000000000000000
     Size.Height = 600.000000000000000000
+    Size.PlatformDefault = False
     TabOrder = 0
     object PanelCabecalho: TPanel
       Align = Top
@@ -27,30 +25,38 @@ object FormFinalizarVenda: TFormFinalizarVenda
       Padding.Bottom = 10.000000000000000000
       Size.Width = 900.000000000000000000
       Size.Height = 60.000000000000000000
+      Size.PlatformDefault = False
       TabOrder = 0
       object RectangloCabecalho: TRectangle
         Align = Client
         Fill.Color = claBlue
-        Stroke.Color = claBlue
-        Size.Width = 880.000000000000000000
+        Size.Width = 375.000000000000000000
         Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Color = claBlue
       end
       object LabelTitulo: TLabel
         Align = Left
+        Position.X = 10.000000000000000000
+        Position.Y = 10.000000000000000000
         Size.Width = 400.000000000000000000
         Size.Height = 40.000000000000000000
-        Text = 'Finalizar Venda'
-        Font.Size = 16.000000000000000000
-        Font.Style = [fsBold]
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 16.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
         TextSettings.FontColor = claWhite
+        Text = 'Finalizar Venda'
       end
       object ButtonFechar: TButton
         Align = Right
         Margins.Left = 5.000000000000000000
+        Position.X = 790.000000000000000000
+        Position.Y = 10.000000000000000000
         Size.Width = 100.000000000000000000
         Size.Height = 40.000000000000000000
-        Text = 'Fechar'
+        Size.PlatformDefault = False
         TabOrder = 0
+        Text = 'Fechar'
       end
     end
     object PanelCorpo: TPanel
@@ -60,25 +66,36 @@ object FormFinalizarVenda: TFormFinalizarVenda
       Padding.Right = 10.000000000000000000
       Padding.Bottom = 10.000000000000000000
       Size.Width = 900.000000000000000000
-      Size.Height = 530.000000000000000000
+      Size.Height = 540.000000000000000000
+      Size.PlatformDefault = False
       TabOrder = 1
       object LayoutResumoVenda: TLayout
         Align = Top
+        Position.X = 10.000000000000000000
+        Position.Y = 10.000000000000000000
         Size.Width = 880.000000000000000000
         Size.Height = 30.000000000000000000
+        Size.PlatformDefault = False
         object LabelResumo: TLabel
           Align = Client
+          Size.Width = 880.000000000000000000
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
           Text = 'RESUMO DA VENDA'
-          Font.Size = 12.000000000000000000
-          Font.Style = [fsBold]
         end
       end
       object MemoResumoVenda: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        ReadOnly = True
         Align = Top
         Margins.Top = 5.000000000000000000
+        Position.X = 10.000000000000000000
+        Position.Y = 45.000000000000000000
         Size.Width = 880.000000000000000000
         Size.Height = 120.000000000000000000
-        ReadOnly = True
+        Size.PlatformDefault = False
         TabOrder = 0
         Viewport.Width = 876.000000000000000000
         Viewport.Height = 116.000000000000000000
@@ -86,33 +103,36 @@ object FormFinalizarVenda: TFormFinalizarVenda
       object LayoutPagamento: TLayout
         Align = Top
         Margins.Top = 10.000000000000000000
+        Position.X = 10.000000000000000000
+        Position.Y = 175.000000000000000000
         Size.Width = 880.000000000000000000
         Size.Height = 200.000000000000000000
+        Size.PlatformDefault = False
         object LabelPagamento: TLabel
           Align = Top
           Size.Width = 880.000000000000000000
           Size.Height = 25.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
           Text = 'DADOS DE PAGAMENTO'
-          Font.Size = 12.000000000000000000
-          Font.Style = [fsBold]
         end
         object LayoutFormaPagamento: TLayout
           Align = Top
           Margins.Top = 5.000000000000000000
+          Position.Y = 30.000000000000000000
           Size.Width = 880.000000000000000000
           Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
           object LabelFormaPagamento: TLabel
             Align = Left
             Size.Width = 150.000000000000000000
             Size.Height = 40.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.Font.Size = 11.000000000000000000
             Text = 'Forma de Pagamento:'
-            Font.Size = 11.000000000000000000
           end
           object ComboFormaPagamento: TComboBox
             Align = Client
-            Margins.Left = 5.000000000000000000
-            Size.Width = 725.000000000000000000
-            Size.Height = 40.000000000000000000
             Items.Strings = (
               'Dinheiro'
               'Cart'#227'o de D'#233'bito'
@@ -120,116 +140,148 @@ object FormFinalizarVenda: TFormFinalizarVenda
               'PIX'
               'Cheque')
             ItemIndex = 0
+            Margins.Left = 5.000000000000000000
+            Size.Width = 725.000000000000000000
+            Size.Height = 40.000000000000000000
+            Size.PlatformDefault = False
             TabOrder = 0
           end
         end
         object LayoutValorTotal: TLayout
           Align = Top
           Margins.Top = 5.000000000000000000
+          Position.Y = 75.000000000000000000
           Size.Width = 880.000000000000000000
           Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
           object LabelValorTotal: TLabel
             Align = Left
             Size.Width = 150.000000000000000000
             Size.Height = 40.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.Font.Size = 11.000000000000000000
             Text = 'Valor Total:'
-            Font.Size = 11.000000000000000000
           end
           object EditValorTotal: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
             Align = Client
+            TabOrder = 0
+            ReadOnly = True
+            Text = 'R$ 0,00'
+            TextSettings.Font.Size = 11.000000000000000000
             Margins.Left = 5.000000000000000000
             Size.Width = 725.000000000000000000
             Size.Height = 40.000000000000000000
-            Font.Size = 11.000000000000000000
-            ReadOnly = True
-            TabOrder = 0
-            Text = 'R$ 0,00'
+            Size.PlatformDefault = False
           end
         end
         object LayoutValorPago: TLayout
           Align = Top
           Margins.Top = 5.000000000000000000
+          Position.Y = 120.000000000000000000
           Size.Width = 880.000000000000000000
           Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
           object LabelValorPago: TLabel
             Align = Left
             Size.Width = 150.000000000000000000
             Size.Height = 40.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.Font.Size = 11.000000000000000000
             Text = 'Valor Pago:'
-            Font.Size = 11.000000000000000000
           end
           object EditValorPago: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
             Align = Client
+            TabOrder = 0
+            Text = '0'
+            TextSettings.Font.Size = 11.000000000000000000
             Margins.Left = 5.000000000000000000
             Size.Width = 725.000000000000000000
             Size.Height = 40.000000000000000000
-            Font.Size = 11.000000000000000000
-            TabOrder = 0
-            Text = '0'
+            Size.PlatformDefault = False
           end
         end
         object LayoutTroco: TLayout
           Align = Top
           Margins.Top = 5.000000000000000000
+          Position.Y = 165.000000000000000000
           Size.Width = 880.000000000000000000
           Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
           object LabelTroco: TLabel
             Align = Left
             Size.Width = 150.000000000000000000
             Size.Height = 40.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.Font.Size = 11.000000000000000000
             Text = 'Troco:'
-            Font.Size = 11.000000000000000000
           end
           object EditTroco: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
             Align = Client
+            TabOrder = 0
+            ReadOnly = True
+            Text = 'R$ 0,00'
+            TextSettings.Font.Size = 11.000000000000000000
             Margins.Left = 5.000000000000000000
             Size.Width = 725.000000000000000000
             Size.Height = 40.000000000000000000
-            Font.Size = 11.000000000000000000
-            ReadOnly = True
-            TabOrder = 0
-            Text = 'R$ 0,00'
+            Size.PlatformDefault = False
           end
         end
       end
       object LayoutStatus: TLayout
         Align = Top
         Margins.Top = 10.000000000000000000
+        Position.X = 10.000000000000000000
+        Position.Y = 385.000000000000000000
         Size.Width = 880.000000000000000000
         Size.Height = 30.000000000000000000
+        Size.PlatformDefault = False
         object LabelStatus: TLabel
           Align = Client
+          Size.Width = 880.000000000000000000
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 11.000000000000000000
           Text = 'Processando...'
-          Font.Size = 11.000000000000000000
         end
       end
       object ProgressBar: TProgressBar
         Align = Top
+        Orientation = Horizontal
         Margins.Top = 5.000000000000000000
+        Position.X = 10.000000000000000000
+        Position.Y = 420.000000000000000000
         Size.Width = 880.000000000000000000
         Size.Height = 20.000000000000000000
-        Value = 0.000000000000000000
+        Size.PlatformDefault = False
       end
       object LayoutBotoes: TLayout
         Align = Bottom
+        Position.X = 10.000000000000000000
+        Position.Y = 480.000000000000000000
         Size.Width = 880.000000000000000000
         Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
         object ButtonProcessarPagamento: TButton
           Align = Left
           Margins.Right = 5.000000000000000000
           Size.Width = 430.000000000000000000
           Size.Height = 50.000000000000000000
-          Text = 'Processar Pagamento'
-          Font.Size = 12.000000000000000000
-          Font.Style = [fsBold]
+          Size.PlatformDefault = False
           TabOrder = 0
+          Text = 'Processar Pagamento'
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
         end
         object ButtonCancelar: TButton
           Align = Client
-          Size.Width = 430.000000000000000000
+          Size.Width = 445.000000000000000000
           Size.Height = 50.000000000000000000
-          Text = 'Cancelar'
+          Size.PlatformDefault = False
           TabOrder = 1
+          Text = 'Cancelar'
         end
       end
     end

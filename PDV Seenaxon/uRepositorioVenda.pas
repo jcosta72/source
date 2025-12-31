@@ -1,18 +1,16 @@
-unit uRepositorioVenda;
+﻿unit uRepositorioVenda;
 
 interface
 
 uses
-  System.SysUtils, System.Classes, System.Generics.Collections, System.Generics.Defaults,
+  System.SysUtils, System.Classes, System.Generics.Collections,
+  System.Generics.Defaults, System.Math,
   uVenda, uItemVenda, uProduto;
 
 type
-  {$REGION 'Tipos'}
-  
   // Tipo de filtro
   TTipoFiltroVenda = (tfTodas, tfPendentes, tfFinalizadas, tfCanceladas);
-  
-  {$ENDREGION}
+
 
   {$REGION 'Classe TRepositorioVenda'}
   
@@ -803,15 +801,15 @@ function TRepositorioVenda.ObterMenorVenda: Double;
 var
   I: Integer;
 begin
-  Result := High(Double);
-  
+  Result := MaxDouble;
+
   for I := 0 to FVendas.Count - 1 do
   begin
     if (FVendas[I].Total > 0) and (FVendas[I].Total < Result) then
       Result := FVendas[I].Total;
   end;
-  
-  if Result = High(Double) then
+
+  if Result = MaxDouble then
     Result := 0;
 end;
 

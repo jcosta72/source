@@ -1,15 +1,13 @@
-unit uFormPrincipalResponsivo;
-
+﻿unit uFormPrincipalResponsivo;
 interface
-
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
-  FMX.Grids, FMX.Edit, FMX.StdCtrls, FMX.Memo, FMX.Controls.Presentation,
+  FMX.Grid, FMX.Edit, FMX.StdCtrls, FMX.Memo, FMX.Controls.Presentation,
   FMX.ScrollBox, System.Generics.Collections,
   uRepositorioProduto, uRepositorioVenda, uRepositorioOperador, uDMConexao,
-  uFormLogin, uProduto, uVenda, uItemVenda, uOperador, uCriptografiaSenha;
-
+  uFormLogin, uProduto, uVenda, uItemVenda, uOperador, uCriptografiaSenha,
+  System.Rtti, FMX.Grid.Style, FMX.Objects;
 type
   TFormPrincipalResponsivo = class(TForm)
     LayoutPrincipal: TLayout;
@@ -59,6 +57,7 @@ type
     procedure ButtonSairClick(Sender: TObject);
     procedure TimerAtualizacaoTimer(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure ButtonVendaClick(Sender: TObject);
   private
     FRepositorioProduto: TRepositorioProduto;
     FRepositorioVenda: TRepositorioVenda;
@@ -82,14 +81,10 @@ type
   public
     { Public declarations }
   end;
-
 var
   FormPrincipalResponsivo: TFormPrincipalResponsivo;
-
 implementation
-
 {$R *.fmx}
-
 const
   ALTURA_CABECALHO = 80;
   ALTURA_MENU = 60;
@@ -101,9 +96,7 @@ const
   COR_DESTAQUE = $FFFF4500;
   COR_SUCESSO = $FF00AA00;
   COR_ERRO = $FFFF0000;
-
 {$REGION 'Inicialização'}
-
 procedure TFormPrincipalResponsivo.FormCreate(Sender: TObject);
 begin
   // Inicializar repositórios
@@ -119,7 +112,6 @@ begin
   TimerAtualizacao.Interval := 1000;
   TimerAtualizacao.Enabled := True;
 end;
-
 procedure TFormPrincipalResponsivo.FormShow(Sender: TObject);
 begin
   // Conectar ao banco de dados
@@ -142,7 +134,6 @@ begin
   // Ajustar layout responsivo
   AjustarLayoutResponsivo;
 end;
-
 procedure TFormPrincipalResponsivo.FormDestroy(Sender: TObject);
 begin
   if Assigned(FRepositorioProduto) then
@@ -154,16 +145,12 @@ begin
   if Assigned(FOperadorAtual) then
     FOperadorAtual.Free;
 end;
-
 procedure TFormPrincipalResponsivo.FormResize(Sender: TObject);
 begin
   AjustarLayoutResponsivo;
 end;
-
 {$ENDREGION}
-
 {$REGION 'Métodos Privados'}
-
 procedure TFormPrincipalResponsivo.InicializarRepositorios;
 begin
   FRepositorioProduto := TRepositorioProduto.Create;
@@ -173,7 +160,6 @@ begin
   FProdutoSelecionado := nil;
   FItemSelecionado := -1;
 end;
-
 procedure TFormPrincipalResponsivo.ConfigurarEstilos;
 begin
   // Configurar cores do cabeçalho
@@ -193,32 +179,74 @@ begin
   LabelCarrinho.TextSettings.FontColor := COR_DESTAQUE;
   LabelResumo.TextSettings.FontColor := COR_DESTAQUE;
 end;
-
 procedure TFormPrincipalResponsivo.InicializarComponentes;
+var
+  Coluna: TColumn;
+  I: Integer;
 begin
-  // Configurar GridProdutos
+  // Limpar dados existentes
   GridProdutos.RowCount := 1;
-  GridProdutos.ColumnCount := 5;
-  GridProdutos.Columns[0].Header := 'ID';
-  GridProdutos.Columns[1].Header := 'Nome';
-  GridProdutos.Columns[2].Header := 'Categoria';
-  GridProdutos.Columns[3].Header := 'Preço';
-  GridProdutos.Columns[4].Header := 'Estoque';
-  
-  // Configurar GridCarrinho
+  GridProdutos.ClearColumns;
+
+  // Adicionar 5 colunas
+  Coluna := TStringColumn.Create(GridProdutos);
+  Coluna.Header := 'ID';
+  Coluna.Width := 50;
+  GridProdutos.AddObject(Coluna);
+
+  Coluna := TStringColumn.Create(GridProdutos);
+  Coluna.Header := 'Nome';
+  Coluna.Width := 150;
+  GridProdutos.AddObject(Coluna);
+
+  Coluna := TStringColumn.Create(GridProdutos);
+  Coluna.Header := 'Categoria';
+  Coluna.Width := 100;
+  GridProdutos.AddObject(Coluna);
+
+  Coluna := TStringColumn.Create(GridProdutos);
+  Coluna.Header := 'Preço';
+  Coluna.Width := 80;
+  GridProdutos.AddObject(Coluna);
+
+  Coluna := TStringColumn.Create(GridProdutos);
+  Coluna.Header := 'Estoque';
+  Coluna.Width := 60;
+  GridProdutos.AddObject(Coluna);
+
+//----------------------------------------------
   GridCarrinho.RowCount := 1;
-  GridCarrinho.ColumnCount := 5;
-  GridCarrinho.Columns[0].Header := 'ID';
-  GridCarrinho.Columns[1].Header := 'Produto';
-  GridCarrinho.Columns[2].Header := 'Qtd';
-  GridCarrinho.Columns[3].Header := 'Valor Unit.';
-  GridCarrinho.Columns[4].Header := 'Total';
-  
+  GridCarrinho.ClearColumns;
+
+  // Adicionar 5 colunas
+  Coluna := TStringColumn.Create(GridCarrinho);
+  Coluna.Header := 'ID';
+  Coluna.Width := 50;
+  GridCarrinho.AddObject(Coluna);
+
+  Coluna := TStringColumn.Create(GridCarrinho);
+  Coluna.Header := 'Produto';
+  Coluna.Width := 150;
+  GridCarrinho.AddObject(Coluna);
+
+  Coluna := TStringColumn.Create(GridCarrinho);
+  Coluna.Header := 'Qtd';
+  Coluna.Width := 100;
+  GridCarrinho.AddObject(Coluna);
+
+  Coluna := TStringColumn.Create(GridCarrinho);
+  Coluna.Header := 'Valor Unit.';
+  Coluna.Width := 80;
+  GridCarrinho.AddObject(Coluna);
+
+  Coluna := TStringColumn.Create(GridCarrinho);
+  Coluna.Header := 'Total';
+  Coluna.Width := 60;
+  GridCarrinho.AddObject(Coluna);
   // Configurar EditBuscaProduto
   EditBuscaProduto.Text := '';
   EditBuscaProduto.Hint := 'Digite para buscar...';
 end;
-
 procedure TFormPrincipalResponsivo.RealizarLogin;
 var
   FormLogin: TFormLogin;
@@ -240,13 +268,11 @@ begin
     FormLogin.Free;
   end;
 end;
-
 procedure TFormPrincipalResponsivo.VerificarVendaPendente;
 begin
   // TODO: Implementar lógica de recuperação de venda pendente
   // Usar TRecuperacaoVendas para verificar se existe venda pendente
 end;
-
 procedure TFormPrincipalResponsivo.CarregarDadosIniciais;
 begin
   // Iniciar nova venda
@@ -258,7 +284,6 @@ begin
   // Atualizar UI
   AtualizarResumoVenda;
 end;
-
 procedure TFormPrincipalResponsivo.CarregarProdutosNaGrid(AProdutos: TObjectList<TProduto>);
 var
   Produto: TProduto;
@@ -280,9 +305,9 @@ begin
       Produto := AProdutos[I];
       GridProdutos.Cells[0, I + 1] := IntToStr(Produto.ID);
       GridProdutos.Cells[1, I + 1] := Produto.Nome;
-      GridProdutos.Cells[2, I + 1] := Produto.Categoria;
+      GridProdutos.Cells[2, I + 1] := Produto.CategoriaNome;
       GridProdutos.Cells[3, I + 1] := FormatFloat('0.00', Produto.Preco);
-      GridProdutos.Cells[4, I + 1] := IntToStr(Produto.QuantidadeEstoque);
+      GridProdutos.Cells[4, I + 1] := IntToStr(Produto.Estoque);
     end;
     
     AProdutos.Free;
@@ -291,7 +316,6 @@ begin
       ExibirMensagem('Erro ao carregar produtos: ' + E.Message, True);
   end;
 end;
-
 procedure TFormPrincipalResponsivo.AtualizarUICarrinho;
 var
   Item: TItemVenda;
@@ -315,14 +339,13 @@ begin
       GridCarrinho.Cells[1, I + 1] := Item.Produto.Nome;
       GridCarrinho.Cells[2, I + 1] := FormatFloat('0.00', Item.Quantidade);
       GridCarrinho.Cells[3, I + 1] := FormatFloat('0.00', Item.Produto.Preco);
-      GridCarrinho.Cells[4, I + 1] := FormatFloat('0.00', Item.GetValorTotal);
+      GridCarrinho.Cells[4, I + 1] := FormatFloat('0.00', Item.ValorTotal);
     end;
   except
     on E: Exception do
       ExibirMensagem('Erro ao atualizar carrinho: ' + E.Message, True);
   end;
 end;
-
 procedure TFormPrincipalResponsivo.AtualizarResumoVenda;
 var
   Venda: TVenda;
@@ -342,7 +365,6 @@ begin
       ExibirMensagem('Erro ao atualizar resumo: ' + E.Message, True);
   end;
 end;
-
 procedure TFormPrincipalResponsivo.ExibirMensagem(AMensagem: string; AErro: Boolean = False);
 begin
   LabelStatusBar.Text := AMensagem;
@@ -352,7 +374,6 @@ begin
   else
     LabelStatusBar.TextSettings.FontColor := COR_SUCESSO;
 end;
-
 procedure TFormPrincipalResponsivo.AjustarLayoutResponsivo;
 var
   LarguraPainelDireito: Single;
@@ -365,11 +386,8 @@ begin
   LayoutPainelDireito.Width := LarguraPainelDireito;
   LayoutPainelDireito.Position.X := LayoutPainelEsquerdo.Width;
 end;
-
 {$ENDREGION}
-
 {$REGION 'Eventos de Busca e Seleção'}
-
 procedure TFormPrincipalResponsivo.EditBuscaProdutoChange(Sender: TObject);
 var
   Termo: string;
@@ -384,7 +402,6 @@ begin
   
   CarregarProdutosNaGrid(Produtos);
 end;
-
 procedure TFormPrincipalResponsivo.GridProdutosSelectCell(Sender: TObject; const ACol, ARow: Integer);
 var
   ProdutoID: Integer;
@@ -399,11 +416,8 @@ begin
     end;
   end;
 end;
-
 {$ENDREGION}
-
 {$REGION 'Eventos de Ação'}
-
 procedure TFormPrincipalResponsivo.ButtonAdicionarProdutoClick(Sender: TObject);
 begin
   if not Assigned(FProdutoSelecionado) then
@@ -423,7 +437,6 @@ begin
     ExibirMensagem('Erro: ' + FRepositorioVenda.UltimoErro, True);
   end;
 end;
-
 procedure TFormPrincipalResponsivo.ButtonRemoverItemClick(Sender: TObject);
 begin
   if FItemSelecionado < 0 then
@@ -443,7 +456,6 @@ begin
     ExibirMensagem('Erro: ' + FRepositorioVenda.UltimoErro, True);
   end;
 end;
-
 procedure TFormPrincipalResponsivo.ButtonLimparCarrinhoClick(Sender: TObject);
 begin
   if MessageDlg('Deseja limpar o carrinho?', TMsgDlgType.mtConfirmation, 
@@ -456,7 +468,6 @@ begin
     ExibirMensagem('Carrinho limpo!', False);
   end;
 end;
-
 procedure TFormPrincipalResponsivo.ButtonAplicarDescontoClick(Sender: TObject);
 var
   Desconto: string;
@@ -482,7 +493,6 @@ begin
     end;
   end;
 end;
-
 procedure TFormPrincipalResponsivo.ButtonFinalizarVendaClick(Sender: TObject);
 begin
   // TODO: Abrir tela de finalização de venda (TFormFinalizacao)
@@ -498,15 +508,16 @@ begin
   end;
 end;
 
+procedure TFormPrincipalResponsivo.ButtonVendaClick(Sender: TObject);
+begin
+
+end;
+
 {$ENDREGION}
-
 {$REGION 'Timer'}
-
 procedure TFormPrincipalResponsivo.TimerAtualizacaoTimer(Sender: TObject);
 begin
   LabelHora.Text := FormatDateTime('HH:mm:ss', Now);
 end;
-
 {$ENDREGION}
-
 end.

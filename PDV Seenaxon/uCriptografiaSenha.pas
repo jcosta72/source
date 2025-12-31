@@ -1,83 +1,75 @@
-unit uCriptografiaSenha;
+﻿unit uCriptografiaSenha;
 
 interface
 
 uses
   System.SysUtils, System.Classes, IdHMACSHA1, IdGlobal, System.NetEncoding;
 
-type
-  {$REGION 'Tipos e Constantes'}
-  
-  // Constantes para PBKDF2
-  const
-    PBKDF2_ITERATIONS = 10000;      // 10.000 iterações (conforme OWASP)
-    PBKDF2_SALT_LENGTH = 32;        // 32 bytes de salt
-    PBKDF2_HASH_LENGTH = 32;        // 32 bytes de hash
-    PBKDF2_ALGORITHM = 'HMAC-SHA256'; // Algoritmo HMAC-SHA256
-  
-  {$ENDREGION}
-
-  {$REGION 'Classe TCriptografiaSenha'}
-  
   /// <summary>
   /// Classe para criptografia segura de senhas usando PBKDF2
   /// Implementa as melhores práticas de segurança conforme OWASP
   /// </summary>
+type
   TCriptografiaSenha = class
   private
     /// <summary>Gerar salt aleatório criptograficamente seguro</summary>
     class function GerarSaltAleatorio: TBytes;
-    
+
     /// <summary>Converter bytes para string hexadecimal</summary>
     class function BytesParaHex(ABytes: TBytes): string;
-    
+
     /// <summary>Converter string hexadecimal para bytes</summary>
     class function HexParaBytes(AHex: string): TBytes;
-    
+
     /// <summary>Implementar PBKDF2 com HMAC-SHA256</summary>
-    class function CalcularPBKDF2(ASenha: string; ASalt: TBytes; 
+    class function CalcularPBKDF2(ASenha: string; ASalt: TBytes;
                                   AIteracoes: Integer; AComprimento: Integer): TBytes;
-    
+
     /// <summary>Calcular HMAC-SHA256</summary>
     class function CalcularHMACSHA256(AChave: TBytes; AMensagem: TBytes): TBytes;
-    
+
   public
     /// <summary>
     /// Criptografar senha gerando hash com salt
     /// Retorna: salt (hex) + ':' + hash (hex)
     /// </summary>
     class function CriptografarSenha(ASenha: string): string;
-    
+
     /// <summary>
     /// Validar senha comparando com hash armazenado
     /// Usa comparação timing-safe para evitar timing attacks
     /// </summary>
     class function ValidarSenha(ASenha: string; AHashArmazenado: string): Boolean;
-    
+
     /// <summary>
     /// Gerar hash com salt específico (para testes)
     /// </summary>
     class function CriptografarSenhaComSalt(ASenha: string; ASalt: string): string;
-    
+
     /// <summary>
     /// Extrair salt de um hash armazenado
     /// </summary>
     class function ExtrairSalt(AHashArmazenado: string): string;
-    
+
     /// <summary>
     /// Verificar se o hash foi gerado com PBKDF2
     /// </summary>
     class function EhHashValido(AHash: string): Boolean;
-    
+
     /// <summary>
     /// Gerar hash com parâmetros customizados (para testes)
     /// </summary>
-    class function CriptografarSenhaCustomizado(ASenha: string; 
+    class function CriptografarSenhaCustomizado(ASenha: string;
                                                AIteracoes: Integer;
                                                ASaltLength: Integer): string;
   end;
-  
-  {$ENDREGION}
+
+// Constantes para PBKDF2
+const
+  PBKDF2_ITERATIONS = 10000;      // 10.000 iterações (conforme OWASP)
+  PBKDF2_SALT_LENGTH = 32;        // 32 bytes de salt
+  PBKDF2_HASH_LENGTH = 32;        // 32 bytes de hash
+  PBKDF2_ALGORITHM = 'HMAC-SHA256'; // Algoritmo HMAC-SHA256
 
 implementation
 
@@ -121,30 +113,24 @@ begin
   end;
 end;
 
-class function TCriptografiaSenha.CalcularHMACSHA256(AChave: TBytes; 
+class function TCriptografiaSenha.CalcularHMACSHA256(AChave: TBytes;
                                                      AMensagem: TBytes): TBytes;
 var
-  HMAC: TIdHMACSHA1;
-  I: Integer;
+  HMAC: TIdHMACSHA256;  // Mude para TIdHMACSHA1 se quiser SHA-1
 begin
-  // Nota: Usar HMAC-SHA256 (idealmente com biblioteca apropriada)
-  // Para simplificar, usar HMAC-SHA1 como exemplo
-  // Em produção, usar OpenSSL ou biblioteca criptográfica completa
-  
-  HMAC := TIdHMACSHA1.Create;
+  HMAC := TIdHMACSHA256.Create;  // Ou TIdHMACSHA1.Create
   try
-    // Configurar chave
-    HMAC.Key := BytesToString(AChave);
-    
-    // Calcular HMAC
-    Result := StringToBytes(HMAC.HashValue(BytesToString(AMensagem)));
+    // Configurar chave (cast explícito para TIdBytes)
+    HMAC.Key := TIdBytes(AChave);
+    // Calcular HMAC (usa overload binário: TIdBytes in/out)
+    Result := TBytes(HMAC.HashValue(TIdBytes(AMensagem)));
   finally
     HMAC.Free;
   end;
 end;
 
-class function TCriptografiaSenha.CalcularPBKDF2(ASenha: string; ASalt: TBytes; 
-                                                 AIteracoes: Integer; 
+class function TCriptografiaSenha.CalcularPBKDF2(ASenha: string; ASalt: TBytes;
+                                                 AIteracoes: Integer;
                                                  AComprimento: Integer): TBytes;
 var
   I, J, K: Integer;

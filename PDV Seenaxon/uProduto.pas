@@ -1,4 +1,4 @@
-unit uProduto;
+﻿unit uProduto;
 
 interface
 
@@ -26,7 +26,7 @@ type
     FUnidadeMedida: TUnidadeMedida;
     FPermiteDecimais: Boolean;
     FPrecisaoDecimal: Integer;
-    
+
     function GetCategoriaNome: string;
     function GetPrecoFormatado: string;
     function GetDescricaoCompleta: string;
@@ -78,7 +78,7 @@ type
 
 implementation
 
-constructor TProduto.Create(AID: Integer; ANome, ADescricao: string; APreco: Double; 
+constructor TProduto.Create(AID: Integer; ANome, ADescricao: string; APreco: Double;
   ACodigoBarras: string = ''; ACategoria: TCategoria = ctOutros; 
   AEstoque: Integer = 0; AImagemPath: string = ''; 
   AUnidadeMedida: TUnidadeMedida = umUnidade);

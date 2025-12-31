@@ -6,7 +6,6 @@ object DMConexao: TDMConexao
     Params.Strings = (
       'DriverID=SQLite'
       'Database=pdv_seenaxon.db')
-    Connected = False
     LoginPrompt = False
     Left = 48
     Top = 48

@@ -1,4 +1,4 @@
-unit uFormFinalizarVenda;
+﻿unit uFormFinalizarVenda;
 
 interface
 
@@ -6,8 +6,9 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
   FMX.StdCtrls, FMX.Edit, FMX.Memo, FMX.Controls.Presentation, FMX.ScrollBox,
-  FMX.Grids, System.Generics.Collections,
-  uRepositorioVenda, uVenda, uItemVenda, uImpressoraFiscal, uRecuperacaoVendas;
+  FMX.Grid, FMX.Objects, System.Generics.Collections, FMX.ListBox,
+  uRepositorioVenda, uVenda, uItemVenda, uImpressoraFiscal, uRecuperacaoVendas,
+  FMX.Memo.Types;
 
 type
   TFormFinalizarVenda = class(TForm)
@@ -95,8 +96,13 @@ begin
   FVendaAtual := nil;
   FProcessando := False;
   FProgressoProcessamento := 0;
-  
+
   FImpressoraFiscal := TImpressoraFiscal.Create;
+  FImpressoraFiscal.EmpresaNome := 'PDV SEENAXON';
+  FImpressoraFiscal.EmpresaCNPJ := '00.000.000/0000-00';
+  FImpressoraFiscal.EmpresaIE := '00.000.000.000.000';
+  FImpressoraFiscal.NumeroCupom := 1;
+
   FRecuperacaoVendas := TRecuperacaoVendas.Create;
   
   InicializarComponentes;
@@ -125,8 +131,8 @@ begin
   
   // Configurar EditValorPago
   EditValorPago.Text := '0.00';
-  EditValorPago.KeyboardType := TKeyboardType.NumberPad;
-  
+  EditValorPago.KeyboardType := TVirtualKeyboardType.NumberPad;
+
   // Configurar EditTroco
   EditTroco.ReadOnly := True;
   EditTroco.Text := '0.00';
@@ -196,7 +202,7 @@ begin
   // Cabeçalho
   Resumo := Resumo + '=== RESUMO DA VENDA ===' + sLineBreak;
   Resumo := Resumo + 'ID: ' + IntToStr(FVendaAtual.ID) + sLineBreak;
-  Resumo := Resumo + 'Data/Hora: ' + FormatDateTime('dd/mm/yyyy hh:mm:ss', FVendaAtual.DataHora) + sLineBreak;
+  Resumo := Resumo + 'Data/Hora: ' + FormatDateTime('dd/mm/yyyy hh:mm:ss', FVendaAtual.DataVenda) + sLineBreak;
   Resumo := Resumo + sLineBreak;
   
   // Itens
@@ -207,7 +213,7 @@ begin
     Resumo := Resumo + Item.Produto.Nome + sLineBreak;
     Resumo := Resumo + '  Qtd: ' + FormatFloat('0.00', Item.Quantidade) + 
               ' x R$ ' + FormatFloat('0.00', Item.Produto.Preco) + 
-              ' = R$ ' + FormatFloat('0.00', Item.GetValorTotal) + sLineBreak;
+              ' = R$ ' + FormatFloat('0.00', Item.ValorTotal) + sLineBreak;
   end;
   
   Resumo := Resumo + sLineBreak;
@@ -450,7 +456,7 @@ begin
     
     if Assigned(FRepositorioVenda) then
     begin
-      if FRepositorioVenda.FinalizarVenda(FormaPagamento, ValorPago) then
+      if FRepositorioVenda.FinalizarVenda( TFormaPagamento(FormaPagamento), ValorPago) then
       begin
         ExibirMensagem('Pagamento processado com sucesso!', False);
         
